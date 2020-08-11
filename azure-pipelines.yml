@@ -10,15 +10,12 @@ variables:
 - group: Chartmuseum
 - name: imageName
   value: 'mtm'
-- name: containerRegistry
-  value: 'simplyworks.azurecr.io'
 - name: major
   value: 2
 - name: minor
   value: 0
 - name: version
   value: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], counter(format('{0}.{1}', variables['major'], variables['minor']), 0))]
-
 
 jobs:
 
@@ -60,62 +57,74 @@ jobs:
       nobuild: true
       versioningScheme: byBuildNumber
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet push'
+  - task: NuGetCommand@2
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
-      command: push
-      publishVstsFeed: 'e5fb2e9c-1207-48a4-8f7b-2e6b32308210'
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'swnuget' 
 
 - job: build
   displayName: Build, push image and chart and deploy to playground
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageName)
-        dockerfile: $(Build.SourcesDirectory)/Dockerfile
-        containerRegistry: simplyworksacr
-        tags: |
-          $(version)
-          latest
 
-    - task: HelmInstaller@0
-      displayName: 'Install Helm 3.2.4'
-      inputs:
-        helmVersion: '3.2.4'
-        checkLatestHelmVersion: false
-        installKubectl: false
+  - task: VersionDotNetCoreAssemblies@2
+    inputs:
+      Path: '$(Build.SourcesDirectory)'
+      VersionNumber: '$(Build.BuildNumber)'
+      Injectversion: False
+      VersionRegex: '\d+\.\d+\.\d+'
+      FilenamePattern: '.csproj'
+      SDKNames: 'Microsoft.NET.Sdk'
+      OutputVersion: 'OutputedVersion'
 
-    - task: HelmDeploy@0
-      displayName: Helm package
-      inputs:
-        command: package
-        chartPath: charts/default
-        arguments: --version $(version) --app-version $(version)
+  - task: Docker@2
+    displayName: Build and push an image to container registry
+    inputs:
+      command: buildAndPush
+      repository: $(imageName)
+      dockerfile: $(Build.SourcesDirectory)/Dockerfile
+      containerRegistry: 'simplyworks.azurecr.io'
+      tags: |
+        $(version)
+        latest
 
-    - task: Bash@3
-      displayName: 'Upload to chart museum'
-      inputs:
-        targetType: 'inline'
-        script: |
-          for f in $(Build.ArtifactStagingDirectory)/*.tgz
-          do 
-            echo "Uploading @$f"
-            curl --data-binary "@$f" https://charts.sf9.io/api/charts --user $(User):$(Password)
-          done 
+  - task: HelmInstaller@0
+    displayName: 'Install Helm 3.2.4'
+    inputs:
+      helmVersion: '3.2.4'
+      checkLatestHelmVersion: false
+      installKubectl: false
 
-    - task: HelmDeploy@0
-      displayName: 'Deploy to playground'
-      inputs:
-        connectionType: 'Kubernetes Service Connection'
-        kubernetesServiceConnection: 'k8s-s9'
-        namespace: 'playground'
-        command: 'upgrade'
-        chartName: '$(imageName)'
-        chartVersion: $(version)
-        releaseName: '$(imageName)'
-        overrideValues: 'db=$(dbconnection),ingress.enabled=true,ingress.hosts={mtm.sf9.io}'
-        arguments: --repo https://charts.sf9.io
+  - task: HelmDeploy@0
+    displayName: Helm package
+    inputs:
+      command: package
+      chartPath: charts/default
+      arguments: --version $(version) --app-version $(version)
+
+  - task: Bash@3
+    displayName: 'Upload to chart museum'
+    inputs:
+      targetType: 'inline'
+      script: |
+        for f in $(Build.ArtifactStagingDirectory)/*.tgz
+        do 
+          echo "Uploading @$f"
+          curl --data-binary "@$f" https://charts.sf9.io/api/charts --user $(CmUser):$(CmPassword)
+        done 
+
+  - task: HelmDeploy@0
+    displayName: 'Deploy to playground'
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceConnection: 'k8s-s9'
+      namespace: 'playground'
+      command: 'upgrade'
+      chartName: '$(imageName)'
+      chartVersion: $(version)
+      releaseName: '$(imageName)'
+      overrideValues: 'db=$(dbconnection),ingress.enabled=true,ingress.hosts={mtm.sf9.io}'
+      arguments: --repo https://charts.sf9.io
