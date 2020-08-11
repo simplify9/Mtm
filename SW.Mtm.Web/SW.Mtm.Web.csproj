@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SW.Mtm.Api\SW.Mtm.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+    <PackageReference Include="SimplyWorks.CqApi" Version="2.0.3" />
+    <PackageReference Include="SimplyWorks.DomainEvents" Version="2.0.0" />
+    <PackageReference Include="SimplyWorks.Logger" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+
+
+</Project>
