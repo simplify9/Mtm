@@ -7,6 +7,8 @@
     <Product>SimplyWorks.Mtm.Sdk</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/simplify9/Mtm</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/simplify9/Mtm</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
