@@ -10,12 +10,8 @@ variables:
 - group: Chartmuseum
 - name: imageName
   value: 'mtm'
-- name: major
-  value: 2
-- name: minor
-  value: 0
 - name: version
-  value: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], counter(format('{0}.{1}', variables['major'], variables['minor']), 0))]
+  value: $[format('2.1.{0}', counter('2.1', 0))]
 
 jobs:
 
@@ -126,5 +122,5 @@ jobs:
       chartName: '$(imageName)'
       chartVersion: $(version)
       releaseName: '$(imageName)'
-      overrideValues: 'db=$(dbconnection),ingress.enabled=true,ingress.hosts={mtm.sf9.io}'
+      overrideValues: 'db=$(dbConnection),ingress.enabled=true,ingress.hosts={mtm.sf9.io}'
       arguments: --repo https://charts.sf9.io
