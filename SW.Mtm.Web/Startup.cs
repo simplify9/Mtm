@@ -70,6 +70,7 @@ namespace SW.Mtm.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UsePathBase("/_mtm");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
