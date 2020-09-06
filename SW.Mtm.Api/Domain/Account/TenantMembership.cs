@@ -1,7 +1,7 @@
-﻿using SW.Mtm.Sdk.Model;
+﻿using SW.Mtm.Model;
 using System;
 
-namespace SW.Mtm.Api.Domain
+namespace SW.Mtm.Domain
 {
     public class TenantMembership
     {

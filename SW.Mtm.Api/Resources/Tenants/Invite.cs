@@ -1,12 +1,12 @@
-﻿using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+﻿using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SW.Mtm.Api.Resources.Tenants
+namespace SW.Mtm.Resources.Tenants
 {
     [Protect]
     [HandlerName("invite")]

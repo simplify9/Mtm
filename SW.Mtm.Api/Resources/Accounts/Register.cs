@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SW.Mtm.Api.Resources.Accounts
+namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("register")]
     [Protect(RequireRole = true)]

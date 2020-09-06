@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SW.HttpExtensions;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System.Linq;
 

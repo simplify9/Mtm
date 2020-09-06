@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Api.Resources.Accounts
+namespace SW.Mtm.Resources.Accounts
 {
     class SetupTotp
     {

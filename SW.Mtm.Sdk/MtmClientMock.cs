@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using SW.PrimitiveTypes;
 using SW.HttpExtensions;
 using System.Security.Claims;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Model;
 
 namespace SW.Mtm.Sdk
 {
@@ -187,6 +187,11 @@ namespace SW.Mtm.Sdk
         }
 
         public Task<AccountRegisterResult> Register(AccountRegister registerAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateAdditionalTenant(TenantCreate registerAccount)
         {
             throw new NotImplementedException();
         }

@@ -10,10 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using SW.CqApi;
-using SW.DomainEvents;
 using SW.HttpExtensions;
 using SW.Logger;
-using SW.Mtm.Api;
 using SW.PrimitiveTypes;
 
 namespace SW.Mtm.Web
@@ -32,8 +30,13 @@ namespace SW.Mtm.Web
         {
             services.AddControllers();
             services.AddHealthChecks();
-            services.AddCqApi(typeof(MtmDbContext).Assembly);
-            services.AddDomainEvents(typeof(MtmDbContext).Assembly);
+
+            services.AddCqApi(configure =>
+                {
+                    configure.RolePrefix = "Mtm";
+                },
+                typeof(MtmDbContext).Assembly);
+
             services.AddScoped<RequestContext>();
             services.AddJwtTokenParameters();
 

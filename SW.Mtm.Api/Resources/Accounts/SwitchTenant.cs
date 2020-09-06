@@ -1,11 +1,11 @@
-﻿using SW.Mtm.Sdk.Model;
+﻿using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SW.Mtm.Api.Resources.Accounts
+namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("switchtenant")]
     [Protect]

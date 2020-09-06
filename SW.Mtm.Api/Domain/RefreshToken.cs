@@ -1,10 +1,10 @@
-﻿using SW.Mtm.Sdk.Model;
+﻿using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Api.Domain
+namespace SW.Mtm.Domain
 {
     internal class RefreshToken : BaseEntity<string>, IHasCreationTime
     {

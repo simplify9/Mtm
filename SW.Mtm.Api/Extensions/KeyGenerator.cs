@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Api
+namespace SW.Mtm
 {
     internal static class KeyGenerator
     {

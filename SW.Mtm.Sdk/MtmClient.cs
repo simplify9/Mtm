@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SW.HttpExtensions;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Net.Http;
@@ -15,11 +15,20 @@ namespace SW.Mtm.Sdk
         public MtmClient(HttpClient httpClient, RequestContext requestContext, MtmClientOptions mtmClientOptions) : base(httpClient, requestContext, mtmClientOptions)
         {
         }
-
-        public Task CreateTenant(TenantCreate registerAccount)
+        async public Task CreateTenant(TenantCreate tenantCreate)
         {
+            await Builder
+               .Key()
+               .Path("tenants/create")
+               .PostAsync(tenantCreate, true);
+        }
 
-            throw new NotImplementedException();
+        async public Task CreateAdditionalTenant(TenantCreate tenantCreate)
+        {
+            await Builder
+               .Jwt()
+               .Path("tenants/create")
+               .PostAsync(tenantCreate, true);
         }
 
         async public Task<AccountLoginResult> Login(AccountLogin loginAccount)

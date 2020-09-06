@@ -1,18 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore.Internal;
 using SW.EfCoreExtensions;
 using SW.HttpExtensions;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SW.Mtm.Api.Domain
+namespace SW.Mtm.Domain
 {
     internal class Account : BaseEntity<string>, IAudited, IDeletionAudited, IHasOptionalTenant
     {
         public const string SystemId = "1";
+        public const string AdminId = "2";
 
         private Account()
         {

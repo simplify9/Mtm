@@ -1,18 +1,15 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using SW.EfCoreExtensions;
-using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SW.Mtm.Api
+namespace SW.Mtm
 {
     public class MtmDbContext : DbContext
     {
@@ -22,15 +19,15 @@ namespace SW.Mtm.Api
         // Mtm@dmin!2
         private readonly string defaultPasswordHash = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ";
         private readonly DateTime defaultCreatedOn = DateTime.Parse("1/1/2020");
-        private readonly IDomainEventDispatcher domainEventDispatcher;
+        //private readonly IDomainEventDispatcher domainEventDispatcher;
         private readonly IConfiguration configuration;
 
         public RequestContext RequestContext { get; }
 
-        public MtmDbContext(DbContextOptions options, RequestContext requestContext, IDomainEventDispatcher domainEventDispatcher, IConfiguration configuration) : base(options)
+        public MtmDbContext(DbContextOptions options, RequestContext requestContext, IConfiguration configuration) : base(options)
         {
             RequestContext = requestContext;
-            this.domainEventDispatcher = domainEventDispatcher;
+            //this.domainEventDispatcher = domainEventDispatcher;
             this.configuration = configuration;
         }
 
@@ -109,11 +106,11 @@ namespace SW.Mtm.Api
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] { "Accounts.Login", "Accounts.Register" }
+                        Roles = new string[] { RoleConstants.AccounsLogin, RoleConstants.AccountsRegister }
                     },
                     new
                     {
-                        Id = "2",
+                        Id = Account.AdminId,
                         Email = "admin@xyz.com",
                         Password = defaultPasswordHash,
                         EmailProvider = EmailProvider.None,
@@ -126,7 +123,7 @@ namespace SW.Mtm.Api
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = true,
-                        Roles = new string[] { "Accounts.Register" }
+                        Roles = new string[] { RoleConstants.AccountsRegister }
                     },
                     new
                     {
@@ -269,7 +266,7 @@ namespace SW.Mtm.Api
 
                 var affectedRecords = await base.SaveChangesAsync(cancellationToken);
 
-                await ChangeTracker.DispatchDomainEvents(domainEventDispatcher);
+                //await ChangeTracker.DispatchDomainEvents(domainEventDispatcher);
 
                 await transaction.CommitAsync();
 

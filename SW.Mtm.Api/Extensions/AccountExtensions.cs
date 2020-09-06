@@ -1,13 +1,13 @@
 ﻿using SW.HttpExtensions;
-using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace SW.Mtm.Api
+namespace SW.Mtm
 {
     internal static class AccountExtensions
     {

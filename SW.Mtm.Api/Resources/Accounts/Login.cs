@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OtpNet;
 using SW.HttpExtensions;
-using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SW.Mtm.Api.Resources.Accounts
+namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("login")]
     [Protect(RequireRole = true)]

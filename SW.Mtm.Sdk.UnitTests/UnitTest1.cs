@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Model;
 using System.Threading.Tasks;
 
 namespace SW.Mtm.Sdk.UnitTests

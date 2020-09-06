@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Sdk.Model
+namespace SW.Mtm.Model
 {
     public class TenantAddAccount
     {

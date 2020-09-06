@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SW.EfCoreExtensions;
 using SW.Logger;
-using SW.Mtm.Api;
 
 namespace SW.Mtm.Web
 {

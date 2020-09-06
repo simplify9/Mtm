@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SW.Mtm.Api.Domain
+namespace SW.Mtm.Domain
 {
     internal class Tenant : BaseEntity, IAudited, IDeletionAudited
     {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SW.Mtm.Api.Domain;
-using SW.Mtm.Sdk.Model;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace SW.Mtm.Api
+namespace SW.Mtm
 {
     public static class IAppBuilderExtensions
     {

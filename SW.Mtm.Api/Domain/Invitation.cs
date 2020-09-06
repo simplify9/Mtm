@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Api.Domain
+namespace SW.Mtm.Domain
 {
     internal class Invitation : BaseEntity<string>, IAudited, IDeletionAudited, IHasTenant
     {
