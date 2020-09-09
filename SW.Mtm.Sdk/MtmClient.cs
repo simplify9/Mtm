@@ -15,20 +15,22 @@ namespace SW.Mtm.Sdk
         public MtmClient(HttpClient httpClient, RequestContext requestContext, MtmClientOptions mtmClientOptions) : base(httpClient, requestContext, mtmClientOptions)
         {
         }
-        async public Task CreateTenant(TenantCreate tenantCreate)
+        async public Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
         {
-            await Builder
+            return await Builder
                .Key()
                .Path("tenants/create")
-               .PostAsync(tenantCreate, true);
+               .As<TenantCreateResult>(true)
+               .PostAsync(tenantCreate);
         }
 
-        async public Task CreateAdditionalTenant(TenantCreate tenantCreate)
+        async public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate)
         {
-            await Builder
+            return await Builder
                .Jwt()
                .Path("tenants/create")
-               .PostAsync(tenantCreate, true);
+               .As<TenantCreateResult>(true)
+               .PostAsync(tenantCreate);
         }
 
         async public Task<AccountLoginResult> Login(AccountLogin loginAccount)

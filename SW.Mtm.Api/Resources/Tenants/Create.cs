@@ -60,7 +60,11 @@ namespace SW.Mtm.Resources.Tenants
             
             await dbContext.SaveChangesAsync();
 
-            return null;
+            return new TenantCreateResult 
+            { 
+                TenantId = tenant.Id,
+                AccountId = account.Id
+            };
         }
 
         private class Validate : AbstractValidator<TenantCreate>

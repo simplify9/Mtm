@@ -10,8 +10,8 @@ namespace SW.Mtm.Sdk
     {
         Task<AccountLoginResult> Login(AccountLogin loginAccount);
         Task<AccountRegisterResult> Register(AccountRegister registerAccount);
-        Task CreateTenant(TenantCreate registerAccount);
-        Task CreateAdditionalTenant(TenantCreate tenantCreate);
+        Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
+        Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
 
     }
 }

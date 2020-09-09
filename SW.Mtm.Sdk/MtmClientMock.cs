@@ -18,10 +18,7 @@ namespace SW.Mtm.Sdk
             this.mtmClientOptions = mtmClientOptions;
         }
 
-        public Task CreateTenant(TenantCreate registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+
 
         async public Task<AccountLoginResult> Login(AccountLogin request)
         {
@@ -191,7 +188,12 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
-        public Task CreateAdditionalTenant(TenantCreate registerAccount)
+        public Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate registerAccount)
         {
             throw new NotImplementedException();
         }

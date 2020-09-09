@@ -7,5 +7,6 @@ namespace SW.Mtm.Model
     public class TenantCreateResult
     {
         public int TenantId { get; set; }
+        public string AccountId { get; set; }
     }
 }
