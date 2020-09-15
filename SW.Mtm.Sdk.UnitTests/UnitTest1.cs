@@ -108,9 +108,9 @@ namespace SW.Mtm.Sdk.UnitTests
                 CurrentPassword = clientOptions.MockData["Password"],
                 NewPassword = "Mtm@1243",
             };
-            var changePasswordResult = await client.ChangePassword(accountId,changePasswordRequest);
+            await client.ChangePassword(accountId,changePasswordRequest);
 
-            Assert.AreEqual(changePasswordResult, null);
+            //Assert.AreEqual(changePasswordResult, null);
 
 
 
