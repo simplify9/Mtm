@@ -199,9 +199,14 @@ namespace SW.Mtm.Sdk
         }
    
 
-        public  Task ChangePassword(string accountId, AccountChangePassword changePasswordAccount)
+        public  Task ChangePassword(AccountChangePassword changePasswordAccount)
         {
             return Task.CompletedTask; 
+        }
+
+        public Task ResetPassword(string accountId, AccountResetPassword accountResetPassword)
+        {
+            return Task.CompletedTask;
         }
     }
 }

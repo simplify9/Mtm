@@ -53,4 +53,9 @@ namespace SW.Mtm.Model
         public int NewTenant { get; set; }
     }
 
+    public class AccountResetPassword
+    {
+        public string NewPassword { get; set; }
+    }
+
 }
