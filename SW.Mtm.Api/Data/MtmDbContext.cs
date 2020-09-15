@@ -110,7 +110,8 @@ namespace SW.Mtm
                         { 
                             RoleConstants.AccountsLogin, 
                             RoleConstants.AccountsRegister,
-                            RoleConstants.AccountsResetPassword
+                            RoleConstants.AccountsResetPassword,
+                            RoleConstants.AccountsInitiatePasswordReset
                         }
                     },
                     new
@@ -197,6 +198,18 @@ namespace SW.Mtm
                     });
 
             });
+
+            modelBuilder.Entity<PasswordResetToken>(b =>
+            {
+                b.ToTable("PasswordResetTokens");
+                b.HasKey(p => p.Id);
+                b.HasOne<Account>().WithMany().HasForeignKey(p => p.AccountId).OnDelete(DeleteBehavior.Cascade);
+
+                b.Property(p => p.Id).IsUnicode(false).HasMaxLength(50);
+                b.Property(p => p.AccountId).IsUnicode(false).HasMaxLength(50);
+
+            });
+
 
             modelBuilder.Entity<RefreshToken>(b =>
             {

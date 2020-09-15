@@ -10,7 +10,10 @@ namespace SW.Mtm.Sdk
     {
         Task<AccountLoginResult> Login(AccountLogin loginAccount);
         Task ChangePassword(AccountChangePassword accountChangePassword);
-        Task ResetPassword(string accountId, AccountResetPassword accountResetPassword);
+
+        Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail);
+
+        Task ResetPassword(string accountIdOrEmail, AccountResetPassword accountResetPassword);
         Task<AccountRegisterResult> Register(AccountRegister registerAccount);
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
         Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);

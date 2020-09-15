@@ -9,7 +9,7 @@ using SW.Mtm;
 namespace SW.Mtm.Web.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20200915141426_Update5")]
+    [Migration("20200915152014_Update5")]
     partial class Update5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,7 +158,7 @@ namespace SW.Mtm.Web.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword",
+                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -349,6 +349,28 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("OtpTokens");
                 });
 
+            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("PasswordResetTokens");
+                });
+
             modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
@@ -521,6 +543,14 @@ namespace SW.Mtm.Web.Migrations
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
+                {
+                    b.HasOne("SW.Mtm.Domain.Account", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
                 {
                     b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
