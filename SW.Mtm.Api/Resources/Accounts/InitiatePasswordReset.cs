@@ -13,7 +13,7 @@ namespace SW.Mtm.Resources.Accounts
 
     [Protect(RequireRole = true)]
     [HandlerName("initiatepasswordreset")]
-    class InitiatePasswordReset : IGetHandler<string>
+    class InitiatePasswordReset : ICommandHandler<string, AccountInitiatePasswordReset>
     {
         private readonly MtmDbContext dbContext;
 
@@ -22,7 +22,7 @@ namespace SW.Mtm.Resources.Accounts
             this.dbContext = dbContext;
         }
 
-        async public Task<object> Handle(string accountIdOrEmail, bool lookup = false)
+        async public Task<object> Handle(string accountIdOrEmail, AccountInitiatePasswordReset request)
         {
             var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
             if (account == null)

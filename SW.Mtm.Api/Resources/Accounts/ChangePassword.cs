@@ -24,10 +24,6 @@ namespace SW.Mtm.Resources.Accounts
 
             var accountId = requestContext.GetNameIdentifier();
 
-            //if (accountId != key)
-            //    throw new SWUnauthorizedException();
-
-            //
             var account = await dbContext.FindAsync<Account>(accountId);
             if (account == null)
                 throw new SWNotFoundException(accountId);
