@@ -55,12 +55,21 @@ namespace SW.Mtm.Sdk
                .PostAsync(changePasswordAccount, true);
         }
 
-        async public Task ResetPassword(string accountId, AccountResetPassword accountResetPassword)
+        async public Task ResetPassword(string accountIdOrEmail, AccountResetPassword accountResetPassword)
         {
             await Builder
                .Key()
-               .Path($"accounts/{accountId}/resetpassword")
+               .Path($"accounts/{accountIdOrEmail}/resetpassword")
                .PostAsync(accountResetPassword, true);
+        }
+
+        async public Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
+        {
+            return await Builder
+               .Key()
+               .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
+               .As<AccountInitiatePasswordResetResult>(true)
+               .PostAsync(new  AccountInitiatePasswordReset());
         }
     }
 }

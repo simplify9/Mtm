@@ -208,5 +208,10 @@ namespace SW.Mtm.Sdk
         {
             return Task.CompletedTask;
         }
+
+        public Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
