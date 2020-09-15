@@ -9,9 +9,9 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("switchtenant")]
     [Protect]
-    class SwitchTenant : ICommandHandler<AccountSwitch>
+    class SwitchTenant : ICommandHandler<AccountSwitchTenant>
     {
-        public Task<object> Handle(AccountSwitch request)
+        public Task<object> Handle(AccountSwitchTenant request)
         {
             throw new NotImplementedException();
         }

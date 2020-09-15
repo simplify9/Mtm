@@ -197,12 +197,11 @@ namespace SW.Mtm.Sdk
         {
             throw new NotImplementedException();
         }
-
    
 
-        public async Task<AccountChangePasswordResult> ChangePassword(string accountId, AccountChangePassword changePasswordAccount)
+        public  Task ChangePassword(string accountId, AccountChangePassword changePasswordAccount)
         {
-            return null ;
+            return Task.CompletedTask; 
         }
     }
 }

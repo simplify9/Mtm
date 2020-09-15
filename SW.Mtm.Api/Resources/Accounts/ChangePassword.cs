@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
+    [HandlerName("changepassword")]
     class ChangePassword : ICommandHandler<string, AccountChangePassword>
     {
         private readonly RequestContext requestContext;
@@ -26,9 +27,6 @@ namespace SW.Mtm.Resources.Accounts
             if (accountId != key)
                 throw new SWUnauthorizedException();
 
-
-
-
             //
             var account = await dbContext.FindAsync<Account>(key);
             if (account == null)
@@ -38,14 +36,9 @@ namespace SW.Mtm.Resources.Accounts
 
             if (account.EmailProvider != EmailProvider.None)
                 throw new SWValidationException("EmailProvider", "Not allowed for external email providers.");
-
-            
             
             if ((account.LoginMethods & LoginMethod.EmailAndPassword) != LoginMethod.EmailAndPassword)
-            
                 throw new SWValidationException("LoginMethod", "Invalid login method.");
-            
-
 
             var passwordCheck = SecurePasswordHasher.Verify(request.CurrentPassword, account.Password);
 
