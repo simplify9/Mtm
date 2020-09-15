@@ -53,8 +53,15 @@ namespace SW.Mtm.Model
         public int NewTenant { get; set; }
     }
 
+    public class AccountInitiatePasswordResetResult
+    {
+        public string AccountId { get; set; }
+        public string Token { get; set; }
+    }
+
     public class AccountResetPassword
     {
+        public string Token { get; set; }
         public string NewPassword { get; set; }
     }
 

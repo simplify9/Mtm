@@ -1,12 +1,10 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SW.Mtm.Domain;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,19 +12,18 @@ namespace SW.Mtm.Resources.Accounts
 {
 
     [Protect(RequireRole = true)]
-    [HandlerName("resetpassword")]
-    class ResetPassword : ICommandHandler<string, AccountResetPassword>
+    [HandlerName("initiatepasswordreset")]
+    class InitiatePasswordReset : IGetHandler<string>
     {
         private readonly MtmDbContext dbContext;
 
-        public ResetPassword(MtmDbContext dbContext)
+        public InitiatePasswordReset(MtmDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        async public Task<object> Handle(string accountIdOrEmail, AccountResetPassword request)
+        async public Task<object> Handle(string accountIdOrEmail, bool lookup = false)
         {
-
             var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
             if (account == null)
                 account = await dbContext.Set<Account>().Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
@@ -40,27 +37,15 @@ namespace SW.Mtm.Resources.Accounts
             if ((account.LoginMethods & LoginMethod.EmailAndPassword) != LoginMethod.EmailAndPassword)
                 throw new SWValidationException("LoginMethod", "Invalid login method.");
 
-            var token = await dbContext.FindAsync<PasswordResetToken>(request.Token);
-            if (token == null)
-                throw new SWUnauthorizedException();
-
-
-            account.SetPassword(SecurePasswordHasher.Hash(request.NewPassword));
-
-            dbContext.Remove(token);
-
+            var passwordResetToken = new Domain.PasswordResetToken(account.Id);
+            dbContext.Add(passwordResetToken);
             await dbContext.SaveChangesAsync();
 
-            return null;
-        }
-
-        class Validate : AbstractValidator<AccountResetPassword>
-        {
-            public Validate()
+            return new AccountInitiatePasswordResetResult
             {
-                RuleFor(i => i.Token).NotEmpty();
-                RuleFor(i => i.NewPassword).NotEmpty();
-            }
+                AccountId = account.Id,
+                Token = passwordResetToken.Id
+            };
         }
     }
 }
