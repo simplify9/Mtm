@@ -47,13 +47,20 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
-        async public Task ChangePassword(string accountId, AccountChangePassword changePasswordAccount)
+        async public Task ChangePassword(AccountChangePassword changePasswordAccount)
+        {
+            await Builder
+               .Jwt()
+               .Path($"accounts/changepassword")
+               .PostAsync(changePasswordAccount, true);
+        }
+
+        async public Task ResetPassword(string accountId, AccountResetPassword accountResetPassword)
         {
             await Builder
                .Key()
-               .Jwt()
-               .Path($"accounts/{accountId}/changepassword")
-               .PostAsync(changePasswordAccount, true);
+               .Path($"accounts/{accountId}/resetpassword")
+               .PostAsync(accountResetPassword, true);
         }
     }
 }

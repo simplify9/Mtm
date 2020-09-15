@@ -77,7 +77,7 @@ namespace SW.Mtm.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseApiKeyRequestContext();
+            app.UseApiKeyAsRequestContext();
             app.UseHttpAsRequestContext();
             app.UseRequestContextLogEnricher();
 

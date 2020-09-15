@@ -8,7 +8,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("changepassword")]
-    class ChangePassword : ICommandHandler<string, AccountChangePassword>
+    class ChangePassword : ICommandHandler<AccountChangePassword>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;
@@ -19,18 +19,18 @@ namespace SW.Mtm.Resources.Accounts
             this.dbContext = dbContext;
         }
 
-        async public Task<object> Handle(string key, AccountChangePassword request)
+        async public Task<object> Handle(AccountChangePassword request)
         {
 
             var accountId = requestContext.GetNameIdentifier();
 
-            if (accountId != key)
-                throw new SWUnauthorizedException();
+            //if (accountId != key)
+            //    throw new SWUnauthorizedException();
 
             //
-            var account = await dbContext.FindAsync<Account>(key);
+            var account = await dbContext.FindAsync<Account>(accountId);
             if (account == null)
-                throw new SWNotFoundException(key);
+                throw new SWNotFoundException(accountId);
             if (account.Disabled)
                 throw new SWValidationException("DisabledAccount", "Not allowed for disabled account");
 

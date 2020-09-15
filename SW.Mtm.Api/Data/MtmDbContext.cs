@@ -106,7 +106,12 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] { RoleConstants.AccounsLogin, RoleConstants.AccountsRegister }
+                        Roles = new string[] 
+                        { 
+                            RoleConstants.AccountsLogin, 
+                            RoleConstants.AccountsRegister,
+                            RoleConstants.AccountsResetPassword
+                        }
                     },
                     new
                     {
