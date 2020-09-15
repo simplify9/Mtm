@@ -78,7 +78,7 @@ namespace SW.Mtm.Web
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseApiKeyRequestContext();
-            app.UseHttpUserRequestContext();
+            app.UseHttpAsRequestContext();
             app.UseRequestContextLogEnricher();
 
             app.UseEndpoints(endpoints =>

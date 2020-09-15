@@ -85,5 +85,37 @@ namespace SW.Mtm.Sdk.UnitTests
 
             };
         }
+
+
+        [TestMethod]
+        async public Task TestChangePassword()
+        {
+            var client = server.Host.Services.GetRequiredService<IMtmClient>();
+            var clientOptions = server.Host.Services.GetRequiredService<MtmClientOptions>();
+
+            var loginRequest = new AccountLogin
+            {
+                Email = clientOptions.MockData["Email"],
+                Password = clientOptions.MockData["Password"]
+            };
+            var loginResult = await client.Login(loginRequest);
+            
+            
+            
+            var accountId = clientOptions.MockData["AccountId"];
+            var changePasswordRequest = new AccountChangePassword
+            {
+                CurrentPassword = clientOptions.MockData["Password"],
+                NewPassword = "Mtm@1243",
+            };
+            var changePasswordResult = await client.ChangePassword(accountId,changePasswordRequest);
+
+            Assert.AreEqual(changePasswordResult, null);
+
+
+
+
+
+        }
     }
 }

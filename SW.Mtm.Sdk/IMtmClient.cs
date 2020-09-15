@@ -9,6 +9,7 @@ namespace SW.Mtm.Sdk
     public interface IMtmClient
     {
         Task<AccountLoginResult> Login(AccountLogin loginAccount);
+        Task ChangePassword(string accountId, AccountChangePassword accountChangePassword);
         Task<AccountRegisterResult> Register(AccountRegister registerAccount);
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
         Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
