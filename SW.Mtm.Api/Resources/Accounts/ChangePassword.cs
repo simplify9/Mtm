@@ -33,12 +33,18 @@ namespace SW.Mtm.Resources.Accounts
             var account = await dbContext.FindAsync<Account>(key);
             if (account == null)
                 throw new SWNotFoundException(key);
+            if (account.Disabled)
+                throw new SWValidationException("DisabledAccount", "Not allowed for disabled account");
 
             if (account.EmailProvider != EmailProvider.None)
                 throw new SWValidationException("EmailProvider", "Not allowed for external email providers.");
 
-            if (account.LoginMethods & LoginMethod.EmailAndPassword)
-
+            
+            
+            if ((account.LoginMethods & LoginMethod.EmailAndPassword) != LoginMethod.EmailAndPassword)
+            
+                throw new SWValidationException("LoginMethod", "Invalid login method.");
+            
 
 
             var passwordCheck = SecurePasswordHasher.Verify(request.CurrentPassword, account.Password);

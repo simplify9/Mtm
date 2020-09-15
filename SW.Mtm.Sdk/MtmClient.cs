@@ -47,5 +47,13 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
+        async public Task<AccountChangePasswordResult> ChangePassword(string accountId,AccountChangePassword changePasswordAccount)
+        {
+            return await Builder
+                           .Key()
+                           .Path($"accounts/changePassword/{accountId}")
+                           .As<AccountChangePasswordResult>()
+                           .PostAsync(changePasswordAccount);
+        }
     }
 }
