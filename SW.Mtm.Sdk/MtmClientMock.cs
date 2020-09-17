@@ -213,5 +213,40 @@ namespace SW.Mtm.Sdk
         {
             throw new NotImplementedException();
         }
+
+        public Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult> ChangePasswordAsApiResult(AccountChangePassword accountChangePassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(string accountIdOrEmail)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
