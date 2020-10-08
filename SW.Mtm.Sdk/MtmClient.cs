@@ -33,6 +33,15 @@ namespace SW.Mtm.Sdk
                .PostAsync(tenantCreate);
         }
 
+        async public Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
+        {
+            return await Builder
+                .Key()
+                .Path("accounts/login")
+                .AsApiResult<AccountLoginResult>()
+                .PostAsync(loginAccount);
+        }
+
         async public Task<AccountLoginResult> Login(AccountLogin loginAccount)
         {
             return await Builder
@@ -69,7 +78,7 @@ namespace SW.Mtm.Sdk
                .Key()
                .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
                .As<AccountInitiatePasswordResetResult>(true)
-               .PostAsync(new  AccountInitiatePasswordReset());
+               .PostAsync(new AccountInitiatePasswordReset());
         }
     }
 }

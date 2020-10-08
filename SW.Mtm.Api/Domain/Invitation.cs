@@ -14,7 +14,7 @@ namespace SW.Mtm.Domain
 
         public static Invitation ByEmail(int tenantId, string email)
         {
-            var invitation = Invitation.New();
+            var invitation = New();
             invitation.Email = email ?? throw new ArgumentNullException(nameof(email));
             invitation.TenantId = tenantId;
             return invitation;

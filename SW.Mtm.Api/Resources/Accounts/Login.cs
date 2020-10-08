@@ -44,10 +44,13 @@ namespace SW.Mtm.Resources.Accounts
                    .SingleOrDefaultAsync();
 
                 if (refreshToken == null)
-                    throw new SWException("User not found or invalid password.");
+                    throw new SWUnauthorizedException();
 
                 account = await dbContext
                    .Set<Account>().FindAsync(refreshToken.AccountId);
+
+                if (account == null)
+                    throw new SWUnauthorizedException();
 
                 loginResult.Jwt = account.CreateJwt(refreshToken.LoginMethod, jwtTokenParameters);
                 loginResult.RefreshToken = CreateRefreshToken(account, refreshToken.LoginMethod);
@@ -139,11 +142,14 @@ namespace SW.Mtm.Resources.Accounts
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.Phone == request.Phone && (u.LoginMethods & LoginMethod.PhoneAndOtp) != 0)
+                   .Where(u => u.Phone == request.Phone)
                    .SingleOrDefaultAsync();
 
                 if (account == null)
-                    throw new SWException("User not found or invalid password.");
+                    throw new SWNotFoundException(request.Phone);
+
+                if ((account.LoginMethods & LoginMethod.PhoneAndOtp) == 0)
+                    throw new SWUnauthorizedException();
 
                 var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp);
                 loginResult.OtpType = OtpType.Otp;

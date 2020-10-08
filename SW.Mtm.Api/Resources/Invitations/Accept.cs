@@ -26,7 +26,7 @@ namespace SW.Mtm.Resources.Invitations
             var invitation = await dbContext.FindAsync<Invitation>(key);
 
             if (invitation == null)
-                throw new SWException("Invitation not found.");
+                throw new SWNotFoundException(key);
 
             if (requestContext.GetEmail() != null && requestContext.GetEmail().Equals(invitation.Email, StringComparison.OrdinalIgnoreCase) ||
             requestContext.GetMobilePhone() != null && requestContext.GetMobilePhone().Equals(invitation.Phone, StringComparison.OrdinalIgnoreCase) ||
@@ -35,7 +35,7 @@ namespace SW.Mtm.Resources.Invitations
                 var account = await dbContext.FindAsync<Account>(requestContext.GetNameIdentifier());
 
                 if (account == null)
-                    throw new SWException("Account not found.");
+                    throw new SWNotFoundException(key);
 
                 if (!account.AddTenantMembership(new TenantMembership(invitation.TenantId, MembershipType.User)))
                     throw new SWException("Membership not updated.");
