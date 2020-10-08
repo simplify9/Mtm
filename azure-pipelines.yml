@@ -112,9 +112,10 @@ jobs:
           curl --data-binary "@$f" https://charts.sf9.io/api/charts --user $(CmUser):$(CmPassword)
         done 
         
-  - task: Delay@1
+  - task: Bash@3
     inputs:
-      delayForMinutes: '1'
+      targetType: 'inline'
+      script: 'Start-Sleep -Seconds 10'
 
   - task: HelmDeploy@0
     displayName: 'Deploy to playground'
