@@ -114,7 +114,7 @@ jobs:
         
   - task: Delay@1
     inputs:
-      delayForMinutes: '1' 
+      delayForMinutes: '1'
 
   - task: HelmDeploy@0
     displayName: 'Deploy to playground'
