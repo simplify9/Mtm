@@ -64,13 +64,21 @@ namespace SW.Mtm.Sdk
                 .PostAsync(loginAccount);
         }
 
-        public Task<AccountRegisterResult> Register(AccountRegister registerAccount)
+        public async Task<AccountRegisterResult> Register(AccountRegister registerAccount)
         {
-            throw new NotImplementedException();
+            return await Builder
+                .Key()
+                .Path("accounts/register")
+                .As<AccountRegisterResult>(true)
+                .PostAsync(registerAccount);
         }
-        public Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount)
+        public async Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount)
         {
-            throw new NotImplementedException();
+            return await Builder
+                .Key()
+                .Path("accounts/register")
+                .AsApiResult<AccountRegisterResult>()
+                .PostAsync(registerAccount);
         }
         async public Task ChangePassword(AccountChangePassword changePasswordAccount)
         {
