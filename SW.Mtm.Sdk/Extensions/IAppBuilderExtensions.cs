@@ -9,7 +9,7 @@ namespace SW.Mtm.Sdk
 {
     public static class IAppBuilderExtensions
     {
-        public static IApplicationBuilder UseApiKeyRequestContext(this IApplicationBuilder applicationBuilder)
+        public static IApplicationBuilder UseApiKeyAsRequestContext(this IApplicationBuilder applicationBuilder)
         {
             applicationBuilder.Use(async (httpContext, next) =>
             {

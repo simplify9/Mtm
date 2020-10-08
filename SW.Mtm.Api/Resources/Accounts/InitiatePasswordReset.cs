@@ -37,13 +37,13 @@ namespace SW.Mtm.Resources.Accounts
             if ((account.LoginMethods & LoginMethod.EmailAndPassword) != LoginMethod.EmailAndPassword)
                 throw new SWValidationException("LoginMethod", "Invalid login method.");
 
-            var passwordResetToken = new Domain.PasswordResetToken(account.Id);
+            var passwordResetToken = new PasswordResetToken(account.Id);
             dbContext.Add(passwordResetToken);
             await dbContext.SaveChangesAsync();
 
             return new AccountInitiatePasswordResetResult
             {
-                AccountId = account.Id,
+                //AccountId = account.Id,
                 Token = passwordResetToken.Id
             };
         }
