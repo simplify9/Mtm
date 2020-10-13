@@ -27,8 +27,10 @@ namespace SW.Mtm.Resources.Tenants
 
             Invitation invitation;
 
+            //missing: validate account id exists missing
             if (request.AccountId != null)
                 invitation = Invitation.ByAccountId(key, request.AccountId);
+
 
             else if (request.Email != null)
                 invitation = Invitation.ByEmail(key, request.Email);

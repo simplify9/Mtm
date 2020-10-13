@@ -22,7 +22,7 @@ namespace SW.Mtm.Domain
 
         public static Invitation ByPhone(int tenantId, string phone)
         {
-            var invitation = Invitation.New();
+            var invitation = New();
             invitation.Phone = phone ?? throw new ArgumentNullException(nameof(phone));
             invitation.TenantId = tenantId;
             return invitation;
@@ -30,7 +30,7 @@ namespace SW.Mtm.Domain
 
         public static Invitation ByAccountId(int tenantId, string accountId)
         {
-            var invitation = Invitation.New();
+            var invitation = New();
             invitation.AccountId = accountId ?? throw new ArgumentNullException(nameof(accountId));
             invitation.TenantId = tenantId;
             return invitation;
