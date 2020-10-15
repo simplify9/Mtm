@@ -24,5 +24,12 @@ namespace SW.Mtm.Sdk
         Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
         Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate);
 
+
+        Task AcceptInvitation(string key, InvitationAccept invitationAccept);
+        Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept);
+
+        Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite);
+        Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite);
+
     }
 }
