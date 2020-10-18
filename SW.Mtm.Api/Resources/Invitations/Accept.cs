@@ -40,6 +40,8 @@ namespace SW.Mtm.Resources.Invitations
                 if (!account.AddTenantMembership(new TenantMembership(invitation.TenantId, MembershipType.User)))
                     throw new SWException("Membership not updated.");
 
+                dbContext.Remove(invitation);
+
                 await dbContext.SaveChangesAsync();
                 return null;
             }
