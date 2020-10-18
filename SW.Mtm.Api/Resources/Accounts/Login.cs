@@ -100,7 +100,7 @@ namespace SW.Mtm.Resources.Accounts
                    .SingleOrDefaultAsync();
 
                 if (account == null)
-                    throw new SWException("User not found or invalid password.");
+                    throw new SWNotFoundException(request.ApiKey);
 
                 loginResult.Jwt = account.CreateJwt(LoginMethod.ApiKey, jwtTokenParameters);
 
