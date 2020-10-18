@@ -130,7 +130,7 @@ namespace SW.Mtm.Domain
 
         public bool AddTenantMembership(TenantMembership membership)
         {
-            if (!_TenantMemberships.Any(t => t.TenantId == TenantId))
+            if (!_TenantMemberships.Any(t => t.TenantId == membership.TenantId))
             {
                 if (_TenantMemberships.Count == 0) 
                     if (TenantId == null) TenantId = membership.TenantId;

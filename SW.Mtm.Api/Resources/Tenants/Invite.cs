@@ -1,10 +1,13 @@
-﻿using SW.Mtm.Domain;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using SW.Mtm.Domain;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SW.Mtm.Resources.Tenants
 {
@@ -27,16 +30,35 @@ namespace SW.Mtm.Resources.Tenants
 
             Invitation invitation;
 
-            //missing: validate account id exists missing
             if (request.AccountId != null)
+            {
+                var account = await dbContext.FindAsync<Account>(request.AccountId);
+                if (account == null)
+                    throw new SWNotFoundException(request.AccountId);
+                if (account.TenantMemberships.Any(i => i.TenantId == key))
+                    throw new SWException("Account already member.");
+
                 invitation = Invitation.ByAccountId(key, request.AccountId);
 
+            }
 
             else if (request.Email != null)
+            {
+                var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Email == request.Email);
+                if (account != null && account.TenantMemberships.Any(i => i.TenantId == key))
+                    throw new SWException("Account already member.");
+                
                 invitation = Invitation.ByEmail(key, request.Email);
+            }
 
             else if (request.Phone != null)
+            {
+                var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Phone == request.Phone);
+                if (account != null && account.TenantMemberships.Any(i => i.TenantId == key))
+                    throw new SWException("Account already member.");
                 invitation = Invitation.ByPhone(key, request.Phone);
+
+            }
 
             else
                 throw new SWException("Missing data.");
