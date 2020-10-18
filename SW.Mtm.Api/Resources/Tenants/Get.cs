@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SW.Mtm.Model
+namespace SW.Mtm.Resources.Tenants
 {
-    public class InvitationAccept
+    class Get
     {
     }
 }
