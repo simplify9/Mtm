@@ -68,7 +68,7 @@ namespace SW.Mtm.Sdk
         public async Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite)
         {
             return await Builder
-                .Key()
+                .Jwt()
                 .Path($"tenants/{key}/invite")
                 .As<TenantInviteResult>(true)
                 .PostAsync(tenantInvite);
@@ -77,7 +77,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite)
         {
             return await Builder
-                .Key()
+                .Jwt()
                 .Path($"tenants/{key}/invite")
                 .AsApiResult<TenantInviteResult>()
                 .PostAsync(tenantInvite);
