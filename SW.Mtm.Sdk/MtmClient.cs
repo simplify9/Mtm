@@ -51,7 +51,7 @@ namespace SW.Mtm.Sdk
         public async Task AcceptInvitation(string key, InvitationAccept invitationAccept)
         {
             await Builder
-                .Key()
+                .Jwt()
                 .Path($"invitations/{key}/accept")
                 .PostAsync(invitationAccept);
         }
@@ -59,7 +59,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
         {
             return await Builder
-                .Key()
+                .Jwt()
                 .Path($"invitations/{key}/accept")
                 .AsApiResult()
                 .PostAsync(invitationAccept);
