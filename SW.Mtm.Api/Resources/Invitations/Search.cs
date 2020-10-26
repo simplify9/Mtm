@@ -1,7 +1,10 @@
-﻿using SW.Mtm.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,18 +23,51 @@ namespace SW.Mtm.Resources.Invitations
             this.requestContext = requestContext;
         }
 
-        public async  Task<object> Handle(InvitationSearch request)
+        public async Task<object> Handle(InvitationSearch request)
         {
             var tenantId = requestContext.GetTenantId();
-            //null check
+            if (!tenantId.HasValue)
+                throw new SWException("Tenant is empty.");
 
-            //make sure is owenr
-            var owner = await dbContext.IsTenantOwner() ;
+            if (!await dbContext.IsTenantOwner())
+                throw new SWUnauthorizedException();
 
+            if (!string.IsNullOrEmpty(request.Email))
+                return await dbContext.Set<Invitation>()
+                    .Where(i => i.Email == request.Email && i.TenantId == tenantId.Value)
+                    .Select(i => new InvitationSearchResult
+                    {
+                        TenantId = i.TenantId,
+                        AccountId = i.AccountId,
+                        CreatedBy = i.CreatedBy,
+                        CreatedOn = i.CreatedOn,
+                        Email = i.Email,
+                        Id = i.Id,
+                        ModifiedBy = i.ModifiedBy,
+                        ModifiedOn = i.ModifiedOn,
+                        Phone = i.Phone
+                    })
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync();
+            else
+                return await dbContext.Set<Invitation>()
+                    .Where(i => i.TenantId == tenantId.Value)
+                    .Select(i => new InvitationSearchResult
+                    {
+                        TenantId = i.TenantId,
+                        AccountId = i.AccountId,
+                        CreatedBy = i.CreatedBy,
+                        CreatedOn = i.CreatedOn,
+                        Email = i.Email,
+                        Id = i.Id,
+                        ModifiedBy = i.ModifiedBy,
+                        ModifiedOn = i.ModifiedOn,
+                        Phone = i.Phone
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
 
-
-
-            throw new NotImplementedException();
+            
         }
     }
 }

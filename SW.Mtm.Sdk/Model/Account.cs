@@ -49,7 +49,6 @@ namespace SW.Mtm.Model
 
     public class AccountSwitchTenant
     {
-        public int AccountId { get; set; }
         public int NewTenant { get; set; }
     }
 
