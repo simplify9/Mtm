@@ -25,7 +25,7 @@ namespace SW.Mtm.Resources.Tenants
         async public Task<object> Handle(int key, TenantInvite request)
         {
             if (!(await dbContext.IsLandlord() || await dbContext.IsTenantOwner(key)))
-                throw new SWException("Unauthorized.");
+                throw new SWUnauthorizedException();
 
 
             Invitation invitation;
