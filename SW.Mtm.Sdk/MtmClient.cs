@@ -47,6 +47,42 @@ namespace SW.Mtm.Sdk
                .AsApiResult<TenantCreateResult>()
                .PostAsync(tenantCreate);
         }
+
+        public async Task AcceptInvitation(string key, InvitationAccept invitationAccept)
+        {
+            await Builder
+                .Jwt()
+                .Path($"invitations/{key}/accept")
+                .PostAsync(invitationAccept);
+        }
+
+        public async Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"invitations/{key}/accept")
+                .AsApiResult()
+                .PostAsync(invitationAccept);
+        }
+
+        public async Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"tenants/{key}/invite")
+                .As<TenantInviteResult>(true)
+                .PostAsync(tenantInvite);
+        }
+
+        public async Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"tenants/{key}/invite")
+                .AsApiResult<TenantInviteResult>()
+                .PostAsync(tenantInvite);
+        }
+
         async public Task<AccountLoginResult> Login(AccountLogin loginAccount)
         {
             return await Builder

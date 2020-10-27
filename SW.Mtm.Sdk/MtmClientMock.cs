@@ -248,5 +248,25 @@ namespace SW.Mtm.Sdk
         {
             throw new NotImplementedException();
         }
+
+        public Task AcceptInvitation(string key, InvitationAccept invitationAccept)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
