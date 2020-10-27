@@ -269,7 +269,7 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+        public Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
         {
             throw new NotImplementedException();
         }
@@ -279,7 +279,7 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+        public Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
         {
             throw new NotImplementedException();
         }

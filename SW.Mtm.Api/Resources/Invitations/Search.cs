@@ -48,7 +48,7 @@ namespace SW.Mtm.Resources.Invitations
                         Phone = i.Phone
                     })
                     .AsNoTracking()
-                    .SingleOrDefaultAsync();
+                    .ToListAsync();
             else
                 return await dbContext.Set<Invitation>()
                     .Where(i => i.TenantId == tenantId.Value)
