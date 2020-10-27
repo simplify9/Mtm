@@ -268,5 +268,20 @@ namespace SW.Mtm.Sdk
         {
             throw new NotImplementedException();
         }
+
+        public Task<ApiResult> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

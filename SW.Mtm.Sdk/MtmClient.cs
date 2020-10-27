@@ -164,12 +164,31 @@ namespace SW.Mtm.Sdk
                .PostAsync(new AccountInitiatePasswordReset());
         }
 
-        
+        public async Task<ApiResult> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+        {
+            return await Builder
+               .Jwt()
+               .Path($"invitations/")
+               .AsApiResult()
+               .PostAsync(invitationSearch);
+        }
 
-        
+        public async Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
+        {
+            return await Builder
+               .Jwt()
+               .Path($"invitations/cancel")
+               .AsApiResult()
+               .PostAsync(invitationCancel);
+        }
 
-        
-
-     
+        public async Task<ApiResult> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+        {
+            return await Builder
+               .Jwt()
+               .Path($"accounts/switchtenant")
+               .AsApiResult()
+               .PostAsync(accountSwitchTenant);
+        }
     }
 }

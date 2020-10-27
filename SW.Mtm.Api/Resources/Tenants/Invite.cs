@@ -25,13 +25,16 @@ namespace SW.Mtm.Resources.Tenants
         async public Task<object> Handle(int key, TenantInvite request)
         {
             if (!(await dbContext.IsLandlord() || await dbContext.IsTenantOwner(key)))
-                throw new SWException("Unauthorized.");
+                throw new SWUnauthorizedException();
 
 
             Invitation invitation;
 
             if (request.AccountId != null)
             {
+                if (dbContext.Set<Invitation>().Any(i => i.AccountId == request.AccountId && i.TenantId == key))
+                    throw new SWException("Invitaion already sent.");
+
                 var account = await dbContext.FindAsync<Account>(request.AccountId);
                 if (account == null)
                     throw new SWNotFoundException(request.AccountId);
@@ -44,6 +47,9 @@ namespace SW.Mtm.Resources.Tenants
 
             else if (request.Email != null)
             {
+                if( dbContext.Set<Invitation>().Any(i => i.Email == request.Email && i.TenantId == key))
+                    throw new SWException("Invitaion already sent.");
+
                 var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Email == request.Email);
                 if (account != null && account.TenantMemberships.Any(i => i.TenantId == key))
                     throw new SWException("Account already member.");
@@ -53,6 +59,9 @@ namespace SW.Mtm.Resources.Tenants
 
             else if (request.Phone != null)
             {
+                if (dbContext.Set<Invitation>().Any(i => i.Phone == request.Phone && i.TenantId == key))
+                    throw new SWException("Invitaion already sent.");
+
                 var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Phone == request.Phone);
                 if (account != null && account.TenantMemberships.Any(i => i.TenantId == key))
                     throw new SWException("Account already member.");
