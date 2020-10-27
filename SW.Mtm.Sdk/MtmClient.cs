@@ -3,6 +3,7 @@ using SW.HttpExtensions;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -164,12 +165,12 @@ namespace SW.Mtm.Sdk
                .PostAsync(new AccountInitiatePasswordReset());
         }
 
-        public async Task<ApiResult> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+        public async Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
         {
             return await Builder
                .Jwt()
                .Path($"invitations/")
-               .AsApiResult()
+               .AsApiResult<List<InvitationSearchResult>>()
                .PostAsync(invitationSearch);
         }
 
@@ -182,12 +183,12 @@ namespace SW.Mtm.Sdk
                .PostAsync(invitationCancel);
         }
 
-        public async Task<ApiResult> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+        public async Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
         {
             return await Builder
                .Jwt()
                .Path($"accounts/switchtenant")
-               .AsApiResult()
+               .AsApiResult<AccountLoginResult>()
                .PostAsync(accountSwitchTenant);
         }
     }
