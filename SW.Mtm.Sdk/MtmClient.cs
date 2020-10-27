@@ -169,9 +169,9 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                .Jwt()
-               .Path($"invitations/")
+               .Path($"invitations?email={invitationSearch.Email}")
                .AsApiResult<List<InvitationSearchResult>>()
-               .PostAsync(invitationSearch);
+               .GetAsync();
         }
 
         public async Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
