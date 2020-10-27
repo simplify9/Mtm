@@ -37,6 +37,9 @@ namespace SW.Mtm.Resources.Invitations
                 var inv= await dbContext.Set<Invitation>()
                     .Where(i => i.Email == request.Email && i.TenantId == tenantId.Value)
                     .SingleOrDefaultAsync();
+                
+                if (inv != null)
+                    throw new SWException("Invitation not found.");
 
                 dbContext.Remove(inv);
                 await dbContext.SaveChangesAsync();
