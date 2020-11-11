@@ -191,5 +191,14 @@ namespace SW.Mtm.Sdk
                .AsApiResult<AccountLoginResult>()
                .PostAsync(accountSwitchTenant);
         }
+
+        public async Task<ApiResult> RemoveAccountAsApiResult(string key, TenantRemoveAccount tenantRemoveAccount)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"tenants/{key}/removeaccount")
+                .AsApiResult()
+                .PostAsync(tenantRemoveAccount);
+        }
     }
 }
