@@ -284,7 +284,7 @@ namespace SW.Mtm.Sdk
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult> RemoveAccountAsApiResult(string key, TenantRemoveAccount tenantRemoveAccount)
+        public Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
         {
             throw new NotImplementedException();
         }
