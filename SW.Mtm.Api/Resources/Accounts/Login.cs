@@ -46,8 +46,11 @@ namespace SW.Mtm.Resources.Accounts
                 if (refreshToken == null)
                     throw new SWUnauthorizedException();
 
+                //account = await dbContext
+                //   .Set<Account>().FindAsync(refreshToken.AccountId);
                 account = await dbContext
-                   .Set<Account>().FindAsync(refreshToken.AccountId);
+                    .Set<Account>().Where(a => a.Id == refreshToken.AccountId && !a.Disabled)
+                    .SingleOrDefaultAsync();
 
                 if (account == null)
                     throw new SWUnauthorizedException();
@@ -84,9 +87,11 @@ namespace SW.Mtm.Resources.Accounts
 
                 }
 
+                //account = await dbContext
+                //   .Set<Account>().FindAsync(otpToken.AccountId);
                 account = await dbContext
-                   .Set<Account>().FindAsync(otpToken.AccountId);
-
+                    .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled )
+                    .SingleOrDefaultAsync();
                 loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
                 loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
 
@@ -96,7 +101,7 @@ namespace SW.Mtm.Resources.Accounts
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.ApiCredentials.Any(cred => cred.Key == request.ApiKey) && (u.LoginMethods & LoginMethod.ApiKey) != 0)
+                   .Where(u => u.ApiCredentials.Any(cred => cred.Key == request.ApiKey) && (u.LoginMethods & LoginMethod.ApiKey) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
 
                 if (account == null)
@@ -109,7 +114,7 @@ namespace SW.Mtm.Resources.Accounts
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0)
+                   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
 
                 if (account == null)
@@ -142,7 +147,7 @@ namespace SW.Mtm.Resources.Accounts
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.Phone == request.Phone)
+                   .Where(u => u.Phone == request.Phone && !u.Disabled)
                    .SingleOrDefaultAsync();
 
                 if (account == null)
