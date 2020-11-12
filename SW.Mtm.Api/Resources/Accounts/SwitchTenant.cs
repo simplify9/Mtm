@@ -30,9 +30,9 @@ namespace SW.Mtm.Resources.Accounts
             //c5cd075be5ca47a8a63107954bae44ac
             //tenants 87 and 88
 
-            var tenantId = requestContext.GetTenantId();
-            if (!tenantId.HasValue)
-                throw new SWException("Tenant is empty.");
+            //var tenantId = requestContext.GetTenantId();
+            //if (!tenantId.HasValue)
+            //    throw new SWException("Tenant is empty.");
 
             var accountId = requestContext.GetNameIdentifier();
             if (string.IsNullOrEmpty(accountId))
