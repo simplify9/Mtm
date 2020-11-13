@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SW.Mtm.Domain
 {
-    internal class OtpToken : BaseEntity<string>, IHasCreationTime
+    public class OtpToken : BaseEntity<string>, IHasCreationTime
     {
         private OtpToken()
         {

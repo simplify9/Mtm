@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SW.Mtm.Domain
 {
-    internal class RefreshToken : BaseEntity<string>, IHasCreationTime
+    public class RefreshToken : BaseEntity<string>, IHasCreationTime
     {
         private RefreshToken()
         {

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SW.Mtm.Domain
 {
-    internal class Invitation : BaseEntity<string>, IAudited, IDeletionAudited, IHasTenant
+    public class Invitation : BaseEntity<string>, IAudited, IDeletionAudited, IHasTenant
     {
         private Invitation()
         {

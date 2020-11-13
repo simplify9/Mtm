@@ -4,19 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SW.Mtm;
 
-namespace SW.Mtm.Web.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20200915152014_Update5")]
-    partial class Update5
+    [Migration("20200906091801_update4")]
+    partial class update4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
@@ -41,7 +40,7 @@ namespace SW.Mtm.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.Account", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -158,7 +157,7 @@ namespace SW.Mtm.Web.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
+                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -245,7 +244,7 @@ namespace SW.Mtm.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.Invitation", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -316,7 +315,7 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("Invitations");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.OtpToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -349,29 +348,7 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("OtpTokens");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
-                    b.Property<string>("AccountId")
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("PasswordResetTokens");
-                });
-
-            modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -396,7 +373,7 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.Tenant", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.Tenant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -442,14 +419,14 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.Account", b =>
                 {
-                    b.HasOne("SW.Mtm.Domain.Tenant", null)
+                    b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.OwnsMany("SW.Mtm.Domain.ApiCredential", "ApiCredentials", b1 =>
+                    b.OwnsMany("SW.Mtm.Api.Domain.ApiCredential", "ApiCredentials", b1 =>
                         {
                             b1.Property<string>("AccountId")
                                 .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
@@ -496,7 +473,7 @@ namespace SW.Mtm.Web.Migrations
                                 });
                         });
 
-                    b.OwnsMany("SW.Mtm.Domain.TenantMembership", "TenantMemberships", b1 =>
+                    b.OwnsMany("SW.Mtm.Api.Domain.TenantMembership", "TenantMemberships", b1 =>
                         {
                             b1.Property<string>("AccountId")
                                 .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
@@ -520,7 +497,7 @@ namespace SW.Mtm.Web.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");
 
-                            b1.HasOne("SW.Mtm.Domain.Tenant", null)
+                            b1.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                                 .WithMany()
                                 .HasForeignKey("TenantId")
                                 .OnDelete(DeleteBehavior.Cascade)
@@ -528,39 +505,31 @@ namespace SW.Mtm.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.Invitation", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
                 {
-                    b.HasOne("SW.Mtm.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SW.Mtm.Domain.Tenant", null)
+                    b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.OtpToken", b =>
                 {
-                    b.HasOne("SW.Mtm.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
+            modelBuilder.Entity("SW.Mtm.Api.Domain.RefreshToken", b =>
                 {
-                    b.HasOne("SW.Mtm.Domain.Account", null)
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
-                {
-                    b.HasOne("SW.Mtm.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);

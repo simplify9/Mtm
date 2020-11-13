@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace SW.Mtm.Web.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20200726150230_initial")]
-    partial class initial
+    [Migration("20200803113423_update3")]
+    partial class update3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,8 +21,9 @@ namespace SW.Mtm.Web.Migrations
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
                 {
                     b.Property<string>("Entity")
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
-                        .HasMaxLength(50);
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
@@ -47,9 +48,9 @@ namespace SW.Mtm.Web.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -59,9 +60,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
@@ -93,9 +94,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -245,14 +246,20 @@ namespace SW.Mtm.Web.Migrations
 
             modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -262,29 +269,32 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
-                        .IsFixedLength(false)
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
+                        .HasMaxLength(20)
+                        .IsUnicode(false);
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -292,6 +302,15 @@ namespace SW.Mtm.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TenantId");
+
+                    b.HasIndex("AccountId", "TenantId")
+                        .IsUnique();
+
+                    b.HasIndex("Email", "TenantId")
+                        .IsUnique();
+
+                    b.HasIndex("Phone", "TenantId")
+                        .IsUnique();
 
                     b.ToTable("Invitations");
                 });
@@ -361,9 +380,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -373,9 +392,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
@@ -387,9 +406,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -405,7 +424,7 @@ namespace SW.Mtm.Web.Migrations
                     b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsMany("SW.Mtm.Api.Domain.ApiCredential", "ApiCredentials", b1 =>
                         {
@@ -481,13 +500,18 @@ namespace SW.Mtm.Web.Migrations
                             b1.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                                 .WithMany()
                                 .HasForeignKey("TenantId")
-                                .OnDelete(DeleteBehavior.Restrict)
+                                .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
                         });
                 });
 
             modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
                 {
+                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
