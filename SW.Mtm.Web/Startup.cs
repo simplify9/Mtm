@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using SW.CqApi;
+using SW.EfCoreExtensions;
 using SW.HttpExtensions;
 using SW.Logger;
 using SW.PrimitiveTypes;
@@ -28,6 +29,11 @@ namespace SW.Mtm.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var mtmOptions = new MtmOptions();
+            Configuration.GetSection(MtmOptions.ConfigurationSection).Bind(mtmOptions);
+            services.AddSingleton(mtmOptions);
+
             services.AddControllers();
             services.AddHealthChecks();
 
@@ -40,16 +46,37 @@ namespace SW.Mtm.Web
             services.AddScoped<RequestContext>();
             services.AddJwtTokenParameters();
 
-            services.AddDbContext<MtmDbContext>(c =>
+
+            if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.PgSql.ToString().ToLower())
             {
-                c.EnableSensitiveDataLogging(true);
-                c.UseMySql(Configuration.GetConnectionString("MtmDb"), b =>
+                services.AddDbContext<MtmDbContext, PgSql.MtmDbContext>(c =>
                 {
-                    b.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                    b.CommandTimeout(90);
-                    b.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql));
+                    c.EnableSensitiveDataLogging(true);
+                    c.UseSnakeCaseNamingConvention();
+                    c.UseNpgsql(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
+                    {
+                        b.MigrationsHistoryTable("__ef_migrations_history", PgSql.MtmDbContext.Schema);
+                        b.MigrationsAssembly(typeof(PgSql.DbType).Assembly.FullName);
+                        b.UseAdminDatabase("defaultdb");
+                    });
+
                 });
-            });
+            }
+            else
+            {
+
+                services.AddDbContext<MtmDbContext>(c =>
+                {
+                    c.EnableSensitiveDataLogging(true);
+                    c.UseMySql(Configuration.GetConnectionString("MtmDb"), b =>
+                    {
+                        b.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                        b.CommandTimeout(90);
+                        b.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql));
+                    });
+                });
+            }
+
 
             services.AddAuthentication().
                 AddJwtBearer(configureOptions =>

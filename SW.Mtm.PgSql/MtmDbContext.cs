@@ -9,33 +9,23 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SW.Mtm
+namespace SW.Mtm.PgSql
 {
-    public class MtmDbContext : DbContext
+    public class MtmDbContext : Mtm.MtmDbContext
     {
 
-        public const string ConnectionString = "MtmDb";
+        public const string Schema = "mtm";
 
-        // Mtm@dmin!2
-        protected readonly string defaultPasswordHash = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ";
-        protected readonly DateTime defaultCreatedOn = DateTime.Parse("1/1/2020");
-        //private readonly IDomainEventDispatcher domainEventDispatcher;
-        //protected readonly IConfiguration configuration;
-
-        public RequestContext RequestContext { get; }
-
-        public MtmDbContext(DbContextOptions options, RequestContext requestContext, MtmOptions mtmOptions) : base(options)
+        public MtmDbContext(DbContextOptions options, RequestContext requestContext, MtmOptions mtmOptions) : base(options, requestContext, mtmOptions)
         {
-            RequestContext = requestContext;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Account>(b =>
             {
-                b.ToTable("Accounts");
+
                 b.HasKey(p => p.Id);
                 b.Property(p => p.Id).IsUnicode(false).HasMaxLength(50);
 
@@ -58,7 +48,7 @@ namespace SW.Mtm
 
                 b.OwnsMany(p => p.ApiCredentials, apicred =>
                 {
-                    apicred.ToTable("AccountApiCredentials");
+                    apicred.ToTable("account_api_credential");
                     apicred.Property(p => p.Name).IsRequired().HasMaxLength(500);
                     apicred.Property(p => p.Key).IsRequired().IsUnicode(false).HasMaxLength(500);
                     apicred.HasIndex(p => p.Key).IsUnique();
@@ -104,9 +94,9 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] 
-                        { 
-                            RoleConstants.AccountsLogin, 
+                        Roles = new string[]
+                        {
+                            RoleConstants.AccountsLogin,
                             RoleConstants.AccountsRegister,
                             RoleConstants.AccountsResetPassword,
                             RoleConstants.AccountsInitiatePasswordReset
@@ -199,7 +189,7 @@ namespace SW.Mtm
 
             modelBuilder.Entity<PasswordResetToken>(b =>
             {
-                b.ToTable("PasswordResetTokens");
+                //b.ToTable("PasswordResetTokens");
                 b.HasKey(p => p.Id);
                 b.HasOne<Account>().WithMany().HasForeignKey(p => p.AccountId).OnDelete(DeleteBehavior.Cascade);
 
@@ -211,7 +201,7 @@ namespace SW.Mtm
 
             modelBuilder.Entity<RefreshToken>(b =>
             {
-                b.ToTable("RefreshTokens");
+                //b.ToTable("RefreshTokens");
                 b.HasKey(p => p.Id);
                 b.HasOne<Account>().WithMany().HasForeignKey(p => p.AccountId).OnDelete(DeleteBehavior.Cascade);
 
@@ -237,7 +227,7 @@ namespace SW.Mtm
 
             modelBuilder.Entity<Invitation>(b =>
             {
-                b.ToTable("Invitations");
+                //b.ToTable("Invitations");
                 b.Property(p => p.Id).IsUnicode(false).HasMaxLength(50);
 
                 //b.HasOne<Tenant>().WithMany().HasForeignKey(p => p.TenantId).OnDelete(DeleteBehavior.Cascade);
@@ -255,7 +245,7 @@ namespace SW.Mtm
 
             modelBuilder.Entity<Tenant>(b =>
             {
-                b.ToTable("Tenants");
+                //b.ToTable("Tenants");
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
                 b.Property(p => p.Id).HasSequenceGenerator();// ValueGeneratedOnAdd().HasValueGenerator<SequenceValueGenerator>();
 
@@ -272,31 +262,6 @@ namespace SW.Mtm
 
         }
 
-        async public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                ChangeTracker.ApplyAuditValues(RequestContext.GetNameIdentifier());
-
-                using var transaction = Database.BeginTransaction();
-
-                var affectedRecords = await base.SaveChangesAsync(cancellationToken);
-
-                //await ChangeTracker.DispatchDomainEvents(domainEventDispatcher);
-
-                await transaction.CommitAsync();
-
-                return affectedRecords;
-
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                if (dbUpdateException.InnerException == null)
-                    throw new SWException($"Data Error: {dbUpdateException.Message}");
-                else
-                    throw new SWException($"Data Error: {dbUpdateException.InnerException.Message}");
-            }
-        }
 
 
     }

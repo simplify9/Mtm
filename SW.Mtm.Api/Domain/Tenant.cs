@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SW.Mtm.Domain
 {
-    internal class Tenant : BaseEntity, IAudited, IDeletionAudited
+    public class Tenant : BaseEntity, IAudited, IDeletionAudited
     {
 
         private Tenant()

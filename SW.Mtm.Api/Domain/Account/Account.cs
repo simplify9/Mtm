@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SW.Mtm.Domain
 {
-    internal class Account : BaseEntity<string>, IAudited, IDeletionAudited, IHasOptionalTenant
+    public class Account : BaseEntity<string>, IAudited, IDeletionAudited, IHasOptionalTenant
     {
         public const string SystemId = "1";
         public const string AdminId = "2";
