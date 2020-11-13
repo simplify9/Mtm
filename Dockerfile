@@ -8,8 +8,8 @@ WORKDIR /src
 COPY ["SW.Mtm.Web/SW.Mtm.Web.csproj", "SW.Mtm.Web/"]
 COPY ["SW.Mtm.Api/SW.Mtm.Api.csproj", "SW.Mtm.Api/"]
 COPY ["SW.Mtm.Sdk/SW.Mtm.Sdk.csproj", "SW.Mtm.Sdk/"]
-COPY ["SW.Mtm.Sdk/SW.Mtm.MySql.csproj", "SW.Mtm.MySql/"]
-COPY ["SW.Mtm.Sdk/SW.Mtm.PgSql.csproj", "SW.Mtm.PgSql/"]
+COPY ["SW.Mtm.MySql/SW.Mtm.MySql.csproj", "SW.Mtm.MySql/"]
+COPY ["SW.Mtm.PgSql/SW.Mtm.PgSql.csproj", "SW.Mtm.PgSql/"]
 
 
 
