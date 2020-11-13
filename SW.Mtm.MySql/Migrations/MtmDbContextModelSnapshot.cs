@@ -2,27 +2,27 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SW.Mtm;
 
-namespace SW.Mtm.Web.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20200726214420_update1")]
-    partial class update1
+    partial class MtmDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
                 {
                     b.Property<string>("Entity")
-                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
-                        .HasMaxLength(50);
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
@@ -39,7 +39,7 @@ namespace SW.Mtm.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.Account", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -47,9 +47,9 @@ namespace SW.Mtm.Web.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -59,9 +59,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
@@ -93,9 +93,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -156,7 +156,7 @@ namespace SW.Mtm.Web.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "Accounts.Login;Accounts.Register",
+                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -173,7 +173,7 @@ namespace SW.Mtm.Web.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = true,
-                            Roles = "Accounts.Register",
+                            Roles = "Mtm.Accounts.Register",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -243,7 +243,7 @@ namespace SW.Mtm.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.Invitation", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -256,9 +256,9 @@ namespace SW.Mtm.Web.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -268,9 +268,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
@@ -282,9 +282,9 @@ namespace SW.Mtm.Web.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -314,7 +314,7 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("Invitations");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.OtpToken", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -347,7 +347,29 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("OtpTokens");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.RefreshToken", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("PasswordResetTokens");
+                });
+
+            modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -372,16 +394,16 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.Tenant", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.Tenant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
@@ -391,9 +413,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
@@ -405,9 +427,9 @@ namespace SW.Mtm.Web.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -418,14 +440,14 @@ namespace SW.Mtm.Web.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.Account", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
                 {
-                    b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
+                    b.HasOne("SW.Mtm.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.OwnsMany("SW.Mtm.Api.Domain.ApiCredential", "ApiCredentials", b1 =>
+                    b.OwnsMany("SW.Mtm.Domain.ApiCredential", "ApiCredentials", b1 =>
                         {
                             b1.Property<string>("AccountId")
                                 .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
@@ -472,7 +494,7 @@ namespace SW.Mtm.Web.Migrations
                                 });
                         });
 
-                    b.OwnsMany("SW.Mtm.Api.Domain.TenantMembership", "TenantMemberships", b1 =>
+                    b.OwnsMany("SW.Mtm.Domain.TenantMembership", "TenantMemberships", b1 =>
                         {
                             b1.Property<string>("AccountId")
                                 .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
@@ -496,39 +518,47 @@ namespace SW.Mtm.Web.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");
 
-                            b1.HasOne("SW.Mtm.Api.Domain.Tenant", null)
+                            b1.HasOne("SW.Mtm.Domain.Tenant", null)
                                 .WithMany()
                                 .HasForeignKey("TenantId")
-                                .OnDelete(DeleteBehavior.Restrict)
+                                .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
                         });
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.Invitation", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.Invitation", b =>
                 {
-                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
+                    b.HasOne("SW.Mtm.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.OtpToken", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
                 {
-                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SW.Mtm.Api.Domain.RefreshToken", b =>
+            modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
                 {
-                    b.HasOne("SW.Mtm.Api.Domain.Account", null)
+                    b.HasOne("SW.Mtm.Domain.Account", null)
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
+                {
+                    b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);

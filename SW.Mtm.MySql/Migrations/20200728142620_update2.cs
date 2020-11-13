@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SW.Mtm.Web.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     public partial class update2 : Migration
     {

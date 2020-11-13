@@ -213,7 +213,7 @@ namespace SW.Mtm.PgSql
 
             modelBuilder.Entity<OtpToken>(b =>
             {
-                b.ToTable("OtpTokens");
+                //b.ToTable("OtpTokens");
                 b.HasKey(p => p.Id);
                 b.HasOne<Account>().WithMany().HasForeignKey(p => p.AccountId).OnDelete(DeleteBehavior.Cascade);
 

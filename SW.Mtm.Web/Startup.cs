@@ -64,16 +64,32 @@ namespace SW.Mtm.Web
             }
             else
             {
-
                 services.AddDbContext<MtmDbContext>(c =>
                 {
                     c.EnableSensitiveDataLogging(true);
-                    c.UseMySql(Configuration.GetConnectionString("MtmDb"), b =>
+
+                    if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MySql.ToString().ToLower())
                     {
-                        b.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                        b.CommandTimeout(90);
-                        b.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql));
-                    });
+                        c.UseMySql(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
+                        {
+                            b.MigrationsAssembly(typeof(MySql.DbType).Assembly.FullName);
+                            b.CommandTimeout(90);
+                            b.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql));
+                        });
+                    }
+                    else if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MsSql.ToString().ToLower())
+                    {
+                        //c.UseSqlServer(Configuration.GetConnectionString(InfolinkDbContext.ConnectionString), b =>
+                        //{
+                        //    b.MigrationsAssembly(typeof(MsSql.DbType).Assembly.FullName);
+                        //});
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+
                 });
             }
 

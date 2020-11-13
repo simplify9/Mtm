@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace SW.Mtm.Web.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20200803113423_update3")]
-    partial class update3
+    [Migration("20200728142620_update2")]
+    partial class update2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,9 +21,8 @@ namespace SW.Mtm.Web.Migrations
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
                 {
                     b.Property<string>("Entity")
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100)
-                        .IsUnicode(false);
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
+                        .HasMaxLength(50);
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
@@ -424,7 +423,7 @@ namespace SW.Mtm.Web.Migrations
                     b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsMany("SW.Mtm.Api.Domain.ApiCredential", "ApiCredentials", b1 =>
                         {
@@ -515,7 +514,7 @@ namespace SW.Mtm.Web.Migrations
                     b.HasOne("SW.Mtm.Api.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
