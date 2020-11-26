@@ -18,9 +18,9 @@ namespace SW.Mtm
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id),
                 new Claim(ClaimTypes.GivenName, account.DisplayName),
-                new Claim("EmailVerified", account.EmailVerified.ToString()),
-                new Claim("PhoneVerified", account.PhoneVerified.ToString()),
-                new Claim("IsOwner", (account.TenantMemberships.Where(t=>t.TenantId == account.TenantId).Select(t=> t.Type).FirstOrDefault() ==  MembershipType.Owner).ToString()),
+                new Claim("EmailVerified", account.EmailVerified.ToString(),ClaimValueTypes.Boolean),
+                new Claim("PhoneVerified", account.PhoneVerified.ToString(),ClaimValueTypes.Boolean),
+                new Claim("IsOwner", (account.TenantMemberships.Where(t=>t.TenantId == account.TenantId).Select(t=> t.Type).FirstOrDefault() ==  MembershipType.Owner).ToString(),ClaimValueTypes.Boolean),
             };
 
             switch (loginMethod)
