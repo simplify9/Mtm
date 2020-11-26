@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SW.Mtm.Domain
 {
-    internal class PasswordResetToken : BaseEntity<string>, IHasCreationTime
+    public class PasswordResetToken : BaseEntity<string>, IHasCreationTime
     {
         private PasswordResetToken()
         {

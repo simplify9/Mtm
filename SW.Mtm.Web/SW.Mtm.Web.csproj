@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SW.Mtm.Api\SW.Mtm.Api.csproj" />
+    <ProjectReference Include="..\SW.Mtm.MySql\SW.Mtm.MySql.csproj" />
+    <ProjectReference Include="..\SW.Mtm.PgSql\SW.Mtm.PgSql.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,8 +16,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
-    <PackageReference Include="SimplyWorks.CqApi" Version="2.0.23" />
+    <PackageReference Include="EFCore.NamingConventions" Version="1.1.0" />
+
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
+    <PackageReference Include="SimplyWorks.CqApi" Version="2.0.28" />
     <PackageReference Include="SimplyWorks.Logger" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
   </ItemGroup>
