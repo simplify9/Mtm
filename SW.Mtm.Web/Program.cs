@@ -15,7 +15,11 @@ namespace SW.Mtm.Web
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).UseSwLogger().Build().MigrateDatabase<MtmDbContext>().Run();
+            CreateHostBuilder(args).
+                UseSwLogger().
+                Build().
+                MigrateDatabase<MtmDbContext>().
+                Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
