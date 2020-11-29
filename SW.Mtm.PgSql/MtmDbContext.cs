@@ -23,6 +23,8 @@ namespace SW.Mtm.PgSql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            modelBuilder.HasDefaultSchema(Schema);
+
             modelBuilder.Entity<Account>(b =>
             {
 
@@ -73,7 +75,7 @@ namespace SW.Mtm.PgSql
 
                 b.OwnsMany(p => p.TenantMemberships, membership =>
                 {
-                    membership.ToTable("AccountTenantMemberships");
+                    membership.ToTable("account_tenant_membership");
                     membership.Property(p => p.Type).HasConversion<byte>();
                     membership.WithOwner().HasForeignKey("AccountId");
                     membership.HasOne<Tenant>().WithMany().HasForeignKey(p => p.TenantId).OnDelete(DeleteBehavior.Cascade);
@@ -247,7 +249,7 @@ namespace SW.Mtm.PgSql
             {
                 //b.ToTable("Tenants");
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
-                b.Property(p => p.Id).HasSequenceGenerator();// ValueGeneratedOnAdd().HasValueGenerator<SequenceValueGenerator>();
+                b.Property(p => p.Id).UseHiLo(); //HasSequenceGenerator();// ValueGeneratedOnAdd().HasValueGenerator<SequenceValueGenerator>();
 
             });
 

@@ -38,10 +38,11 @@ namespace SW.Mtm.Web
             services.AddHealthChecks();
 
             services.AddCqApi(configure =>
-                {
-                    configure.RolePrefix = "Mtm";
-                },
-                typeof(MtmDbContext).Assembly);
+            {
+                configure.RolePrefix = "Mtm";
+                configure.UrlPrefix = "api"; 
+            },
+            typeof(MtmDbContext).Assembly);
 
             services.AddScoped<RequestContext>();
             services.AddJwtTokenParameters();
@@ -79,10 +80,6 @@ namespace SW.Mtm.Web
                     }
                     else if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MsSql.ToString().ToLower())
                     {
-                        //c.UseSqlServer(Configuration.GetConnectionString(InfolinkDbContext.ConnectionString), b =>
-                        //{
-                        //    b.MigrationsAssembly(typeof(MsSql.DbType).Assembly.FullName);
-                        //});
                         throw new NotImplementedException();
                     }
                     else
@@ -116,7 +113,7 @@ namespace SW.Mtm.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UsePathBase("/_mtm");
+            app.UsePathBase("/mtm");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
