@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using OtpNet;
 using SW.HttpExtensions;
 using SW.Mtm.Domain;
@@ -9,23 +8,23 @@ using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("login")]
-    [Protect(RequireRole = true)]
+    [Protect]
     class Login : ICommandHandler<AccountLogin>
     {
         private readonly MtmDbContext dbContext;
+        private readonly RequestContext requestContext;
         private readonly JwtTokenParameters jwtTokenParameters;
 
-        public Login(MtmDbContext dbContext, JwtTokenParameters jwtTokenParameters)
+        public Login(MtmDbContext dbContext, RequestContext requestContext,  JwtTokenParameters jwtTokenParameters)
         {
             this.dbContext = dbContext;
+            this.requestContext = requestContext;
             this.jwtTokenParameters = jwtTokenParameters;
         }
 
@@ -90,7 +89,7 @@ namespace SW.Mtm.Resources.Accounts
                 //account = await dbContext
                 //   .Set<Account>().FindAsync(otpToken.AccountId);
                 account = await dbContext
-                    .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled )
+                    .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled)
                     .SingleOrDefaultAsync();
                 loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
                 loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
@@ -161,6 +160,34 @@ namespace SW.Mtm.Resources.Accounts
                 loginResult.OtpToken = otpToken.Key;
                 loginResult.Password = otpToken.Value;
             }
+            else
+            {
+                account = await dbContext
+                   .Set<Account>()
+                   .Where(u => u.Email == requestContext.GetEmail() && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
+                   .SingleOrDefaultAsync();
+
+                if (account == null)
+                    throw new SWNotFoundException(requestContext.GetEmail());
+
+                switch (account.SecondFactorMethod)
+                {
+                    case OtpType.None:
+                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                        loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
+                        break;
+                    case OtpType.Otp:
+                    case OtpType.Totp:
+                        var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+                        loginResult.OtpType = account.SecondFactorMethod;
+                        loginResult.OtpToken = otpToken.Key;
+                        loginResult.Password = otpToken.Value;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+
+                }
+            }
 
             await dbContext.SaveChangesAsync();
 
@@ -199,20 +226,23 @@ namespace SW.Mtm.Resources.Accounts
         }
         class Validator : AbstractValidator<AccountLogin>
         {
-            public Validator()
+            public Validator(RequestContext requestContext)
             {
-                RuleFor(p => p.Email).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.ApiKey == null && p.OtpToken == null);
-                RuleFor(p => p.ApiKey).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.Email == null && p.OtpToken == null);
-                RuleFor(p => p.Phone).NotEmpty().When(p => p.RefreshToken == null && p.Email == null && p.ApiKey == null && p.OtpToken == null);
-                RuleFor(p => p.OtpToken).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
-                RuleFor(p => p.RefreshToken).NotEmpty().When(p => p.OtpToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
+                When(request => requestContext.GetNameIdentifier() == Account.SystemId, () =>
+                {
+                    RuleFor(p => p.Email).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.ApiKey == null && p.OtpToken == null);
+                    RuleFor(p => p.ApiKey).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.Email == null && p.OtpToken == null);
+                    RuleFor(p => p.Phone).NotEmpty().When(p => p.RefreshToken == null && p.Email == null && p.ApiKey == null && p.OtpToken == null);
+                    RuleFor(p => p.OtpToken).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
+                    RuleFor(p => p.RefreshToken).NotEmpty().When(p => p.OtpToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
+                    RuleFor(p => p.Email).EmailAddress();
+                    RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null);
+                    RuleFor(p => p.Password).Empty().When(p => p.EmailProvider != EmailProvider.None && p.Email != null || p.ApiKey != null || p.Phone != null || p.RefreshToken != null);
 
-
-                RuleFor(p => p.Email).EmailAddress();
-
-                RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null);
-
-                RuleFor(p => p.Password).Empty().When(p => p.EmailProvider != EmailProvider.None && p.Email != null || p.ApiKey != null || p.Phone != null || p.RefreshToken != null);
+                }).Otherwise(() =>
+                {
+                    RuleFor(p => p.EmailProvider).NotEqual(EmailProvider.None);
+                });
             }
 
         }

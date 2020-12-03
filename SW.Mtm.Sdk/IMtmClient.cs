@@ -17,12 +17,12 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(string accountIdOrEmail);
         Task ResetPassword(string accountIdOrEmail, AccountResetPassword accountResetPassword);
         Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword);
-        Task<AccountRegisterResult> Register(AccountRegister registerAccount);
-        Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount);
+        Task<AccountCreateResult> CreateAccount(AccountCreate registerAccount);
+        Task<ApiResult<AccountCreateResult>> CreateAccountAsApiResult(AccountCreate registerAccount);
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
         Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount);
-        Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
-        Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate);
+        //Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
+        //Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate);
 
 
         Task AcceptInvitation(string key, InvitationAccept invitationAccept);

@@ -18,8 +18,8 @@ namespace SW.Mtm
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id),
                 new Claim(ClaimTypes.GivenName, account.DisplayName),
-                new Claim("EmailVerified", account.EmailVerified.ToString(), ClaimValueTypes.Boolean),
-                new Claim("PhoneVerified", account.PhoneVerified.ToString(), ClaimValueTypes.Boolean),
+                new Claim("email_verified", account.EmailVerified.ToString(), ClaimValueTypes.Boolean),
+                new Claim("phone_verified", account.PhoneVerified.ToString(), ClaimValueTypes.Boolean),
             };
 
             switch (loginMethod)
@@ -50,7 +50,7 @@ namespace SW.Mtm
                 if (membership != null)
                 {
                     claims.Add(new Claim("TenantId", account.TenantId.ToString(), ClaimValueTypes.Integer32));
-                    claims.Add(new Claim("IsOwner", (membership.Type == MembershipType.Owner).ToString(), ClaimValueTypes.Boolean));
+                    claims.Add(new Claim("tenant_owner", (membership.Type == MembershipType.Owner).ToString(), ClaimValueTypes.Boolean));
 
                     if (membership.ProfileData != null)
                         foreach (var item in membership.ProfileData)

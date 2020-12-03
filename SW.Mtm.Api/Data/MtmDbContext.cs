@@ -22,6 +22,7 @@ namespace SW.Mtm
         protected readonly DateTime defaultCreatedOn = DateTime.Parse("1/1/2020");
         //private readonly IDomainEventDispatcher domainEventDispatcher;
         //protected readonly IConfiguration configuration;
+        protected const string AdminAccountId = "2";
 
         public RequestContext RequestContext { get; }
 
@@ -110,15 +111,15 @@ namespace SW.Mtm
                         PhoneVerified = false,
                         Roles = new string[]
                         {
-                            RoleConstants.AccountsLogin,
-                            RoleConstants.AccountsRegister,
+                            //RoleConstants.AccountsLogin,
+                            RoleConstants.AccountsCreate,
                             RoleConstants.AccountsResetPassword,
                             RoleConstants.AccountsInitiatePasswordReset
                         }
                     },
                     new
                     {
-                        Id = Account.AdminId,
+                        Id = AdminAccountId,
                         Email = "admin@xyz.com",
                         Password = defaultPasswordHash,
                         EmailProvider = EmailProvider.None,
@@ -132,7 +133,7 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = true,
-                        Roles = new string[] { RoleConstants.AccountsRegister }
+                        Roles = new string[] { RoleConstants.AccountsCreate }
                     },
                     new
                     {

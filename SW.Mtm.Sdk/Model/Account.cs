@@ -36,7 +36,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
     }
 
-    public class AccountRegister
+    public class AccountCreate
     {
         public string Email { get; set; }
         public EmailProvider EmailProvider { get; set; }
@@ -46,7 +46,7 @@ namespace SW.Mtm.Model
         public string CredentialName { get; set; }
     }
 
-    public class AccountRegisterResult
+    public class AccountCreateResult
     {
         public string Id { get; set; }
         public string Key { get; set; }

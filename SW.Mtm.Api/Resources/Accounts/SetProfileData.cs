@@ -13,12 +13,12 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("setprofiledata")]
-    class Update : ICommandHandler<string, AccountUpdate>
+    class SetProfileData : ICommandHandler<string, AccountUpdate>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
 
-        public Update(MtmDbContext dbContext, RequestContext requestContext)
+        public SetProfileData(MtmDbContext dbContext, RequestContext requestContext)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;

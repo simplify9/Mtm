@@ -2,6 +2,7 @@ name: $(version)
 
 trigger:
 - master
+- releases/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -11,7 +12,7 @@ variables:
 - name: imageName
   value: 'mtm'
 - name: version
-  value: $[format('2.1.{0}', counter('2.1', 0))]
+  value: $[format('3.0.{0}', counter('3.0', 0))]
 
 jobs:
 
@@ -46,7 +47,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: 'dotnet pack'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/releases/')
     inputs:
       command: pack
       packagesToPack: 'SW.Mtm.Sdk/SW.Mtm.Sdk.csproj;'
@@ -54,7 +55,7 @@ jobs:
       versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/releases/')
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
@@ -63,7 +64,7 @@ jobs:
 
 - job: build
   displayName: Build, push image and chart and deploy to playground
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/releases/')
   steps:
 
   - task: VersionDotNetCoreAssemblies@2

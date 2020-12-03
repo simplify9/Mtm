@@ -13,7 +13,7 @@ namespace SW.Mtm.Domain
     public class Account : BaseEntity<string>, IAudited, IDeletionAudited, IHasOptionalTenant
     {
         public const string SystemId = "1";
-        public const string AdminId = "2";
+        
 
         private Account()
         {

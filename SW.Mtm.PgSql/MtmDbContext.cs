@@ -103,15 +103,15 @@ namespace SW.Mtm.PgSql
                         PhoneVerified = false,
                         Roles = new string[]
                         {
-                            RoleConstants.AccountsLogin,
-                            RoleConstants.AccountsRegister,
+                            //RoleConstants.AccountsLogin,
+                            RoleConstants.AccountsCreate,
                             RoleConstants.AccountsResetPassword,
                             RoleConstants.AccountsInitiatePasswordReset
                         }
                     },
                     new
                     {
-                        Id = Account.AdminId,
+                        Id = AdminAccountId,
                         Email = "admin@xyz.com",
                         Password = defaultPasswordHash,
                         EmailProvider = EmailProvider.None,
@@ -125,7 +125,7 @@ namespace SW.Mtm.PgSql
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = true,
-                        Roles = new string[] { RoleConstants.AccountsRegister }
+                        Roles = new string[] { RoleConstants.AccountsCreate }
                     },
                     new
                     {
