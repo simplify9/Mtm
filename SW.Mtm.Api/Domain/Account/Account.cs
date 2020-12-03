@@ -27,6 +27,7 @@ namespace SW.Mtm.Domain
         public Account(string displayName, string phone) : this(displayName, LoginMethod.PhoneAndOtp)
         {
             Phone = phone;
+            PhoneVerified = true;
         }
 
         public Account(string displayName, string email, string password) : this(displayName, email, EmailProvider.None)
@@ -48,12 +49,14 @@ namespace SW.Mtm.Domain
             DisplayName = displayName;
             _ApiCredentials = new HashSet<ApiCredential>();
             _TenantMemberships = new HashSet<TenantMembership>();
+            ProfileData = new [] { new ProfileDataItem() };
             Roles = new string[] { };
         }
 
         public string Email { get; private set; }
         public string Phone { get; private set; }
         public string DisplayName { get; set; }
+
         public EmailProvider EmailProvider { get; private set; }
         public LoginMethod LoginMethods { get; private set; }
         public OtpType SecondFactorMethod { get; private set; }
@@ -104,7 +107,10 @@ namespace SW.Mtm.Domain
             _ApiCredentials.Update(apiCredentials);
         }
 
-        public int? TenantId { get; set; }
+        public IEnumerable<ProfileDataItem> ProfileData { get; set; }
+
+        public int? TenantId { get; private set; }
+
         readonly HashSet<TenantMembership> _TenantMemberships;
         public IReadOnlyCollection<TenantMembership> TenantMemberships => _TenantMemberships;
         public bool SetTenantId(int tenantId)
@@ -120,19 +126,19 @@ namespace SW.Mtm.Domain
         }
 
 
-        public void SetTenantMembership(IEnumerable<TenantMembership> tenantMemberships)
-        {
-            _TenantMemberships.Update(tenantMemberships);
+        //public void SetTenantMembership(IEnumerable<TenantMembership> tenantMemberships)
+        //{
+        //    _TenantMemberships.Update(tenantMemberships);
 
-            if (TenantId != null && !_TenantMemberships.Any(t => t.TenantId == TenantId))
-                TenantId = null;
-        }
+        //    if (TenantId != null && !_TenantMemberships.Any(t => t.TenantId == TenantId))
+        //        TenantId = null;
+        //}
 
         public bool AddTenantMembership(TenantMembership membership)
         {
             if (!_TenantMemberships.Any(t => t.TenantId == membership.TenantId))
             {
-                if (_TenantMemberships.Count == 0) 
+                if (_TenantMemberships.Count == 0)
                     if (TenantId == null) TenantId = membership.TenantId;
 
                 return _TenantMemberships.Add(membership);

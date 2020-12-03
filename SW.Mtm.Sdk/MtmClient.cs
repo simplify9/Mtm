@@ -20,7 +20,7 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                .Key()
-               .Path("tenants/create")
+               .Path("tenants")
                .As<TenantCreateResult>(true)
                .PostAsync(tenantCreate);
         }
@@ -28,7 +28,7 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                .Key()
-               .Path("tenants/create")
+               .Path("tenants")
                .AsApiResult<TenantCreateResult>()
                .PostAsync(tenantCreate);
         }

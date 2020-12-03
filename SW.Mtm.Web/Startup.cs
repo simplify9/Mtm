@@ -56,7 +56,7 @@ namespace SW.Mtm.Web
                     c.UseSnakeCaseNamingConvention();
                     c.UseNpgsql(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
                     {
-                        b.MigrationsHistoryTable("__ef_migrations_history", PgSql.MtmDbContext.Schema);
+                        b.MigrationsHistoryTable("_ef_migrations_history", PgSql.MtmDbContext.Schema);
                         b.MigrationsAssembly(typeof(PgSql.DbType).Assembly.FullName);
                         b.UseAdminDatabase("defaultdb");
                     });

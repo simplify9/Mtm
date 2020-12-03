@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SW.Mtm.Resources.Tenants
 {
-    [HandlerName("create")]
     [Protect(RequireRole = false)]
     class Create : ICommandHandler<TenantCreate>
     {
@@ -31,22 +30,22 @@ namespace SW.Mtm.Resources.Tenants
 
             if (requestContext.GetNameIdentifier() == Account.SystemId)
             {
-                if (request.OwnerEmail != null)
-                {
-                    if (request.OwnerEmailProvider == EmailProvider.None)
-                        account = new Account(request.OwnerDisplayName, request.OwnerEmail, SecurePasswordHasher.Hash(request.OwnerPassword));
-                    else
-                        account = new Account(request.OwnerDisplayName, request.OwnerEmail, request.OwnerEmailProvider);
-                }
+                //if (request.OwnerEmail != null)
+                //{
+                if (request.OwnerEmailProvider == EmailProvider.None)
+                    account = new Account(request.OwnerDisplayName, request.OwnerEmail, SecurePasswordHasher.Hash(request.OwnerPassword));
+                else
+                    account = new Account(request.OwnerDisplayName, request.OwnerEmail, request.OwnerEmailProvider);
+                //}
                 //else if (request.OwnerPhone != null)
                 //{
                 //    account = new Account(request.DisplayName, request.OwnerPhone);
 
                 //}
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                //else
+                //{
+                //    throw new NotImplementedException();
+                //}
 
                 dbContext.Add(account);
             }
@@ -57,11 +56,11 @@ namespace SW.Mtm.Resources.Tenants
             }
 
             account.AddTenantMembership(new TenantMembership(tenant.Id, MembershipType.Owner));
-            
+
             await dbContext.SaveChangesAsync();
 
-            return new TenantCreateResult 
-            { 
+            return new TenantCreateResult
+            {
                 TenantId = tenant.Id,
                 AccountId = account.Id
             };
@@ -69,13 +68,17 @@ namespace SW.Mtm.Resources.Tenants
 
         private class Validate : AbstractValidator<TenantCreate>
         {
-            public Validate()
+            public Validate(RequestContext requestContext)
             {
+
                 RuleFor(p => p.DisplayName).NotEmpty();
-                RuleFor(p => p.OwnerDisplayName).NotEmpty();
-                RuleFor(p => p.OwnerEmail).NotEmpty();
-                RuleFor(p => p.OwnerPassword).NotEmpty().When(i => i.OwnerEmailProvider == EmailProvider.None);
-                RuleFor(p => p.OwnerPassword).Empty().When(i => i.OwnerEmailProvider != EmailProvider.None);
+                When(request => requestContext.GetNameIdentifier() == Account.SystemId, () =>
+                {
+                    RuleFor(p => p.OwnerDisplayName).NotEmpty();
+                    RuleFor(p => p.OwnerEmail).NotEmpty();
+                    RuleFor(p => p.OwnerPassword).NotEmpty().When(i => i.OwnerEmailProvider == EmailProvider.None);
+                    RuleFor(p => p.OwnerPassword).Empty().When(i => i.OwnerEmailProvider != EmailProvider.None);
+                });
 
             }
         }

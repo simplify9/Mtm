@@ -21,7 +21,7 @@ namespace SW.Mtm.Resources.Tenants
 
         async public Task<object> Handle(int key, TenantAddAccount request)
         {
-            if (!await mtmDbContext.IsTenantOwner(key) && !await mtmDbContext.IsLandlord())
+            if (!await mtmDbContext.IsRequesterTenantOwner(key) && !await mtmDbContext.IsRequesterLandlord())
                 throw new SWUnauthorizedException();
 
             var account = await mtmDbContext.FindAsync<Account>(request.AccountId);

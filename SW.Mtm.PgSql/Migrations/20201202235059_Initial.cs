@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using SW.Mtm.Model;
 
 namespace SW.Mtm.PgSql.Migrations
 {
@@ -54,8 +56,9 @@ namespace SW.Mtm.PgSql.Migrations
                     landlord = table.Column<bool>(nullable: false),
                     email_verified = table.Column<bool>(nullable: false),
                     phone_verified = table.Column<bool>(nullable: false),
+                    profile_data = table.Column<IEnumerable<ProfileDataItem>>(type: "jsonb", nullable: true),
                     tenant_id = table.Column<int>(nullable: true),
-                    roles = table.Column<string>(unicode: false, maxLength: 4000, nullable: false),
+                    roles = table.Column<string[]>(nullable: false),
                     disabled = table.Column<bool>(nullable: false),
                     created_by = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
                     created_on = table.Column<DateTime>(nullable: false),
@@ -109,7 +112,8 @@ namespace SW.Mtm.PgSql.Migrations
                     id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     tenant_id = table.Column<int>(nullable: false),
-                    type = table.Column<byte>(nullable: false)
+                    type = table.Column<byte>(nullable: false),
+                    profile_data = table.Column<IEnumerable<ProfileDataItem>>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -237,15 +241,15 @@ namespace SW.Mtm.PgSql.Migrations
             migrationBuilder.InsertData(
                 schema: "mtm",
                 table: "account",
-                columns: new[] { "id", "created_by", "created_on", "deleted", "deleted_by", "deleted_on", "disabled", "display_name", "email", "email_provider", "email_verified", "landlord", "login_methods", "modified_by", "modified_on", "password", "phone", "phone_verified", "roles", "second_factor_key", "second_factor_method", "tenant_id" },
+                columns: new[] { "id", "created_by", "created_on", "deleted", "deleted_by", "deleted_on", "disabled", "display_name", "email", "email_provider", "email_verified", "landlord", "login_methods", "modified_by", "modified_on", "password", "phone", "phone_verified", "profile_data", "roles", "second_factor_key", "second_factor_method", "tenant_id" },
                 values: new object[,]
                 {
-                    { "1", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "System", null, (byte)0, false, false, (byte)1, null, null, null, null, false, "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset", null, (byte)0, null },
-                    { "2", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Admin", "admin@xyz.com", (byte)0, true, true, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, true, "Mtm.Accounts.Register", null, (byte)0, null },
-                    { "2d3d997abdaf4e2880f2b4737aab6b0d", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User", "sample@xyz.com", (byte)0, true, false, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, false, "", null, (byte)0, null },
-                    { "4a64f3640d914cfa98f3c166fe22f59a", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User MFA", "samplewithmfa@xyz.com", (byte)0, true, false, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, false, "", null, (byte)1, null },
-                    { "40ec4db42e434bf5a17f2065521a5219", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User Phone", null, (byte)0, false, false, (byte)4, null, null, null, "12345678", true, "", null, (byte)0, null },
-                    { "4cc3320b49af45dfb7ec13b072701acc", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User API", null, (byte)0, false, false, (byte)1, null, null, null, null, false, "", null, (byte)0, null }
+                    { "1", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "System", null, (byte)0, false, false, (byte)1, null, null, null, null, false, null, new[] { "Mtm.Accounts.Login", "Mtm.Accounts.Register", "Mtm.Accounts.ResetPassword", "Mtm.Accounts.InitiatePasswordReset" }, null, (byte)0, null },
+                    { "2", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Admin", "admin@xyz.com", (byte)0, true, true, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, true, null, new[] { "Mtm.Accounts.Register" }, null, (byte)0, null },
+                    { "2d3d997abdaf4e2880f2b4737aab6b0d", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User", "sample@xyz.com", (byte)0, true, false, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, false, null, new string[] {  }, null, (byte)0, null },
+                    { "4a64f3640d914cfa98f3c166fe22f59a", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User MFA", "samplewithmfa@xyz.com", (byte)0, true, false, (byte)2, null, null, "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ", null, false, null, new string[] {  }, null, (byte)1, null },
+                    { "40ec4db42e434bf5a17f2065521a5219", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User Phone", null, (byte)0, false, false, (byte)4, null, null, null, "12345678", true, null, new string[] {  }, null, (byte)0, null },
+                    { "4cc3320b49af45dfb7ec13b072701acc", null, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, false, "Sample User API", null, (byte)0, false, false, (byte)1, null, null, null, null, false, null, new string[] {  }, null, (byte)0, null }
                 });
 
             migrationBuilder.InsertData(

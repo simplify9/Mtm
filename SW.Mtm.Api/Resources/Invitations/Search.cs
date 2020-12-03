@@ -29,7 +29,7 @@ namespace SW.Mtm.Resources.Invitations
             if (!tenantId.HasValue)
                 throw new SWException("Tenant is empty.");
 
-            if (!await dbContext.IsTenantOwner())
+            if (!await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
 
             if (!string.IsNullOrEmpty(request.Email))

@@ -12,20 +12,20 @@ namespace SW.Mtm
 {
     static class MtmDbContextExtensions
     {
-        public static Task<bool> IsTenantOwner(this MtmDbContext dbContext)
+        public static Task<bool> IsRequesterTenantOwner(this MtmDbContext dbContext)
         {
             var tenentId = dbContext.RequestContext.GetTenantId();
 
             if (tenentId.HasValue)
-                return dbContext.IsTenantOwner(tenentId.Value);
+                return dbContext.IsRequesterTenantOwner(tenentId.Value);
 
             return Task.FromResult(false);
         }
-        async public static Task<bool> IsTenantOwner(this MtmDbContext dbContext, int tenantId)
+        async public static Task<bool> IsRequesterTenantOwner(this MtmDbContext dbContext, int tenantId)
         {
             return await dbContext.Set<Account>().AnyAsync(a => a.Id == dbContext.RequestContext.GetNameIdentifier() && a.TenantMemberships.Any(m => m.TenantId == tenantId && m.Type == MembershipType.Owner));
         }
-        async public static Task<bool> IsLandlord(this MtmDbContext dbContext)
+        async public static Task<bool> IsRequesterLandlord(this MtmDbContext dbContext)
         {
             return await dbContext.Set<Account>().AnyAsync(a => a.Id == dbContext.RequestContext.GetNameIdentifier() && a.Landlord);
         }
