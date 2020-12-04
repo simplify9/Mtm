@@ -68,14 +68,14 @@ namespace SW.Mtm.Resources.Accounts
             public Validate()
             {
                 RuleFor(p => p.ProfileData).NotNull();
-
                 RuleForEach(p => p.ProfileData).
                     ChildRules(items =>
                     {
                         items.RuleFor(i => i.Name).NotEmpty();
                         items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Role, StringComparer.OrdinalIgnoreCase);
                         items.RuleFor(i => i.Value).NotEmpty();
-                    });
+                    }).
+                    When(p => p.ProfileData != null);
             }
         }
     }
