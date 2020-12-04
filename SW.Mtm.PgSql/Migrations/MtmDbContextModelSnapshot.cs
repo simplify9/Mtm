@@ -121,9 +121,9 @@ namespace SW.Mtm.PgSql.Migrations
                         .HasColumnType("jsonb");
 
                     b.Property<string[]>("Roles")
-                        .IsRequired()
                         .HasColumnName("roles")
-                        .HasColumnType("text[]");
+                        .HasColumnType("text[]")
+                        .HasMaxLength(100);
 
                     b.Property<string>("SecondFactorKey")
                         .HasColumnName("second_factor_key")
@@ -168,7 +168,7 @@ namespace SW.Mtm.PgSql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = new[] { "Mtm.Accounts.Login", "Mtm.Accounts.Register", "Mtm.Accounts.ResetPassword", "Mtm.Accounts.InitiatePasswordReset" },
+                            Roles = new[] { "Mtm.Accounts.Create", "Mtm.Accounts.ResetPassword", "Mtm.Accounts.InitiatePasswordReset" },
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -185,7 +185,7 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = true,
-                            Roles = new[] { "Mtm.Accounts.Register" },
+                            Roles = new[] { "Mtm.Accounts.Create" },
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -202,7 +202,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = new string[] {  },
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -219,7 +218,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = new string[] {  },
                             SecondFactorMethod = (byte)1
                         },
                         new
@@ -235,7 +233,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)4,
                             Phone = "12345678",
                             PhoneVerified = true,
-                            Roles = new string[] {  },
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -250,7 +247,6 @@ namespace SW.Mtm.PgSql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = new string[] {  },
                             SecondFactorMethod = (byte)0
                         });
                 });
@@ -493,6 +489,10 @@ namespace SW.Mtm.PgSql.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnName("modified_on")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<IEnumerable<ProfileDataItem>>("ProfileData")
+                        .HasColumnName("profile_data")
+                        .HasColumnType("jsonb");
 
                     b.HasKey("Id")
                         .HasName("pk_tenant");

@@ -1,4 +1,5 @@
-﻿using SW.PrimitiveTypes;
+﻿using SW.Mtm.Model;
+using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace SW.Mtm.Domain
         }
 
         public string DisplayName { get; set; }
+        public IEnumerable<ProfileDataItem> ProfileData { get; set; }
         public string CreatedBy { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public string ModifiedBy { get; private set; }

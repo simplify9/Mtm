@@ -99,10 +99,6 @@ namespace SW.Mtm.Resources.Accounts
                 {
                     return p.EmailProvider == EmailProvider.None && p.Email != null;
                 });
-
-
-
-
             }
         }
 

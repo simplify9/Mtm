@@ -14,7 +14,7 @@ namespace SW.Mtm.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
@@ -113,9 +113,6 @@ namespace SW.Mtm.MySql.Migrations
 
                     b.Property<bool>("PhoneVerified")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("ProfileData")
-                        .HasColumnType("json");
 
                     b.Property<string>("Roles")
                         .IsRequired()
@@ -505,9 +502,6 @@ namespace SW.Mtm.MySql.Migrations
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
-
-                            b1.Property<string>("ProfileData")
-                                .HasColumnType("json");
 
                             b1.Property<int>("TenantId")
                                 .HasColumnType("int");

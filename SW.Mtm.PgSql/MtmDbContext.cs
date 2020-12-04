@@ -47,7 +47,7 @@ namespace SW.Mtm.PgSql
                 b.Property(p => p.LoginMethods).HasConversion<byte>();
                 b.Property(p => p.SecondFactorMethod).HasConversion<byte>();
                 b.Property(p => p.SecondFactorKey).IsUnicode(false).HasMaxLength(500);
-                b.Property(p => p.Roles).IsRequired();
+                b.Property(p => p.Roles).HasMaxLength(100);
 
 
                 b.OwnsMany(p => p.ApiCredentials, apicred =>
@@ -138,12 +138,12 @@ namespace SW.Mtm.PgSql
                         Landlord = false,
                         DisplayName = "Sample User",
                         CreatedOn = defaultCreatedOn,
-                        //ProfileData = new[] { new ProfileDataItem() },
+                        //ProfileData = new ProfileDataItem[] { },
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -161,7 +161,7 @@ namespace SW.Mtm.PgSql
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -178,7 +178,7 @@ namespace SW.Mtm.PgSql
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = true,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -194,8 +194,8 @@ namespace SW.Mtm.PgSql
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] { }
-                    }); 
+                        //Roles = new string[] { }
+                    });
 
 
             });
@@ -260,7 +260,8 @@ namespace SW.Mtm.PgSql
             {
                 //b.ToTable("Tenants");
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
-                b.Property(p => p.Id).UseHiLo(); 
+                b.Property(p => p.ProfileData).HasColumnType("jsonb");
+                b.Property(p => p.Id).UseHiLo();
 
             });
 
