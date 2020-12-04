@@ -6,6 +6,7 @@ using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("setprofiledata")]
-    class SetProfileData : ICommandHandler<string, AccountUpdate>
+    class SetProfileData : ICommandHandler<string, AccountSetProfileData>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
@@ -24,7 +25,7 @@ namespace SW.Mtm.Resources.Accounts
             this.requestContext = requestContext;
         }
 
-        async public Task<object> Handle(string accountIdOrEmail, AccountUpdate request)
+        async public Task<object> Handle(string accountIdOrEmail, AccountSetProfileData request)
         {
 
             var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
@@ -62,11 +63,19 @@ namespace SW.Mtm.Resources.Accounts
 
         }
 
-        private class Validate : AbstractValidator<AccountUpdate>
+        private class Validate : AbstractValidator<AccountSetProfileData>
         {
             public Validate()
             {
                 RuleFor(p => p.ProfileData).NotNull();
+
+                RuleForEach(p => p.ProfileData).
+                    ChildRules(items =>
+                    {
+                        items.RuleFor(i => i.Name).NotEmpty();
+                        items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Role, StringComparer.OrdinalIgnoreCase);
+                        items.RuleFor(i => i.Value).NotEmpty();
+                    });
             }
         }
     }

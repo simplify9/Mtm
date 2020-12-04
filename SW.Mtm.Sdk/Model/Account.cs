@@ -74,7 +74,7 @@ namespace SW.Mtm.Model
         public string NewPassword { get; set; }
     }
 
-    public class AccountUpdate
+    public class AccountSetProfileData
     {
         //public string DisplayName { get; set; }
         public int? TenantId { get; set; }

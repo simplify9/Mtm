@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SW.Mtm.Resources.Tenants
 {
-    [Protect(RequireRole = false)]
+    [Protect]
     class Create : ICommandHandler<TenantCreate>
     {
         private readonly RequestContext requestContext;

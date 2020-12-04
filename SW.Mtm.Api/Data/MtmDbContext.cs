@@ -56,7 +56,7 @@ namespace SW.Mtm
                 b.Property(p => p.LoginMethods).HasConversion<byte>();
                 b.Property(p => p.SecondFactorMethod).HasConversion<byte>();
                 b.Property(p => p.SecondFactorKey).IsUnicode(false).HasMaxLength(500);
-                b.Property(p => p.Roles).IsSeparatorDelimited().IsUnicode(false).HasMaxLength(4000).IsRequired();
+                b.Property(p => p.Roles).IsSeparatorDelimited().IsUnicode(false).HasMaxLength(4000);
 
 
                 b.OwnsMany(p => p.ApiCredentials, apicred =>
@@ -151,7 +151,7 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -169,7 +169,7 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -186,7 +186,7 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = true,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -202,7 +202,7 @@ namespace SW.Mtm
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     }); ;
 
             });
@@ -267,6 +267,7 @@ namespace SW.Mtm
             {
                 b.ToTable("Tenants");
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
+                b.Property(p => p.ProfileData).StoreAsJson().HasColumnType("json");
                 b.Property(p => p.Id).HasSequenceGenerator();// ValueGeneratedOnAdd().HasValueGenerator<SequenceValueGenerator>();
 
             });

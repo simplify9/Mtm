@@ -20,6 +20,8 @@ namespace SW.Mtm
                 new Claim("email_verified", account.EmailVerified.ToString(), ClaimValueTypes.Boolean),
                 new Claim("phone_verified", account.PhoneVerified.ToString(), ClaimValueTypes.Boolean),
                 new Claim("login_methods", ((int)account.LoginMethods).ToString(), ClaimValueTypes.Integer),
+                new Claim("second_factor_method", ((int)account.SecondFactorMethod).ToString(), ClaimValueTypes.Integer),
+
             };
 
             switch (loginMethod)
