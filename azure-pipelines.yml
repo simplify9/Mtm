@@ -20,15 +20,18 @@ jobs:
   displayName: build, test and pack nuget
   steps:
 
-
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 5.0.100
+      installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       projects: '**/*.csproj'
       arguments: '--configuration Release'
-
-
 
   - task: DotNetCoreCLI@2
     displayName: 'dotnet pack'
