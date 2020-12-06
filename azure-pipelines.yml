@@ -39,7 +39,6 @@ jobs:
     inputs:
       command: pack
       packagesToPack: 'SW.Mtm.Sdk/SW.Mtm.Sdk.csproj;'
-      nobuild: true
       versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
