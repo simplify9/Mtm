@@ -4,154 +4,148 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using SW.Mtm.PgSql;
+using SW.Mtm;
 
-namespace SW.Mtm.PgSql.Migrations
+namespace SW.Mtm.MySql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    [Migration("20201129231055_Initial")]
-    partial class Initial
+    [Migration("20201204145211_Update6")]
+    partial class Update6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("mtm")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.9")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("Relational:Sequence:.EntityFrameworkHiLoSequence", "'EntityFrameworkHiLoSequence', '', '1', '10', '', '', 'Int64', 'False'");
+                .HasAnnotation("ProductVersion", "3.1.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
+                {
+                    b.Property<string>("Entity")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Entity");
+
+                    b.ToTable("Sequences");
+
+                    b.HasData(
+                        new
+                        {
+                            Entity = "Tenant",
+                            Value = 1
+                        });
+                });
 
             modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnName("created_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnName("deleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnName("deleted_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
-                        .HasColumnName("deleted_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("Disabled")
-                        .HasColumnName("disabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnName("display_name")
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
                     b.Property<byte>("EmailProvider")
-                        .HasColumnName("email_provider")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<bool>("EmailVerified")
-                        .HasColumnName("email_verified")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Landlord")
-                        .HasColumnName("landlord")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<byte>("LoginMethods")
-                        .HasColumnName("login_methods")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnName("modified_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnName("modified_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Password")
-                        .HasColumnName("password")
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                         .HasMaxLength(500)
                         .IsUnicode(false);
 
                     b.Property<string>("Phone")
-                        .HasColumnName("phone")
-                        .HasColumnType("character varying(20)")
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
                         .HasMaxLength(20)
                         .IsUnicode(false);
 
                     b.Property<bool>("PhoneVerified")
-                        .HasColumnName("phone_verified")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ProfileData")
+                        .HasColumnType("json");
 
                     b.Property<string>("Roles")
-                        .IsRequired()
-                        .HasColumnName("roles")
-                        .HasColumnType("character varying(4000)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(4000)
                         .IsUnicode(false);
 
                     b.Property<string>("SecondFactorKey")
-                        .HasColumnName("second_factor_key")
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                         .HasMaxLength(500)
                         .IsUnicode(false);
 
                     b.Property<byte>("SecondFactorMethod")
-                        .HasColumnName("second_factor_method")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<int?>("TenantId")
-                        .HasColumnName("tenant_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("pk_account");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasName("ix_account_email");
+                        .IsUnique();
 
                     b.HasIndex("Phone")
-                        .IsUnique()
-                        .HasName("ix_account_phone");
+                        .IsUnique();
 
-                    b.HasIndex("TenantId")
-                        .HasName("ix_account_tenant_id");
+                    b.HasIndex("TenantId");
 
-                    b.ToTable("account","mtm");
+                    b.ToTable("Accounts");
 
                     b.HasData(
                         new
@@ -166,7 +160,7 @@ namespace SW.Mtm.PgSql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
+                            Roles = "Mtm.Accounts.Create;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -183,7 +177,7 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = true,
-                            Roles = "Mtm.Accounts.Register",
+                            Roles = "Mtm.Accounts.Create",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -200,7 +194,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -217,7 +210,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)1
                         },
                         new
@@ -233,7 +225,6 @@ namespace SW.Mtm.PgSql.Migrations
                             LoginMethods = (byte)4,
                             Phone = "12345678",
                             PhoneVerified = true,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -248,7 +239,6 @@ namespace SW.Mtm.PgSql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         });
                 });
@@ -256,246 +246,201 @@ namespace SW.Mtm.PgSql.Migrations
             modelBuilder.Entity("SW.Mtm.Domain.Invitation", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("AccountId")
-                        .HasColumnName("account_id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnName("created_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnName("deleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnName("deleted_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
-                        .HasColumnName("deleted_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnName("modified_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnName("modified_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Phone")
-                        .HasColumnName("phone")
-                        .HasColumnType("character varying(20)")
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
                         .HasMaxLength(20)
                         .IsUnicode(false);
 
                     b.Property<int>("TenantId")
-                        .HasColumnName("tenant_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("pk_invitation");
+                    b.HasKey("Id");
 
-                    b.HasIndex("TenantId")
-                        .HasName("ix_invitation_tenant_id");
+                    b.HasIndex("TenantId");
 
                     b.HasIndex("AccountId", "TenantId")
-                        .IsUnique()
-                        .HasName("ix_invitation_account_id_tenant_id");
+                        .IsUnique();
 
                     b.HasIndex("Email", "TenantId")
-                        .IsUnique()
-                        .HasName("ix_invitation_email_tenant_id");
+                        .IsUnique();
 
                     b.HasIndex("Phone", "TenantId")
-                        .IsUnique()
-                        .HasName("ix_invitation_phone_tenant_id");
+                        .IsUnique();
 
-                    b.ToTable("invitation","mtm");
+                    b.ToTable("Invitations");
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.OtpToken", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("AccountId")
-                        .HasColumnName("account_id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte>("LoginMethod")
-                        .HasColumnName("login_method")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("Password")
-                        .HasColumnName("password")
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                         .HasMaxLength(500)
                         .IsUnicode(false);
 
                     b.Property<byte>("Type")
-                        .HasColumnName("type")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
-                    b.HasKey("Id")
-                        .HasName("pk_otp_token");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AccountId")
-                        .HasName("ix_otp_token_account_id");
+                    b.HasIndex("AccountId");
 
-                    b.ToTable("otp_token","mtm");
+                    b.ToTable("OtpTokens");
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.PasswordResetToken", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("AccountId")
-                        .HasColumnName("account_id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_password_reset_token");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AccountId")
-                        .HasName("ix_password_reset_token_account_id");
+                    b.HasIndex("AccountId");
 
-                    b.ToTable("password_reset_token","mtm");
+                    b.ToTable("PasswordResetTokens");
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("AccountId")
-                        .HasColumnName("account_id")
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte>("LoginMethod")
-                        .HasColumnName("login_method")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
-                    b.HasKey("Id")
-                        .HasName("pk_refresh_token");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AccountId")
-                        .HasName("ix_refresh_token_account_id");
+                    b.HasIndex("AccountId");
 
-                    b.ToTable("refresh_token","mtm");
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.Tenant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:HiLoSequenceName", "EntityFrameworkHiLoSequence")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo);
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnName("created_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnName("created_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("Deleted")
-                        .HasColumnName("deleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnName("deleted_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("DeletedOn")
-                        .HasColumnName("deleted_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnName("display_name")
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnName("modified_by")
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .IsFixedLength(false)
                         .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnName("modified_on")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_tenant");
+                    b.Property<string>("ProfileData")
+                        .HasColumnType("json");
 
-                    b.ToTable("tenant","mtm");
+                    b.HasKey("Id");
+
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("SW.Mtm.Domain.Account", b =>
@@ -503,46 +448,37 @@ namespace SW.Mtm.PgSql.Migrations
                     b.HasOne("SW.Mtm.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .HasConstraintName("fk_account_tenant_tenant_id")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsMany("SW.Mtm.Domain.ApiCredential", "ApiCredentials", b1 =>
                         {
                             b1.Property<string>("AccountId")
-                                .HasColumnName("account_id")
-                                .HasColumnType("character varying(50)");
+                                .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
 
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnName("id")
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                                .HasColumnType("int");
 
                             b1.Property<string>("Key")
                                 .IsRequired()
-                                .HasColumnName("key")
-                                .HasColumnType("character varying(500)")
+                                .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                                 .HasMaxLength(500)
                                 .IsUnicode(false);
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .HasColumnName("name")
-                                .HasColumnType("character varying(500)")
+                                .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                                 .HasMaxLength(500);
 
-                            b1.HasKey("AccountId", "Id")
-                                .HasName("pk_api_credential");
+                            b1.HasKey("AccountId", "Id");
 
                             b1.HasIndex("Key")
-                                .IsUnique()
-                                .HasName("ix_account_api_credential_key");
+                                .IsUnique();
 
-                            b1.ToTable("account_api_credential","mtm");
+                            b1.ToTable("AccountApiCredentials");
 
                             b1.WithOwner()
-                                .HasForeignKey("AccountId")
-                                .HasConstraintName("fk_api_credential_account_account_id");
+                                .HasForeignKey("AccountId");
 
                             b1.HasData(
                                 new
@@ -564,39 +500,33 @@ namespace SW.Mtm.PgSql.Migrations
                     b.OwnsMany("SW.Mtm.Domain.TenantMembership", "TenantMemberships", b1 =>
                         {
                             b1.Property<string>("AccountId")
-                                .HasColumnName("account_id")
-                                .HasColumnType("character varying(50)");
+                                .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
 
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnName("id")
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                                .HasColumnType("int");
+
+                            b1.Property<string>("ProfileData")
+                                .HasColumnType("json");
 
                             b1.Property<int>("TenantId")
-                                .HasColumnName("tenant_id")
-                                .HasColumnType("integer");
+                                .HasColumnType("int");
 
                             b1.Property<byte>("Type")
-                                .HasColumnName("type")
-                                .HasColumnType("smallint");
+                                .HasColumnType("tinyint unsigned");
 
-                            b1.HasKey("AccountId", "Id")
-                                .HasName("pk_tenant_membership");
+                            b1.HasKey("AccountId", "Id");
 
-                            b1.HasIndex("TenantId")
-                                .HasName("ix_account_tenant_membership_tenant_id");
+                            b1.HasIndex("TenantId");
 
-                            b1.ToTable("account_tenant_membership","mtm");
+                            b1.ToTable("AccountTenantMemberships");
 
                             b1.WithOwner()
-                                .HasForeignKey("AccountId")
-                                .HasConstraintName("fk_tenant_membership_account_account_id");
+                                .HasForeignKey("AccountId");
 
                             b1.HasOne("SW.Mtm.Domain.Tenant", null)
                                 .WithMany()
                                 .HasForeignKey("TenantId")
-                                .HasConstraintName("fk_account_tenant_membership_tenant_tenant_id")
                                 .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
                         });
@@ -607,13 +537,11 @@ namespace SW.Mtm.PgSql.Migrations
                     b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .HasConstraintName("fk_invitation_account_account_id")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SW.Mtm.Domain.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .HasConstraintName("fk_invitation_tenant_tenant_id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -623,7 +551,6 @@ namespace SW.Mtm.PgSql.Migrations
                     b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .HasConstraintName("fk_otp_token_account_account_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -632,7 +559,6 @@ namespace SW.Mtm.PgSql.Migrations
                     b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .HasConstraintName("fk_password_reset_token_account_account_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -641,7 +567,6 @@ namespace SW.Mtm.PgSql.Migrations
                     b.HasOne("SW.Mtm.Domain.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountId")
-                        .HasConstraintName("fk_refresh_token_account_account_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

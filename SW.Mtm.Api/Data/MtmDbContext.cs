@@ -6,6 +6,7 @@ using SW.Mtm.Domain;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace SW.Mtm
         protected readonly DateTime defaultCreatedOn = DateTime.Parse("1/1/2020");
         //private readonly IDomainEventDispatcher domainEventDispatcher;
         //protected readonly IConfiguration configuration;
+        protected const string AdminAccountId = "2";
 
         public RequestContext RequestContext { get; }
 
@@ -49,11 +51,12 @@ namespace SW.Mtm
                 b.Property(p => p.Phone).IsUnicode(false).HasMaxLength(20);
                 b.Property(p => p.Password).IsUnicode(false).HasMaxLength(500);
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
+                b.Property(p => p.ProfileData).StoreAsJson().HasColumnType("json");
                 b.Property(p => p.EmailProvider).HasConversion<byte>();
                 b.Property(p => p.LoginMethods).HasConversion<byte>();
                 b.Property(p => p.SecondFactorMethod).HasConversion<byte>();
                 b.Property(p => p.SecondFactorKey).IsUnicode(false).HasMaxLength(500);
-                b.Property(p => p.Roles).IsSeparatorDelimited().IsUnicode(false).HasMaxLength(4000).IsRequired();
+                b.Property(p => p.Roles).IsSeparatorDelimited().IsUnicode(false).HasMaxLength(4000);
 
 
                 b.OwnsMany(p => p.ApiCredentials, apicred =>
@@ -85,6 +88,7 @@ namespace SW.Mtm
                 {
                     membership.ToTable("AccountTenantMemberships");
                     membership.Property(p => p.Type).HasConversion<byte>();
+                    membership.Property(p => p.ProfileData).StoreAsJson().HasColumnType("json");
                     membership.WithOwner().HasForeignKey("AccountId");
                     membership.HasOne<Tenant>().WithMany().HasForeignKey(p => p.TenantId).OnDelete(DeleteBehavior.Cascade);
                 });
@@ -100,21 +104,22 @@ namespace SW.Mtm
                         Landlord = false,
                         DisplayName = "System",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] 
-                        { 
-                            RoleConstants.AccountsLogin, 
-                            RoleConstants.AccountsRegister,
+                        Roles = new string[]
+                        {
+                            //RoleConstants.AccountsLogin,
+                            RoleConstants.AccountsCreate,
                             RoleConstants.AccountsResetPassword,
                             RoleConstants.AccountsInitiatePasswordReset
                         }
                     },
                     new
                     {
-                        Id = Account.AdminId,
+                        Id = AdminAccountId,
                         Email = "admin@xyz.com",
                         Password = defaultPasswordHash,
                         EmailProvider = EmailProvider.None,
@@ -123,11 +128,12 @@ namespace SW.Mtm
                         Landlord = true,
                         DisplayName = "Admin",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = true,
-                        Roles = new string[] { RoleConstants.AccountsRegister }
+                        Roles = new string[] { RoleConstants.AccountsCreate }
                     },
                     new
                     {
@@ -140,11 +146,12 @@ namespace SW.Mtm
                         Landlord = false,
                         DisplayName = "Sample User",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -157,11 +164,12 @@ namespace SW.Mtm
                         Landlord = false,
                         DisplayName = "Sample User MFA",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = true,
                         PhoneVerified = false,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -173,11 +181,12 @@ namespace SW.Mtm
                         Landlord = false,
                         DisplayName = "Sample User Phone",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = true,
-                        Roles = new string[] { }
+                        //Roles = new string[] { }
                     },
                     new
                     {
@@ -188,12 +197,13 @@ namespace SW.Mtm
                         Landlord = false,
                         DisplayName = "Sample User API",
                         CreatedOn = defaultCreatedOn,
+                        //ProfileData = new HashSet<ProfileDataItem>(),
                         Deleted = false,
                         Disabled = false,
                         EmailVerified = false,
                         PhoneVerified = false,
-                        Roles = new string[] { }
-                    });
+                        //Roles = new string[] { }
+                    }); ;
 
             });
 
@@ -257,6 +267,7 @@ namespace SW.Mtm
             {
                 b.ToTable("Tenants");
                 b.Property(p => p.DisplayName).IsRequired().HasMaxLength(200);
+                b.Property(p => p.ProfileData).StoreAsJson().HasColumnType("json");
                 b.Property(p => p.Id).HasSequenceGenerator();// ValueGeneratedOnAdd().HasValueGenerator<SequenceValueGenerator>();
 
             });

@@ -35,7 +35,7 @@ namespace SW.Mtm.Sdk.UnitTests
             //        };
             //    });
 
-            services.AddApiClient<IMtmClient, MtmClient, MtmClientMock, MtmClientOptions>();
+            services.AddApiClient<IMtmClient, MtmClient, MtmClientOptions>();
 
 
         }

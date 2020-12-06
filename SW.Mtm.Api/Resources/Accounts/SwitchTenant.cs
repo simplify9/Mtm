@@ -38,16 +38,11 @@ namespace SW.Mtm.Resources.Accounts
             if (string.IsNullOrEmpty(accountId))
                 throw new SWException("Account is empty.");
 
-            var account = await dbContext
-                    .Set<Account>()
-                    .Include(m=>m.TenantMemberships)
-                    .Where(u => u.Id == accountId)
-                    .SingleOrDefaultAsync();
+            var account = await dbContext.Set<Account>().FindAsync(accountId);
 
-            if (!account.TenantMemberships.Select(t=>t.TenantId).Contains(request.NewTenant))
+            if (!account.SetTenantId(request.NewTenant))
                 throw new SWException($"Account doesnt belong to tenant {request.NewTenant}.");
-
-            account.TenantId = request.NewTenant;
+            
             var loginResult = new AccountLoginResult
             {
                 Jwt = account.CreateJwt(account.LoginMethods, jwtTokenParameters),

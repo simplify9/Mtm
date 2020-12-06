@@ -14,7 +14,7 @@ namespace SW.Mtm.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SW.EfCoreExtensions.Sequence", b =>
@@ -114,8 +114,10 @@ namespace SW.Mtm.MySql.Migrations
                     b.Property<bool>("PhoneVerified")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("ProfileData")
+                        .HasColumnType("json");
+
                     b.Property<string>("Roles")
-                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(4000)
                         .IsUnicode(false);
@@ -156,7 +158,7 @@ namespace SW.Mtm.MySql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "Mtm.Accounts.Login;Mtm.Accounts.Register;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
+                            Roles = "Mtm.Accounts.Create;Mtm.Accounts.ResetPassword;Mtm.Accounts.InitiatePasswordReset",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -173,7 +175,7 @@ namespace SW.Mtm.MySql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = true,
-                            Roles = "Mtm.Accounts.Register",
+                            Roles = "Mtm.Accounts.Create",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -190,7 +192,6 @@ namespace SW.Mtm.MySql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -207,7 +208,6 @@ namespace SW.Mtm.MySql.Migrations
                             LoginMethods = (byte)2,
                             Password = "$SWHASH$V1$10000$VQCi48eitH4Ml5juvBMOFZrMdQwBbhuIQVXe6RR7qJdDF2bJ",
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)1
                         },
                         new
@@ -223,7 +223,6 @@ namespace SW.Mtm.MySql.Migrations
                             LoginMethods = (byte)4,
                             Phone = "12345678",
                             PhoneVerified = true,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         },
                         new
@@ -238,7 +237,6 @@ namespace SW.Mtm.MySql.Migrations
                             Landlord = false,
                             LoginMethods = (byte)1,
                             PhoneVerified = false,
-                            Roles = "",
                             SecondFactorMethod = (byte)0
                         });
                 });
@@ -435,6 +433,9 @@ namespace SW.Mtm.MySql.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("ProfileData")
+                        .HasColumnType("json");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tenants");
@@ -502,6 +503,9 @@ namespace SW.Mtm.MySql.Migrations
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
+
+                            b1.Property<string>("ProfileData")
+                                .HasColumnType("json");
 
                             b1.Property<int>("TenantId")
                                 .HasColumnType("int");

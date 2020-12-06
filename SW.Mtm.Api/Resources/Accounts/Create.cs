@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 
 namespace SW.Mtm.Resources.Accounts
 {
-    [HandlerName("register")]
+    
     [Protect(RequireRole = true)]
-    class Register : ICommandHandler<AccountRegister>
+    class Create : ICommandHandler<AccountCreate>
     {
         private readonly MtmDbContext dbContext;
 
-        public Register(MtmDbContext dbContext)
+        public Create(MtmDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        async public Task<object> Handle(AccountRegister request)
+        async public Task<object> Handle(AccountCreate request)
         {
             string apiKey = null;
             Account account;
@@ -53,14 +53,14 @@ namespace SW.Mtm.Resources.Accounts
             dbContext.Add(account);
             await dbContext.SaveChangesAsync();
 
-            return new AccountRegisterResult
+            return new AccountCreateResult
             {
                 Id = account.Id,
                 Key = apiKey
             };
         }
 
-        private class Validate : AbstractValidator<AccountRegister>
+        private class Validate : AbstractValidator<AccountCreate>
         {
             public Validate(MtmDbContext mtmDbContext)
             {
@@ -99,10 +99,6 @@ namespace SW.Mtm.Resources.Accounts
                 {
                     return p.EmailProvider == EmailProvider.None && p.Email != null;
                 });
-
-
-
-
             }
         }
 

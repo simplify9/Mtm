@@ -19,35 +19,35 @@ namespace SW.Mtm.Sdk
         async public Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
         {
             return await Builder
-               .Key()
-               .Path("tenants/create")
+               .JwtOrKey()
+               .Path("tenants")
                .As<TenantCreateResult>(true)
                .PostAsync(tenantCreate);
         }
         public async Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate tenantCreate)
         {
             return await Builder
-               .Key()
-               .Path("tenants/create")
+               .JwtOrKey()
+               .Path("tenants")
                .AsApiResult<TenantCreateResult>()
                .PostAsync(tenantCreate);
         }
-        async public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate)
-        {
-            return await Builder
-               .Jwt()
-               .Path("tenants/create")
-               .As<TenantCreateResult>(true)
-               .PostAsync(tenantCreate);
-        }
-        public async Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
-        {
-            return await Builder
-               .Jwt()
-               .Path("tenants/create")
-               .AsApiResult<TenantCreateResult>()
-               .PostAsync(tenantCreate);
-        }
+        //async public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate)
+        //{
+        //    return await Builder
+        //       .Jwt()
+        //       .Path("tenants")
+        //       .As<TenantCreateResult>(true)
+        //       .PostAsync(tenantCreate);
+        //}
+        //public async Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
+        //{
+        //    return await Builder
+        //       .Jwt()
+        //       .Path("tenants")
+        //       .AsApiResult<TenantCreateResult>()
+        //       .PostAsync(tenantCreate);
+        //}
 
         public async Task AcceptInvitation(string key, InvitationAccept invitationAccept)
         {
@@ -87,7 +87,7 @@ namespace SW.Mtm.Sdk
         async public Task<AccountLoginResult> Login(AccountLogin loginAccount)
         {
             return await Builder
-                .Key()
+                .JwtOrKey()
                 .Path("accounts/login")
                 .As<AccountLoginResult>(true)
                 .PostAsync(loginAccount);
@@ -95,26 +95,26 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
         {
             return await Builder
-                .Key()
+                .JwtOrKey()
                 .Path("accounts/login")
                 .AsApiResult<AccountLoginResult>()
                 .PostAsync(loginAccount);
         }
 
-        public async Task<AccountRegisterResult> Register(AccountRegister registerAccount)
+        public async Task<AccountCreateResult> CreateAccount(AccountCreate registerAccount)
         {
             return await Builder
                 .Key()
-                .Path("accounts/register")
-                .As<AccountRegisterResult>(true)
+                .Path("accounts")
+                .As<AccountCreateResult>(true)
                 .PostAsync(registerAccount);
         }
-        public async Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount)
+        public async Task<ApiResult<AccountCreateResult>> CreateAccountAsApiResult(AccountCreate registerAccount)
         {
             return await Builder
                 .Key()
-                .Path("accounts/register")
-                .AsApiResult<AccountRegisterResult>()
+                .Path("accounts")
+                .AsApiResult<AccountCreateResult>()
                 .PostAsync(registerAccount);
         }
         async public Task ChangePassword(AccountChangePassword changePasswordAccount)

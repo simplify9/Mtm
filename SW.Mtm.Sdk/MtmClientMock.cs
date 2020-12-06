@@ -1,292 +1,292 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using SW.PrimitiveTypes;
-using SW.HttpExtensions;
-using System.Security.Claims;
-using SW.Mtm.Model;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
+//using System.Threading.Tasks;
+//using SW.PrimitiveTypes;
+//using SW.HttpExtensions;
+//using System.Security.Claims;
+//using SW.Mtm.Model;
 
-namespace SW.Mtm.Sdk
-{
-    public class MtmClientMock : IMtmClient
-    {
-        private readonly MtmClientOptions mtmClientOptions;
+//namespace SW.Mtm.Sdk
+//{
+//    public class MtmClientMock : IMtmClient
+//    {
+//        private readonly MtmClientOptions mtmClientOptions;
 
-        public MtmClientMock(MtmClientOptions mtmClientOptions)
-        {
-            this.mtmClientOptions = mtmClientOptions;
-        }
-
-
-
-        async public Task<AccountLoginResult> Login(AccountLogin request)
-        {
-            var loginResult = new AccountLoginResult();
-
-            if (request.RefreshToken != null)
-            {
-
-                //var refreshToken = await dbContext
-                //   .Set<RefreshToken>()
-                //   .Where(u => u.Id == request.RefreshToken)
-                //   .SingleOrDefaultAsync();
-
-                //if (refreshToken == null)
-                //    throw new SWException("User not found or invalid password.");
-
-                //account = await dbContext
-                //   .Set<Account>().FindAsync(refreshToken.AccountId);
-
-                //loginResult.Jwt = CreateJwt(account, refreshToken.LoginMethod);
-                //loginResult.RefreshToken = CreateRefreshToken(account, refreshToken.LoginMethod);
-
-                //dbContext.Remove(refreshToken);
-
-            }
-            else if (request.OtpToken != null)
-            {
-                //var otpToken = await dbContext
-                //   .Set<OtpToken>()
-                //   .Where(u => u.Id == request.OtpToken)
-                //   .SingleOrDefaultAsync();
-
-                //if (otpToken == null)
-                //    throw new SWException("User not found or invalid password.");
+//        public MtmClientMock(MtmClientOptions mtmClientOptions)
+//        {
+//            this.mtmClientOptions = mtmClientOptions;
+//        }
 
 
 
-                //switch (otpToken.Type)
-                //{
-                //    case OtpType.Otp:
-                //        if (request.Password == null || !SecurePasswordHasher.Verify(request.Password, otpToken.Password))
-                //            throw new SWException("User not found or invalid password.");
+//        async public Task<AccountLoginResult> Login(AccountLogin request)
+//        {
+//            var loginResult = new AccountLoginResult();
 
-                //        break;
-                //    case OtpType.Totp:
-                //        break;
-                //    default:
-                //        throw new SWException("User not found or invalid password.");
+//            if (request.RefreshToken != null)
+//            {
 
-                //}
+//                //var refreshToken = await dbContext
+//                //   .Set<RefreshToken>()
+//                //   .Where(u => u.Id == request.RefreshToken)
+//                //   .SingleOrDefaultAsync();
 
-                //account = await dbContext
-                //   .Set<Account>().FindAsync(otpToken.AccountId);
+//                //if (refreshToken == null)
+//                //    throw new SWException("User not found or invalid password.");
 
-                //loginResult.Jwt = CreateJwt(account, otpToken.LoginMethod);
-                //loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
+//                //account = await dbContext
+//                //   .Set<Account>().FindAsync(refreshToken.AccountId);
 
-                //dbContext.Remove(otpToken);
-            }
-            else if (request.ApiKey != null)
-            {
-                if (request.ApiKey == mtmClientOptions.MockData["ApiKey"])
-                {
-                    loginResult.Jwt = CreateJwt(LoginMethod.ApiKey);
-                }
-                else
-                {
-                    throw new SWException("User not found or invalid password.");
-                }
-            }
-            else if (request.Email != null)
-            {
+//                //loginResult.Jwt = CreateJwt(account, refreshToken.LoginMethod);
+//                //loginResult.RefreshToken = CreateRefreshToken(account, refreshToken.LoginMethod);
 
-                if (request.Email == mtmClientOptions.MockData["Email"] && request.Password == mtmClientOptions.MockData["Password"])
-                {
-                    loginResult.Jwt = CreateJwt(LoginMethod.EmailAndPassword);
-                    loginResult.RefreshToken = mtmClientOptions.MockData["RefreshToken"];
-                }
-                else
-                {
-                    throw new SWException("User not found or invalid password.");
-                }
-                //account = await dbContext
-                //   .Set<Account>()
-                //   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0)
-                //   .SingleOrDefaultAsync();
+//                //dbContext.Remove(refreshToken);
 
-                //if (account == null)
-                //    throw new SWException("User not found or invalid password.");
+//            }
+//            else if (request.OtpToken != null)
+//            {
+//                //var otpToken = await dbContext
+//                //   .Set<OtpToken>()
+//                //   .Where(u => u.Id == request.OtpToken)
+//                //   .SingleOrDefaultAsync();
 
-                //if (request.EmailProvider == EmailProvider.None && request.Password == null || request.EmailProvider == EmailProvider.None && !SecurePasswordHasher.Verify(request.Password, account.Password))
-                //    throw new SWException("User not found or invalid password.");
+//                //if (otpToken == null)
+//                //    throw new SWException("User not found or invalid password.");
 
 
-                //switch (account.SecondFactorMethod)
-                //{
-                //    case OtpType.None:
-                //        loginResult.Jwt = CreateJwt(account, LoginMethod.EmailAndPassword);
-                //        loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
-                //        break;
-                //    case OtpType.Otp:
-                //    case OtpType.Totp:
-                //        var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
-                //        loginResult.OtpType = account.SecondFactorMethod;
-                //        loginResult.OtpToken = otpToken.Key;
-                //        loginResult.Password = otpToken.Value;
-                //        break;
-                //    default:
-                //        throw new NotImplementedException();
 
-                //}
+//                //switch (otpToken.Type)
+//                //{
+//                //    case OtpType.Otp:
+//                //        if (request.Password == null || !SecurePasswordHasher.Verify(request.Password, otpToken.Password))
+//                //            throw new SWException("User not found or invalid password.");
 
-            }
-            else if (request.Phone != null)
-            {
-                //account = await dbContext
-                //   .Set<Account>()
-                //   .Where(u => u.Phone == request.Phone && (u.LoginMethods & LoginMethod.PhoneAndOtp) != 0)
-                //   .SingleOrDefaultAsync();
+//                //        break;
+//                //    case OtpType.Totp:
+//                //        break;
+//                //    default:
+//                //        throw new SWException("User not found or invalid password.");
 
-                //if (account == null)
-                //    throw new SWException("User not found or invalid password.");
+//                //}
 
-                //var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp);
-                //loginResult.OtpType = OtpType.Otp;
-                //loginResult.OtpToken = otpToken.Key;
-                //loginResult.Password = otpToken.Value;
-            }
+//                //account = await dbContext
+//                //   .Set<Account>().FindAsync(otpToken.AccountId);
 
-            //await dbContext.SaveChangesAsync();
+//                //loginResult.Jwt = CreateJwt(account, otpToken.LoginMethod);
+//                //loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
 
-            return loginResult;
-        }
+//                //dbContext.Remove(otpToken);
+//            }
+//            else if (request.ApiKey != null)
+//            {
+//                if (request.ApiKey == mtmClientOptions.MockData["ApiKey"])
+//                {
+//                    loginResult.Jwt = CreateJwt(LoginMethod.ApiKey);
+//                }
+//                else
+//                {
+//                    throw new SWException("User not found or invalid password.");
+//                }
+//            }
+//            else if (request.Email != null)
+//            {
 
-        private string CreateJwt(LoginMethod loginMethod)
-        {
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, mtmClientOptions.MockData["AccountId"]),
-                new Claim(ClaimTypes.GivenName, mtmClientOptions.MockData["DisplayName"]),
-                new Claim("EmailVerified", true.ToString()),
-                new Claim("PhoneVerified", true.ToString()),
-            };
+//                if (request.Email == mtmClientOptions.MockData["Email"] && request.Password == mtmClientOptions.MockData["Password"])
+//                {
+//                    loginResult.Jwt = CreateJwt(LoginMethod.EmailAndPassword);
+//                    loginResult.RefreshToken = mtmClientOptions.MockData["RefreshToken"];
+//                }
+//                else
+//                {
+//                    throw new SWException("User not found or invalid password.");
+//                }
+//                //account = await dbContext
+//                //   .Set<Account>()
+//                //   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0)
+//                //   .SingleOrDefaultAsync();
 
-            switch (loginMethod)
-            {
-                case LoginMethod.EmailAndPassword:
-                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["Email"]));
-                    break;
-                case LoginMethod.PhoneAndOtp:
-                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["Phone"]));
-                    break;
-                case LoginMethod.ApiKey:
-                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["AccountId"]));
-                    break;
-            }
+//                //if (account == null)
+//                //    throw new SWException("User not found or invalid password.");
 
-            claims.Add(new Claim(ClaimTypes.Email, mtmClientOptions.MockData["Email"]));
-            claims.Add(new Claim(ClaimTypes.MobilePhone, mtmClientOptions.MockData["Phone"]));
-            if (mtmClientOptions.MockData.ContainsKey("TenantId")) claims.Add(new Claim("TenantId", mtmClientOptions.MockData["TenantId"]));
+//                //if (request.EmailProvider == EmailProvider.None && request.Password == null || request.EmailProvider == EmailProvider.None && !SecurePasswordHasher.Verify(request.Password, account.Password))
+//                //    throw new SWException("User not found or invalid password.");
 
-            return mtmClientOptions.Token.WriteJwt(new ClaimsIdentity(claims, "Mtm"));
-        }
 
-        public Task<AccountRegisterResult> Register(AccountRegister registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+//                //switch (account.SecondFactorMethod)
+//                //{
+//                //    case OtpType.None:
+//                //        loginResult.Jwt = CreateJwt(account, LoginMethod.EmailAndPassword);
+//                //        loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
+//                //        break;
+//                //    case OtpType.Otp:
+//                //    case OtpType.Totp:
+//                //        var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+//                //        loginResult.OtpType = account.SecondFactorMethod;
+//                //        loginResult.OtpToken = otpToken.Key;
+//                //        loginResult.Password = otpToken.Value;
+//                //        break;
+//                //    default:
+//                //        throw new NotImplementedException();
 
-        public Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+//                //}
 
-        public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+//            }
+//            else if (request.Phone != null)
+//            {
+//                //account = await dbContext
+//                //   .Set<Account>()
+//                //   .Where(u => u.Phone == request.Phone && (u.LoginMethods & LoginMethod.PhoneAndOtp) != 0)
+//                //   .SingleOrDefaultAsync();
+
+//                //if (account == null)
+//                //    throw new SWException("User not found or invalid password.");
+
+//                //var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp);
+//                //loginResult.OtpType = OtpType.Otp;
+//                //loginResult.OtpToken = otpToken.Key;
+//                //loginResult.Password = otpToken.Value;
+//            }
+
+//            //await dbContext.SaveChangesAsync();
+
+//            return loginResult;
+//        }
+
+//        private string CreateJwt(LoginMethod loginMethod)
+//        {
+//            var claims = new List<Claim>()
+//            {
+//                new Claim(ClaimTypes.NameIdentifier, mtmClientOptions.MockData["AccountId"]),
+//                new Claim(ClaimTypes.GivenName, mtmClientOptions.MockData["DisplayName"]),
+//                new Claim("EmailVerified", true.ToString()),
+//                new Claim("PhoneVerified", true.ToString()),
+//            };
+
+//            switch (loginMethod)
+//            {
+//                case LoginMethod.EmailAndPassword:
+//                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["Email"]));
+//                    break;
+//                case LoginMethod.PhoneAndOtp:
+//                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["Phone"]));
+//                    break;
+//                case LoginMethod.ApiKey:
+//                    claims.Add(new Claim(ClaimTypes.Name, mtmClientOptions.MockData["AccountId"]));
+//                    break;
+//            }
+
+//            claims.Add(new Claim(ClaimTypes.Email, mtmClientOptions.MockData["Email"]));
+//            claims.Add(new Claim(ClaimTypes.MobilePhone, mtmClientOptions.MockData["Phone"]));
+//            if (mtmClientOptions.MockData.ContainsKey("TenantId")) claims.Add(new Claim("TenantId", mtmClientOptions.MockData["TenantId"]));
+
+//            return mtmClientOptions.Token.WriteJwt(new ClaimsIdentity(claims, "Mtm"));
+//        }
+
+//        public Task<AccountCreateResult> Register(AccountCreate registerAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate registerAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
    
 
-        public  Task ChangePassword(AccountChangePassword changePasswordAccount)
-        {
-            return Task.CompletedTask; 
-        }
+//        public  Task ChangePassword(AccountChangePassword changePasswordAccount)
+//        {
+//            return Task.CompletedTask; 
+//        }
 
-        public Task ResetPassword(string accountId, AccountResetPassword accountResetPassword)
-        {
-            return Task.CompletedTask;
-        }
+//        public Task ResetPassword(string accountId, AccountResetPassword accountResetPassword)
+//        {
+//            return Task.CompletedTask;
+//        }
 
-        public Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult> ChangePasswordAsApiResult(AccountChangePassword accountChangePassword)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult> ChangePasswordAsApiResult(AccountChangePassword accountChangePassword)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(string accountIdOrEmail)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(string accountIdOrEmail)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<AccountRegisterResult>> RegisterAsApiResult(AccountRegister registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<AccountCreateResult>> RegisterAsApiResult(AccountCreate registerAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task AcceptInvitation(string key, InvitationAccept invitationAccept)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task AcceptInvitation(string key, InvitationAccept invitationAccept)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
-        {
-            throw new NotImplementedException();
-        }
+//        public Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+//        {
+//            throw new NotImplementedException();
+//        }
 
-        public Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+//        public Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
+//        {
+//            throw new NotImplementedException();
+//        }
+//    }
+//}

@@ -10,6 +10,11 @@ namespace SW.Mtm.Model
         public string NewPassword { get; set; }
     }
 
+    public class AccountExternalLogin
+    {
+        public EmailProvider EmailProvider { get; set; }
+    }
+
     public class AccountLogin
     {
         public string Email { get; set; }
@@ -31,7 +36,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
     }
 
-    public class AccountRegister
+    public class AccountCreate
     {
         public string Email { get; set; }
         public EmailProvider EmailProvider { get; set; }
@@ -41,7 +46,7 @@ namespace SW.Mtm.Model
         public string CredentialName { get; set; }
     }
 
-    public class AccountRegisterResult
+    public class AccountCreateResult
     {
         public string Id { get; set; }
         public string Key { get; set; }
@@ -67,6 +72,34 @@ namespace SW.Mtm.Model
     {
         public string Token { get; set; }
         public string NewPassword { get; set; }
+    }
+
+    public class AccountSetProfileData
+    {
+        //public string DisplayName { get; set; }
+        public int? TenantId { get; set; }
+        public ICollection<ProfileDataItem> ProfileData { get; set; }
+    }
+
+    public class AccountGet
+    {
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string DisplayName { get; set; }
+        public EmailProvider EmailProvider { get; set; }
+        public LoginMethod LoginMethods { get; set; }
+        public OtpType SecondFactorMethod { get; set; }
+        //public string SecondFactorKey { get;  set; }
+        //
+        public string[] Roles { get; set; }
+        public bool Disabled { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+
+        //public ICollection<TenantMembership> TenantMemberships { get; set; }
+        public ICollection<ProfileDataItem> ProfileData { get; set; }
     }
 
 }
