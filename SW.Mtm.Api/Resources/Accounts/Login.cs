@@ -21,7 +21,7 @@ namespace SW.Mtm.Resources.Accounts
         private readonly RequestContext requestContext;
         private readonly JwtTokenParameters jwtTokenParameters;
 
-        public Login(MtmDbContext dbContext, RequestContext requestContext,  JwtTokenParameters jwtTokenParameters)
+        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
@@ -160,7 +160,7 @@ namespace SW.Mtm.Resources.Accounts
                 loginResult.OtpToken = otpToken.Key;
                 loginResult.Password = otpToken.Value;
             }
-            else
+            else if (request.EmailProvider != EmailProvider.None)
             {
                 account = await dbContext
                    .Set<Account>()
@@ -187,6 +187,10 @@ namespace SW.Mtm.Resources.Accounts
                         throw new NotImplementedException();
 
                 }
+            }
+            else
+            {
+                throw new SWUnauthorizedException();
             }
 
             await dbContext.SaveChangesAsync();
