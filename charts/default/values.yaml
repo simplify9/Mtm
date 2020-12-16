@@ -55,7 +55,7 @@ affinity: {}
 
 # db is the connection string for the database
 db: ""
-
+dbType: "MySql"
 dbConnectionStringName: ConnectionStrings__MtmDb
 
 global:
