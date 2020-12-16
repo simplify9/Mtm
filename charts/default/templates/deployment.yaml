@@ -82,7 +82,7 @@ spec:
                   name: {{ template "project.fullname" . }}
                   key: db
 
-            - name: DatabaseType
+            - name: Mtm__DatabaseType
               value: {{ .Values.dbType }}
 
             - name: Token__Key
