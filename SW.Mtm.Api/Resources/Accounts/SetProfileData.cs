@@ -73,6 +73,12 @@ namespace SW.Mtm.Resources.Accounts
                     {
                         items.RuleFor(i => i.Name).NotEmpty();
                         items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Role, StringComparer.OrdinalIgnoreCase);
+                        items.RuleFor(i => i.Name).NotEqual(ClaimTypes.NameIdentifier, StringComparer.OrdinalIgnoreCase);
+                        items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Email, StringComparer.OrdinalIgnoreCase);
+                        //items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Ph, StringComparer.OrdinalIgnoreCase);
+
+
+
                         items.RuleFor(i => i.Value).NotEmpty();
                     }).
                     When(p => p.ProfileData != null);

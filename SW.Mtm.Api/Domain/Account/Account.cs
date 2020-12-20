@@ -13,7 +13,7 @@ namespace SW.Mtm.Domain
     public class Account : BaseEntity<string>, IAudited, IDeletionAudited, IHasOptionalTenant
     {
         public const string SystemId = "1";
-        
+
 
         private Account()
         {
@@ -49,7 +49,7 @@ namespace SW.Mtm.Domain
             DisplayName = displayName;
             _ApiCredentials = new HashSet<ApiCredential>();
             _TenantMemberships = new HashSet<TenantMembership>();
-            ProfileData = new [] { new ProfileDataItem() };
+            ProfileData = new ProfileDataItem[] { };
             Roles = new string[] { };
         }
 
