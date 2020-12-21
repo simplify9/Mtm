@@ -7,6 +7,7 @@ using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +50,9 @@ namespace SW.Mtm.Resources.Accounts
             {
                 throw new NotImplementedException();
             }
+            
+            if (request.ProfileData != null)
+                account.ProfileData = request.ProfileData.ToList();
 
             dbContext.Add(account);
             await dbContext.SaveChangesAsync();
@@ -99,6 +103,15 @@ namespace SW.Mtm.Resources.Accounts
                 {
                     return p.EmailProvider == EmailProvider.None && p.Email != null;
                 });
+                
+                RuleForEach(p => p.ProfileData).
+                    ChildRules(items =>
+                    {
+                        items.RuleFor(i => i.Name).NotEmpty();
+                        items.RuleFor(i => i.Name).NotEqual(ClaimTypes.Role, StringComparer.OrdinalIgnoreCase);
+                        items.RuleFor(i => i.Value).NotEmpty();
+                    }).
+                    When(p => p.ProfileData != null);
             }
         }
 

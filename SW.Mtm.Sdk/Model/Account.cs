@@ -44,6 +44,7 @@ namespace SW.Mtm.Model
         public string DisplayName { get; set; }
         public string Password { get; set; }
         public string CredentialName { get; set; }
+        public ICollection<ProfileDataItem> ProfileData { get; set; }
     }
 
     public class AccountCreateResult
