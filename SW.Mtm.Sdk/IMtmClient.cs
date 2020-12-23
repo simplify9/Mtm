@@ -35,5 +35,6 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel);
         Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant);
         Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount);
+        Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount);
     }
 }
