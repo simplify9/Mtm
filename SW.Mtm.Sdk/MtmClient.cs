@@ -209,5 +209,14 @@ namespace SW.Mtm.Sdk
                 .AsApiResult()
                 .PostAsync(tenantAddAccount);
         }
+
+        public async Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/{accountIdOrEmail}/setprofiledata")
+                .AsApiResult()
+                .PostAsync(accountSetProfileData);
+        }
     }
 }
