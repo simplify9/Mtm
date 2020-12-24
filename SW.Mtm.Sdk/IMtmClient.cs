@@ -36,5 +36,6 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant);
         Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount);
         Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount);
+        Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData);
     }
 }
