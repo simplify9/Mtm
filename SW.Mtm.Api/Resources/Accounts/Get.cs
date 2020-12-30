@@ -39,6 +39,7 @@ namespace SW.Mtm.Resources.Accounts
 
             return new AccountGet
             {
+                Id = account.Id,
                 Email = account.Email,
                 Disabled = account.Disabled,
                 Phone = account.Phone,
