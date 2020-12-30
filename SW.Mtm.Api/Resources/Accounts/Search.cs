@@ -1,43 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SW.Mtm.Domain;
-using SW.PrimitiveTypes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SW.Mtm.Domain;
 using SW.Mtm.Model;
+using SW.PrimitiveTypes;
 
 namespace SW.Mtm.Resources.Accounts
 {
-    class Get : IGetHandler<string>
+    public class Search: IQueryHandler<SearchAccounts>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
 
-        public Get(MtmDbContext dbContext, RequestContext requestContext)
+        public Search(MtmDbContext dbContext, RequestContext requestContext)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
         }
-
-        public async Task<object> Handle(string accountIdOrEmail, bool lookup = false)
+        //ToDo turn it to searchy
+        public async Task<object> Handle(SearchAccounts request)
         {
-            var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
-            if (account == null)
-                account = await dbContext.Set<Account>().Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
+            var accounts = await dbContext.Set<Account>()
+                .Where(a => request.EmailContains == null || a.Email.Contains(request.EmailContains))
+                .Where(a => request.PhoneContains == null || a.Phone.Contains(request.PhoneContains))
+                .Where(a => request.Ids == null || request.Ids.Length > 0 || request.Ids.Any(i => i == a.Id))
+                .ToListAsync();
 
-            if (account == null)
-                throw new SWNotFoundException(accountIdOrEmail);
+            if (accounts == null)
+                throw new SWNotFoundException();
 
-            if (requestContext.GetNameIdentifier() != accountIdOrEmail &&
-                requestContext.GetEmail() != accountIdOrEmail &&
-                !await dbContext.IsRequesterLandlord() &&
+            if (!await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
 
-
-            return new AccountGet
+            return accounts.Select(account => new AccountGet
             {
                 Email = account.Email,
                 Disabled = account.Disabled,
@@ -49,8 +46,8 @@ namespace SW.Mtm.Resources.Accounts
                 LoginMethods = account.LoginMethods,
                 ProfileData = account.ProfileData.ToList(),
                 SecondFactorMethod = account.SecondFactorMethod
-            };
-            
+            }).ToList();
+
         }
     }
 }

@@ -51,8 +51,8 @@ namespace SW.Mtm.Resources.Accounts
                 throw new NotImplementedException();
             }
             
-            if (request.ProfileData != null)
-                account.ProfileData = request.ProfileData.ToList();
+            // if (request.ProfileData != null)
+            //     account.ProfileData = request.ProfileData.ToList();
 
             dbContext.Add(account);
             await dbContext.SaveChangesAsync();

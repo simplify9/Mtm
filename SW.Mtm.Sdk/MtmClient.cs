@@ -218,5 +218,23 @@ namespace SW.Mtm.Sdk
                 .AsApiResult()
                 .PostAsync(accountSetProfileData);
         }
+
+        public async Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/{accountIdOrEmail}")
+                .AsApiResult<AccountGet>()
+                .GetAsync();
+        }
+
+        public async Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(SearchAccounts request)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts")
+                .AsApiResult<List<AccountGet>>()
+                .GetAsync(request);
+        }
     }
 }

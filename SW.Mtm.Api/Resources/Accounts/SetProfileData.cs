@@ -34,6 +34,7 @@ namespace SW.Mtm.Resources.Accounts
 
             if (account == null)
                 throw new SWNotFoundException(accountIdOrEmail);
+            
 
             if (request.TenantId == null)
             {
