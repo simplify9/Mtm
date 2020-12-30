@@ -36,6 +36,7 @@ namespace SW.Mtm.Resources.Accounts
 
             return accounts.Select(account => new AccountGet
             {
+                Id = account.Id,
                 Email = account.Email,
                 Disabled = account.Disabled,
                 Phone = account.Phone,
