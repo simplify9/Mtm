@@ -103,4 +103,11 @@ namespace SW.Mtm.Model
         public ICollection<ProfileDataItem> ProfileData { get; set; }
     }
 
+    public class SearchAccounts
+    {
+        public string EmailContains { get; set; }
+        public string PhoneContains { get; set; }
+        public string[] Ids { get; set; }
+    }
+
 }
