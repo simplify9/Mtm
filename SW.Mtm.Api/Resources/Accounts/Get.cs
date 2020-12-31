@@ -48,7 +48,7 @@ namespace SW.Mtm.Resources.Accounts
                 DisplayName = account.DisplayName,
                 EmailProvider = account.EmailProvider,
                 LoginMethods = account.LoginMethods,
-                ProfileData = account.ProfileData.ToList(),
+                ProfileData = account.ProfileData?.ToList(),
                 SecondFactorMethod = account.SecondFactorMethod
             };
             
