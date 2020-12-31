@@ -24,7 +24,7 @@ namespace SW.Mtm.Resources.Accounts
             var accounts = await dbContext.Set<Account>()
                 .Where(a => request.EmailContains == null || a.Email.Contains(request.EmailContains))
                 .Where(a => request.PhoneContains == null || a.Phone.Contains(request.PhoneContains))
-                .Where(a => request.Ids == null || request.Ids.Length > 0 || request.Ids.Any(i => i == a.Id))
+                .Where(a => request.Ids == null || request.Ids.Length == 0 || request.Ids.Any(i => i == a.Id))
                 .ToListAsync();
 
             if (accounts == null)
