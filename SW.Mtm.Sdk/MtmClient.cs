@@ -236,5 +236,14 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<List<AccountGet>>()
                 .GetAsync(request);
         }
+
+        public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request)
+        {
+            return await Builder
+                .JwtOrKey()
+                .Path($"accounts/{accountIdOrEmail}/addlogin")
+                .AsApiResult<AddLoginMethodResult>()
+                .PostAsync(request);
+        }
     }
 }

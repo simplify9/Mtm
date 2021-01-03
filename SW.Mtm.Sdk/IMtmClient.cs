@@ -39,5 +39,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData);
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(SearchAccounts request);
+        
+        Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request);
     }
 }

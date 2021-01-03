@@ -111,4 +111,23 @@ namespace SW.Mtm.Model
         public string[] Ids { get; set; }
     }
 
+    public class AddLoginMethodModel
+    {
+        public LoginMethod LoginMethod { get; set; }
+        public string Email { get; set; }
+        public EmailProvider EmailProvider { get; set; }
+        public string Phone { get; set; }
+        public string Password { get; set; }
+        public string CredentialName { get; set; }
+    }
+    public class AddLoginMethodResult
+    {
+        public string Key { get; set; }
+    }
+
+    public class RemoveLoginMethodModel
+    {
+        public LoginMethod LoginMethod { get; set; }
+    }
+
 }
