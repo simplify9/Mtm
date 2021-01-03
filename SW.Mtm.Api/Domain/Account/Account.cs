@@ -166,6 +166,44 @@ namespace SW.Mtm.Domain
             }
             return false;
         }
+        
+        public bool AddEmailLoginMethod(string email,string password)
+        {
+            Password = password;
+            return AddEmailLoginMethod(email, EmailProvider.None);
+        }
+        public bool AddEmailLoginMethod(string email,EmailProvider provider)
+        {
+            Email = email;
+            EmailProvider = provider;
+            return AddLoginMethod(LoginMethod.EmailAndPassword);
+        }
+
+        public bool AddPhoneLoginMethod(string phone)
+        {
+            Phone = phone;
+            PhoneVerified = true;
+            return AddLoginMethod(LoginMethod.PhoneAndOtp);
+        }
+        public bool AddApiKeyLoginMethod(ApiCredential apiCredential)
+        {
+            _ApiCredentials.Add(apiCredential);
+            return AddLoginMethod(LoginMethod.ApiKey);
+        }
+        private bool AddLoginMethod(LoginMethod loginMethod)
+        {
+            if ((LoginMethods & loginMethod) == loginMethod)
+                return false;
+            LoginMethods &= loginMethod;
+            return true;
+        }
+        private bool RemoveLoginMethod(LoginMethod loginMethod)
+        {
+            if ((LoginMethods & loginMethod) != loginMethod)
+                return false;
+            LoginMethods |= loginMethod;
+            return true;
+        }
 
         public string[] Roles { get; private set; }
         public bool Disabled { get; private set; }
