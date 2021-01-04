@@ -55,7 +55,9 @@ namespace SW.Mtm.Resources.Accounts
                 
             };
 
-            if (!await dbContext.IsRequesterTenantOwner())
+            if (requestContext.GetNameIdentifier() != accountIdOrEmail &&
+                requestContext.GetEmail() != accountIdOrEmail &&
+                !await dbContext.IsRequesterLandlord())
             {
                 response.TenantIdsMemberships = account.TenantMemberships.Select(t => t.TenantId).ToList();
             }
