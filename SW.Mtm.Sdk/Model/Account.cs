@@ -100,8 +100,10 @@ namespace SW.Mtm.Model
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
 
-        //public ICollection<TenantMembership> TenantMemberships { get; set; }
+        public ICollection<int> TenantIdsMemberships { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
+        
+
     }
 
     public class SearchAccounts
