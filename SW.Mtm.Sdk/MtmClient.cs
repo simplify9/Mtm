@@ -174,7 +174,7 @@ namespace SW.Mtm.Sdk
                .GetAsync();
         }
 
-        public async Task<ApiResult<InvitationGet>> GetInvitationApiResult(string key)
+        public async Task<ApiResult<InvitationGet>> GetInvitationAsApiResult(string key)
         {
             return await Builder
                .Key()
