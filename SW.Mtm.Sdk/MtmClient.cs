@@ -174,6 +174,15 @@ namespace SW.Mtm.Sdk
                .GetAsync();
         }
 
+        public async Task<ApiResult<InvitationGet>> GetInvitation(string key)
+        {
+            return await Builder
+               .Key()
+               .Path($"invitations/{key}")
+               .AsApiResult<InvitationGet>()
+               .GetAsync();
+        }
+
         public async Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
         {
             return await Builder
@@ -245,5 +254,6 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<AddLoginMethodResult>()
                 .PostAsync(request);
         }
+
     }
 }

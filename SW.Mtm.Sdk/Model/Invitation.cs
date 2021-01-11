@@ -13,6 +13,8 @@ namespace SW.Mtm.Model
         public string Email { get; set; }
     }
 
+    public class InvitationGet : InvitationSearchResult { }
+
     public class InvitationSearchResult
     {
         public string Id { get; set; }
