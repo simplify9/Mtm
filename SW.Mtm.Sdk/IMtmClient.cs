@@ -30,7 +30,7 @@ namespace SW.Mtm.Sdk
 
         Task<TenantInviteResult> Invite(int key, TenantInvite tenantInvite);
         Task<ApiResult<TenantInviteResult>> InviteAsApiResult(int key, TenantInvite tenantInvite);
-        Task<ApiResult<InvitationGet>> GetInvitation(string key);
+        Task<ApiResult<InvitationGet>> GetInvitationApiResult(string key);
         Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch);
         Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel);
         Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant);
