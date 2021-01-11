@@ -23,13 +23,6 @@ namespace SW.Mtm.Resources.Accounts
 
         public async Task<object> Handle(string accountIdOrEmail, bool lookup = false)
         {
-            var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
-            if (account == null)
-                account = await dbContext.Set<Account>().Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
-
-            if (account == null)
-                throw new SWNotFoundException(accountIdOrEmail);
-
             if (requestContext.GetNameIdentifier() != accountIdOrEmail &&
                 requestContext.GetEmail() != accountIdOrEmail &&
                 !await dbContext.IsRequesterLandlord() &&
@@ -37,7 +30,16 @@ namespace SW.Mtm.Resources.Accounts
                 throw new SWUnauthorizedException();
 
 
-            return new AccountGet
+            var accountQuery =  dbContext.Set<Account>()
+                .Include(a => a.TenantMemberships);
+            
+            var account = await accountQuery.FirstOrDefaultAsync(i => i.Id == accountIdOrEmail) ??
+                          await accountQuery.Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
+
+            if (account == null)
+                throw new SWNotFoundException(accountIdOrEmail);
+
+            var response = new AccountGet
             {
                 Id = account.Id,
                 Email = account.Email,
@@ -49,8 +51,18 @@ namespace SW.Mtm.Resources.Accounts
                 EmailProvider = account.EmailProvider,
                 LoginMethods = account.LoginMethods,
                 ProfileData = account.ProfileData?.ToList(),
-                SecondFactorMethod = account.SecondFactorMethod
+                SecondFactorMethod = account.SecondFactorMethod,
+                
             };
+
+            if (requestContext.GetNameIdentifier() == accountIdOrEmail ||
+                requestContext.GetEmail() == accountIdOrEmail ||
+                await dbContext.IsRequesterLandlord())
+            {
+                response.TenantIdsMemberships = account.TenantMemberships.Select(t => t.TenantId).ToList();
+            }
+
+            return response;
             
         }
     }
