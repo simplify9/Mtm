@@ -243,9 +243,9 @@ namespace SW.Mtm.Resources.Accounts
                     RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null);
                     RuleFor(p => p.Password).Empty().When(p => p.EmailProvider != EmailProvider.None && p.Email != null || p.ApiKey != null || p.Phone != null || p.RefreshToken != null);
 
-                }).Otherwise(() =>
-                {
-                    RuleFor(p => p.EmailProvider).NotEqual(EmailProvider.None);
+                //}).Otherwise(() =>
+                //{
+                //    RuleFor(p => p.EmailProvider).NotEqual(EmailProvider.None);
                 });
             }
 
