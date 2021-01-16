@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "simplyworks.azurecr.io/{{ .Chart.Name }}:{{ .Chart.Version }}"
+          image: "simplify9/{{ .Chart.Name }}:{{ .Chart.Version }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
