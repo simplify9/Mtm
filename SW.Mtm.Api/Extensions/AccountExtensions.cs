@@ -61,6 +61,11 @@ namespace SW.Mtm
 
                 }
 
+                foreach (var m in account.TenantMemberships)
+                {
+                    claims.Add(new Claim("available_tenant", m.TenantId.ToString(), ClaimValueTypes.Integer32));
+                }
+
             }
 
             return new ClaimsIdentity(claims, "Mtm");
