@@ -11,7 +11,7 @@ As the owner of a tenant, _MTM_ allows for you to invite an employee, making the
 To authenticate a user, _MTM_ returns a [JSON Web Token (JWT)](https://jwt.io), identifying the user's permissions. 
 
 ## MTM SDK
-The [MTM Client](https://github.com/simplify9/Mtm/blob/master/SW.Mtm.Sdk/MtmClient.cs) outlines the steps the user takes to enable _MTM_ onto the program. 
+The [MTM Client](https://github.com/simplify9/Mtm/blob/master/SW.Mtm.Sdk/MtmClient.cs) outlines the steps the user takes to enable _MTM_ onto the program and interact with its many properties:
  
  #### Creating the tenant 
  ```cpp
