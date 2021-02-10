@@ -22,6 +22,11 @@ namespace SW.Mtm.Domain
         public MembershipType Type { get; private set; }
         public IEnumerable<ProfileDataItem> ProfileData { get; set; }
 
+        public void ChangeType(MembershipType type)
+        {
+            Type = type;
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as TenantMembership);

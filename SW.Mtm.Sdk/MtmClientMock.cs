@@ -284,9 +284,14 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
-//        {
-//            throw new NotImplementedException();
-//        }
+        //public Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<ApiResult> SetAsTenantOwner(AccountSetAsTenantOwner request)
+        //{
+        //    throw new NotImplementedException();
+        //}
 //    }
 //}
