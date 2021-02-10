@@ -12,7 +12,7 @@ To authenticate a user, _MTM_ returns a [JSON Web Token (JWT)](https://jwt.io), 
 
 ## MTM SDK
 The [MTM Client](https://github.com/simplify9/Mtm/blob/master/SW.Mtm.Sdk/MtmClient.cs) outlines the steps the user takes to enable _MTM_ onto the program and interact with its many properties. 
-To complete a cycle on MTM, call the following functions:
+To complete a cycle on _MTM_, call the following functions:
  
 #### 1- Creating the tenant 
 The first step is to create a tenant by calling the `CreateTenant` method provided by the SDK, which takes in details in the model of `TenantCreate` and includes the tenant's name for example.
@@ -24,15 +24,15 @@ The second step is to accept the invitation by calling `AcceptInvitation` method
 Then invite the user to reside under the tenancy, calling `Invite`. Given the user accepts the invitation, we can move on to the following step in the cycle.
 
 #### 4- LOGIN
-The user logs in, prompting `Login` (which takes in details in the `AccountLogin` model) using their outlined credentials, previously returned by the MTM-generated token. 
+The user logs in, prompting `Login` (which takes in details in the `AccountLogin` model) using their outlined credentials, previously returned by the _MTM_-generated token. 
 
 #### 5- Account Creation 
-This is when MTM completes the cycle, creating for the logged-in user an account, indentifying their role, and enabling access onto the program under the tenancy. 
+This is when _MTM_ completes the cycle, creating for the logged-in user an account, indentifying their role, and enabling access onto the program under the tenancy. 
 Prompt `CreateAccount` and your user is ready. 
 
 ## Additional Properties
 Like with most user-based programs, _MTM_ allows users a variety of properties to modify the program's use.
-(*Note: the properties marked with an asterisk are limited to the Administrator and Moderators' use.)
+(*Note: the properties marked with an asterisk are limited to the Administrator and Moderators' use*.)
 
 #### - Changing password on user's end
 
