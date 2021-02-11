@@ -17,18 +17,18 @@ To complete a cycle on _MTM_, call the following functions:
 #### 1- Creating the tenant 
 The first step is to create a tenant by calling the `CreateTenant` method provided by the SDK, which takes in details in the model of `TenantCreate` and includes the tenant's name for example.
 
-#### 2- Accepting the invitation 
-The second step is to accept the invitation by calling `AcceptInvitation` method provided by the SDK, which takes in the details by mode of `InvitationAccept`. 
-
-#### 3- Inviting user to tenancy 
+#### 2- Inviting user to tenancy 
 Then invite the user to reside under the tenancy, calling `Invite`. Given the user accepts the invitation, we can move on to the following step in the cycle.
 
-#### 4- LOGIN
-The user logs in, prompting `Login` (which takes in details in the `AccountLogin` model) using their outlined credentials, previously returned by the _MTM_-generated token. 
+#### 3- Accepting the invitation 
+The second step is to accept the invitation by calling `AcceptInvitation` method provided by the SDK, which takes in the details by mode of `InvitationAccept`. 
 
-#### 5- Account Creation 
+#### 4- Account Creation 
 This is when _MTM_ completes the cycle, creating for the logged-in user an account, indentifying their role, and enabling access onto the program under the tenancy. 
 Prompt `CreateAccount` and your user is ready. 
+
+#### 5- Logging in
+The user logs in, prompting `Login` (which takes in details in the `AccountLogin` model) using their outlined credentials, previously returned by the _MTM_-generated token. 
 
 ## Additional Properties
 Like with most user-based programs, _MTM_ allows users a variety of properties to modify the program's use.
