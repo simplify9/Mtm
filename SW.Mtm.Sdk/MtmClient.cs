@@ -172,6 +172,14 @@ namespace SW.Mtm.Sdk
                .Path($"invitations?email={invitationSearch.Email}")
                .AsApiResult<List<InvitationSearchResult>>()
                .GetAsync();
+        } 
+        public async Task<ApiResult> SetAsTenantOwner(AccountSetAsTenantOwner request)
+        {
+            return await Builder
+               .Jwt()
+               .Path($"accounts/setastenantowner")
+               .AsApiResult()
+               .PostAsync(request);
         }
 
         public async Task<ApiResult<InvitationGet>> GetInvitationAsApiResult(string key)

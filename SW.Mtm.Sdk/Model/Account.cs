@@ -56,6 +56,11 @@ namespace SW.Mtm.Model
     public class AccountSwitchTenant
     {
         public int NewTenant { get; set; }
+    } 
+    public class AccountSetAsTenantOwner
+    {
+        public string AccountId { get; set; }
+        public int TenantId { get; set; }
     }
 
     public class AccountInitiatePasswordReset
