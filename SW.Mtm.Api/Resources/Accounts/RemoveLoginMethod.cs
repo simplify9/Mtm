@@ -11,7 +11,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("removelogin")]
-    public class RemoveLoginMethod: ICommandHandler<string,RemoveLoginMethodModel>
+    public class RemoveLoginMethod : ICommandHandler<string, RemoveLoginMethodModel>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;
@@ -21,19 +21,30 @@ namespace SW.Mtm.Resources.Accounts
             this.requestContext = requestContext;
             this.dbContext = dbContext;
         }
-        
+
         public async Task<object> Handle(string accountIdOrEmail, RemoveLoginMethodModel request)
         {
-            var account = await dbContext.FindAsync<Account>(accountIdOrEmail);
-            if (account == null)
-                account = await dbContext.Set<Account>().Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
+          
+            var account = await dbContext.FindAsync<Account>(accountIdOrEmail) ??
+                          await dbContext.Set<Account>().Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
 
             if (account == null)
                 throw new SWNotFoundException(accountIdOrEmail);
 
-            throw new NotImplementedException();
+            if (requestContext.GetNameIdentifier() != accountIdOrEmail &&
+                requestContext.GetEmail() != accountIdOrEmail && !await dbContext.IsRequesterLandlord()
+                && !await dbContext.IsRequesterTenantOwner())
+            {
+                throw new SWUnauthorizedException();
+            }
+
+
+            account.RemoveLoginMethod(request.LoginMethod);
+
+            await dbContext.SaveChangesAsync();
+            return null;
         }
-        
+
         private class Validate : AbstractValidator<RemoveLoginMethodModel>
         {
             public Validate()

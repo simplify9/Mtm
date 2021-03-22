@@ -42,5 +42,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(SearchAccounts request);
         
         Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request);
+        Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,RemoveLoginMethodModel request);
+
     }
 }
