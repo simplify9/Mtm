@@ -14,6 +14,7 @@ using FluentValidation;
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("setupOtpSecret")]
+    [Protect]
     class SetupOtpSecret : ICommandHandler<AccountSetupOtpRequest>
     {
         private readonly MtmDbContext dbContext;
