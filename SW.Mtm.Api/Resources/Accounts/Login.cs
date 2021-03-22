@@ -70,27 +70,28 @@ namespace SW.Mtm.Resources.Accounts
                 if (otpToken == null)
                     throw new SWException("User not found or invalid password.");
 
-
-
+          
                 switch (otpToken.Type)
                 {
                     case OtpType.Otp:
                         if (request.Password == null || !SecurePasswordHasher.Verify(request.Password, otpToken.Password))
                             throw new SWException("User not found or invalid password.");
-
                         break;
                     case OtpType.Totp:
                         break;
                     default:
                         throw new SWException("User not found or invalid password.");
-
                 }
 
-                //account = await dbContext
-                //   .Set<Account>().FindAsync(otpToken.AccountId);
                 account = await dbContext
                     .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled)
                     .SingleOrDefaultAsync();
+
+                var isValidOtp = otpToken.VerifyOtp(request.Code, account.SecondFactorKey);
+
+                if(!isValidOtp)
+                    throw new SWException("Otp code is invalid.");
+
                 loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
                 loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
 
@@ -122,6 +123,19 @@ namespace SW.Mtm.Resources.Accounts
                 if (request.EmailProvider == EmailProvider.None && request.Password == null || request.EmailProvider == EmailProvider.None && !SecurePasswordHasher.Verify(request.Password, account.Password))
                     throw new SWException("Invalid password.");
 
+                //if (!account.IsSecondFactorEnabled)
+                //{
+                //    loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                //    loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
+
+                //}
+                //else
+                //{
+                //    var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+                //    loginResult.OtpType = account.SecondFactorMethod;
+                //    loginResult.OtpToken = otpToken.Key;
+                //    loginResult.Password = otpToken.Value; 
+                //}
 
                 switch (account.SecondFactorMethod)
                 {
