@@ -263,5 +263,15 @@ namespace SW.Mtm.Sdk
                 .PostAsync(request);
         }
 
+        public async Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/setupotpsecret")
+                .AsApiResult<AccountSetupTotpResult>()
+                .PostAsync(request);
+        }
+
+   
     }
 }
