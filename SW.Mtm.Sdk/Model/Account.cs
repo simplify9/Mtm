@@ -35,6 +35,8 @@ namespace SW.Mtm.Model
         public string OtpToken { get; set; }
         public OtpType OtpType { get; set; }
         public string Password { get; set; }
+        public string QrCodeUrl { get; set; }
+        public string SecretKey { get; set; }
     }
 
     public class AccountCreate

@@ -61,7 +61,13 @@ namespace SW.Mtm.Domain
         public LoginMethod LoginMethods { get; private set; }
         public OtpType SecondFactorMethod { get; private set; }
         public string SecondFactorKey { get; private set; }
+        public bool IsSecondFactorKeyVerified { get; private set; }
 
+
+        public void VerifySecondFactorKey()
+        {
+            IsSecondFactorKeyVerified = true;
+        }
         public void SetupSecondFactor(OtpType otpType, string key)
         {
             SecondFactorMethod = otpType;

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using OtpNet;
 using SW.HttpExtensions;
 using SW.Mtm.Domain;
@@ -20,12 +21,15 @@ namespace SW.Mtm.Resources.Accounts
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
         private readonly JwtTokenParameters jwtTokenParameters;
+        private readonly IConfiguration configuration;
 
-        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters)
+
+        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
             this.jwtTokenParameters = jwtTokenParameters;
+            this.configuration = configuration;
         }
 
         async public Task<object> Handle(AccountLogin request)
@@ -92,6 +96,7 @@ namespace SW.Mtm.Resources.Accounts
                 if(!isValidOtp)
                     throw new SWException("Otp code is invalid.");
 
+                account.VerifySecondFactorKey();
                 loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
                 loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
 
@@ -116,26 +121,16 @@ namespace SW.Mtm.Resources.Accounts
                    .Set<Account>()
                    .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
+                var tenant = await dbContext
+                   .Set<Tenant>()
+                   .SingleOrDefaultAsync(t => t.Id == account.TenantId);
 
                 if (account == null)
                     throw new SWNotFoundException(request.Email);
 
                 if (request.EmailProvider == EmailProvider.None && request.Password == null || request.EmailProvider == EmailProvider.None && !SecurePasswordHasher.Verify(request.Password, account.Password))
                     throw new SWException("Invalid password.");
-
-                //if (!account.IsSecondFactorEnabled)
-                //{
-                //    loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
-                //    loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
-
-                //}
-                //else
-                //{
-                //    var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
-                //    loginResult.OtpType = account.SecondFactorMethod;
-                //    loginResult.OtpToken = otpToken.Key;
-                //    loginResult.Password = otpToken.Value; 
-                //}
+                
 
                 switch (account.SecondFactorMethod)
                 {
@@ -144,12 +139,39 @@ namespace SW.Mtm.Resources.Accounts
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:
-                    case OtpType.Totp:
+                    {
                         var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
                         loginResult.OtpType = account.SecondFactorMethod;
                         loginResult.OtpToken = otpToken.Key;
                         loginResult.Password = otpToken.Value;
                         break;
+                    }
+                    case OtpType.Totp:
+                    {
+                        if (!account.IsSecondFactorKeyVerified)
+                        {
+                            var secret = KeyGeneration.GenerateRandomKey(20);
+                            var base32Secret = Base32Encoding.ToString(secret);
+
+                            account.SetupSecondFactor(account.SecondFactorMethod, base32Secret);
+
+                            await dbContext.SaveChangesAsync();
+
+                            var issuer = configuration["Totp:Issuer"];
+
+                            var totpDigits = configuration["Totp:Digits"];
+                            var totpPeriod = configuration["Totp:Period"];
+                            var hashMethod = OtpHashMode.Sha256;
+
+                            loginResult.SecretKey = base32Secret;
+                            loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={base32Secret}&issuer={issuer}&algorithm={hashMethod}&digits={totpDigits}&period={totpPeriod}";
+                        }
+                        var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+                        loginResult.OtpType = account.SecondFactorMethod;
+                        loginResult.OtpToken = otpToken.Key;
+                        loginResult.Password = otpToken.Value;
+                        break;
+                    }
                     default:
                         throw new NotImplementedException();
 
