@@ -30,24 +30,13 @@ namespace SW.Mtm.Domain
             Type = otpType;
         }
 
-        public bool VerifyOtp(string otp,string secretKey)
+        public bool VerifyTotp(string code,string secretKey)
         {
             var secret = Base32Encoding.ToBytes(secretKey);
-            var isValid = false;
-            switch (Type)
-            {
-                case OtpType.Otp:
-                    isValid = true;
-                    break;
-                case OtpType.Totp:
-                    var totp = new Totp(secret);
-                    isValid = totp.VerifyTotp(otp, out long timeStepMatched);
-                    break;
-                default:
-                    break;
-            }
+  
+            var totp = new Totp(secret);        
 
-            return isValid;
+            return totp.VerifyTotp(code, out long timeStepMatched);
         }
         public string AccountId { get; private set; }
         public string Password { get; private set; }
