@@ -47,8 +47,8 @@ namespace SW.Mtm.Resources.Accounts
 
             var issuer = configuration["Totp:Issuer"];
    
-            var totpDigits = 6;
-            var totpPeriod = 30;
+            var totpDigits = configuration["Totp:Digits"];
+            var totpPeriod = configuration["Totp:Period"];
             var hashMethod = OtpHashMode.Sha256;
 
             var qrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={base32Secret}&issuer={issuer}&algorithm={hashMethod}&digits={totpDigits}&period={totpPeriod}";
