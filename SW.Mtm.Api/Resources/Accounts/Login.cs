@@ -72,35 +72,66 @@ namespace SW.Mtm.Resources.Accounts
                    .SingleOrDefaultAsync();
 
                 if (otpToken == null)
-                    throw new SWException("User not found or invalid password.");
+                    throw new SWException("Invalid Otp token.");
 
-          
+                account = await dbContext
+                 .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled)
+                 .SingleOrDefaultAsync();
+
                 switch (otpToken.Type)
                 {
                     case OtpType.Otp:
                         if (request.Password == null || !SecurePasswordHasher.Verify(request.Password, otpToken.Password))
-                            throw new SWException("User not found or invalid password.");
+                        {
+                            throw new SWException("User not found or invalid password."); 
+                        }
+                        else
+                        {
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
+                            dbContext.Remove(otpToken);
+
+                        }
                         break;
                     case OtpType.Totp:
+                        if (!otpToken.VerifyTotp(request.Code, account.SecondFactorKey))
+                        {
+                            if (account.IsSecondFactorKeyVerified)
+                            {
+                                throw new SWException("Otp code is invalid.");
+                            }
+                            else
+                            {
+                                var secret = account.SecondFactorKey;
+                                if (string.IsNullOrEmpty(secret))
+                                {
+                                    secret = CreateSecondFactorSecretKey();
+                                    account.SetupSecondFactor(account.SecondFactorMethod, secret);
+                                }
+
+                                var issuer = configuration["Totp:Issuer"];
+
+                                loginResult.SecretKey = secret;
+                                loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
+                                loginResult.OtpType = account.SecondFactorMethod;
+                                loginResult.OtpToken = otpToken.Id;
+                                loginResult.Password = otpToken.Password;
+                            }
+                        }
+                        else
+                        {
+                            account.VerifySecondFactorKey();
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
+                            dbContext.Remove(otpToken);
+
+                        }
                         break;
                     default:
                         throw new SWException("User not found or invalid password.");
                 }
 
-                account = await dbContext
-                    .Set<Account>().Where(a => a.Id == otpToken.AccountId && !a.Disabled)
-                    .SingleOrDefaultAsync();
 
-                var isValidOtp = otpToken.VerifyOtp(request.Code, account.SecondFactorKey);
-
-                if(!isValidOtp)
-                    throw new SWException("Otp code is invalid.");
-
-                account.VerifySecondFactorKey();
-                loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
-                loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
-
-                dbContext.Remove(otpToken);
             }
             else if (request.ApiKey != null)
             {
@@ -121,12 +152,14 @@ namespace SW.Mtm.Resources.Accounts
                    .Set<Account>()
                    .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
-                var tenant = await dbContext
-                   .Set<Tenant>()
-                   .SingleOrDefaultAsync(t => t.Id == account.TenantId);
+             
 
                 if (account == null)
                     throw new SWNotFoundException(request.Email);
+
+                var tenant = await dbContext
+                .Set<Tenant>()
+                .SingleOrDefaultAsync(t => t.Id == account.TenantId);
 
                 if (request.EmailProvider == EmailProvider.None && request.Password == null || request.EmailProvider == EmailProvider.None && !SecurePasswordHasher.Verify(request.Password, account.Password))
                     throw new SWException("Invalid password.");
@@ -150,21 +183,14 @@ namespace SW.Mtm.Resources.Accounts
                     {
                         if (!account.IsSecondFactorKeyVerified)
                         {
-                            var secret = KeyGeneration.GenerateRandomKey(20);
-                            var base32Secret = Base32Encoding.ToString(secret);
-
-                            account.SetupSecondFactor(account.SecondFactorMethod, base32Secret);
-
-                            await dbContext.SaveChangesAsync();
+                            var secret = CreateSecondFactorSecretKey();
+                      
+                            account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
                             var issuer = configuration["Totp:Issuer"];
 
-                            var totpDigits = configuration["Totp:Digits"];
-                            var totpPeriod = configuration["Totp:Period"];
-                            var hashMethod = OtpHashMode.Sha256;
-
-                            loginResult.SecretKey = base32Secret;
-                            loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={base32Secret}&issuer={issuer}&algorithm={hashMethod}&digits={totpDigits}&period={totpPeriod}";
+                            loginResult.SecretKey =secret ;
+                            loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
                         }
                         var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
                         loginResult.OtpType = account.SecondFactorMethod;
@@ -213,12 +239,34 @@ namespace SW.Mtm.Resources.Accounts
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:
+                        {
+                            var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+                            loginResult.OtpType = account.SecondFactorMethod;
+                            loginResult.OtpToken = otpToken.Key;
+                            loginResult.Password = otpToken.Value;
+                            break;
+                        }
                     case OtpType.Totp:
-                        var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
-                        loginResult.OtpType = account.SecondFactorMethod;
-                        loginResult.OtpToken = otpToken.Key;
-                        loginResult.Password = otpToken.Value;
-                        break;
+                        {
+                            if (!account.IsSecondFactorKeyVerified)
+                            {
+                                var secret = CreateSecondFactorSecretKey();
+
+                                account.SetupSecondFactor(account.SecondFactorMethod, secret);
+
+                                await dbContext.SaveChangesAsync();
+
+                                var issuer = configuration["Totp:Issuer"];
+
+                                loginResult.SecretKey = secret;
+                                loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
+                            }
+                            var otpToken = CreateOtpToken(account, LoginMethod.EmailAndPassword, account.SecondFactorMethod);
+                            loginResult.OtpType = account.SecondFactorMethod;
+                            loginResult.OtpToken = otpToken.Key;
+                            loginResult.Password = otpToken.Value;
+                            break;
+                        }
                     default:
                         throw new NotImplementedException();
 
@@ -264,6 +312,15 @@ namespace SW.Mtm.Resources.Accounts
             dbContext.Add(refreshToken);
             return refreshToken.Id;
         }
+
+        private string CreateSecondFactorSecretKey()
+        {
+            var secret = KeyGeneration.GenerateRandomKey(20);
+            var base32Secret = Base32Encoding.ToString(secret);
+            return base32Secret;
+        } 
+
+  
         class Validator : AbstractValidator<AccountLogin>
         {
             public Validator(RequestContext requestContext)
@@ -276,7 +333,7 @@ namespace SW.Mtm.Resources.Accounts
                     RuleFor(p => p.OtpToken).NotEmpty().When(p => p.RefreshToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
                     RuleFor(p => p.RefreshToken).NotEmpty().When(p => p.OtpToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
                     RuleFor(p => p.Email).EmailAddress();
-                    RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null);
+                    RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null && p.Code == null);
                     RuleFor(p => p.Password).Empty().When(p => p.EmailProvider != EmailProvider.None && p.Email != null || p.ApiKey != null || p.Phone != null || p.RefreshToken != null);
 
                 //}).Otherwise(() =>
