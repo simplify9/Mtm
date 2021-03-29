@@ -32,9 +32,17 @@ namespace SW.Mtm.Resources.Accounts
             if (request.Email != null)
             {
                 if (request.EmailProvider == EmailProvider.None)
-                    account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password));
+                    if(request.SecondFactorMethod == OtpType.None)
+                        account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password));
+                    else
+                        account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password), request.SecondFactorMethod);
+
                 else
-                    account = new Account(request.DisplayName, request.Email, request.EmailProvider);
+                    if (request.SecondFactorMethod == OtpType.None)
+                        account = new Account(request.DisplayName, request.Email, request.EmailProvider);
+                    else
+                        account = new Account(request.DisplayName, request.Email, request.EmailProvider, request.SecondFactorMethod);
+
             }
             else if (request.Phone != null)
             {

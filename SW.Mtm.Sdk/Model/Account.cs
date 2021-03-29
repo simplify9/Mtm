@@ -48,6 +48,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
         public string CredentialName { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
+        public OtpType SecondFactorMethod { get; set; }
     }
 
     public class AccountCreateResult
