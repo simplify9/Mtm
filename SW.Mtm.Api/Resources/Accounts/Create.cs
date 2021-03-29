@@ -81,7 +81,7 @@ namespace SW.Mtm.Resources.Accounts
                 RuleFor(p => p.Email).Null().When(p => p.Phone != null || p.CredentialName != null) ;
                 RuleFor(p => p.Phone).Null().When(p => p.Email != null || p.CredentialName != null);
                 RuleFor(p => p.CredentialName).Null().When(p => p.Phone != null || p.Email != null);
-
+                RuleFor(p => p.SecondFactorMethod).IsInEnum();
                 RuleFor(p => p.Email).NotEmpty().When(p => p.Phone == null && p.CredentialName == null);
                 RuleFor(p => p.Phone).NotEmpty().When(p => p.Email == null && p.CredentialName == null);
                 RuleFor(p => p.CredentialName).NotEmpty().When(p => p.Phone == null && p.Email == null);
