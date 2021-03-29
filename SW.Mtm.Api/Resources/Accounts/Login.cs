@@ -254,8 +254,6 @@ namespace SW.Mtm.Resources.Accounts
 
                                 account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
-                                await dbContext.SaveChangesAsync();
-
                                 var issuer = configuration["Totp:Issuer"];
 
                                 loginResult.SecretKey = secret;
@@ -334,6 +332,7 @@ namespace SW.Mtm.Resources.Accounts
                     RuleFor(p => p.RefreshToken).NotEmpty().When(p => p.OtpToken == null && p.Phone == null && p.ApiKey == null && p.Email == null);
                     RuleFor(p => p.Email).EmailAddress();
                     RuleFor(p => p.Password).NotEmpty().When(p => p.EmailProvider == EmailProvider.None && p.Email != null || p.OtpToken != null && p.Code == null);
+                    RuleFor(p => p.Code).NotEmpty().When(p => p.OtpToken != null && p.Password == null);
                     RuleFor(p => p.Password).Empty().When(p => p.EmailProvider != EmailProvider.None && p.Email != null || p.ApiKey != null || p.Phone != null || p.RefreshToken != null);
 
                 //}).Otherwise(() =>
