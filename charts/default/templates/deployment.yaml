@@ -84,6 +84,9 @@ spec:
 
             - name: Mtm__DatabaseType
               value: {{ .Values.dbType }}
+              
+            - name: Totp__Issuer
+              value: {{ .Values.totp.issuer }}
 
             - name: Token__Key
               valueFrom:
