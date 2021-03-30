@@ -21,15 +21,15 @@ namespace SW.Mtm.Resources.Accounts
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
         private readonly JwtTokenParameters jwtTokenParameters;
-        private readonly IConfiguration configuration;
+        private readonly MtmOptions mtmOptions;
 
 
-        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters, IConfiguration configuration)
+        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters, MtmOptions mtmOptions)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
             this.jwtTokenParameters = jwtTokenParameters;
-            this.configuration = configuration;
+            this.mtmOptions = mtmOptions;
         }
 
         async public Task<object> Handle(AccountLogin request)
@@ -109,7 +109,7 @@ namespace SW.Mtm.Resources.Accounts
                                     account.SetupSecondFactor(account.SecondFactorMethod, secret);
                                 }
 
-                                var issuer = configuration["Totp:Issuer"];
+                                var issuer = mtmOptions.TotpIssuer;
 
                                 loginResult.SecretKey = secret;
                                 loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
@@ -187,7 +187,7 @@ namespace SW.Mtm.Resources.Accounts
                       
                             account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
-                            var issuer = configuration["Totp:Issuer"];
+                            var issuer = mtmOptions.TotpIssuer;
 
                             loginResult.SecretKey =secret ;
                             loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
@@ -254,7 +254,7 @@ namespace SW.Mtm.Resources.Accounts
 
                                 account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
-                                var issuer = configuration["Totp:Issuer"];
+                                var issuer = mtmOptions.TotpIssuer;
 
                                 loginResult.SecretKey = secret;
                                 loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
