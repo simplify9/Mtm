@@ -84,7 +84,12 @@ spec:
 
             - name: Mtm__DatabaseType
               value: {{ .Values.dbType }}
-
+              
+            {{- if .Values.totpIssuer }}
+            - name: Mtm__TotpIssuer
+              value: {{ .Values.totpIssuer }}
+            {{- end }}  
+            
             - name: Token__Key
               valueFrom:
                 secretKeyRef:

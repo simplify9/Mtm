@@ -57,6 +57,7 @@ affinity: {}
 db: ""
 dbType: "MySql"
 dbConnectionStringName: ConnectionStrings__MtmDb
+#totpIssuer: ""
 
 global:
 
