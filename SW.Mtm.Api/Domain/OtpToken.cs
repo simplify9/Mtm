@@ -1,4 +1,5 @@
-﻿using SW.Mtm.Model;
+﻿using OtpNet;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,14 @@ namespace SW.Mtm.Domain
             Type = otpType;
         }
 
+        public bool VerifyTotp(string code,string secretKey)
+        {
+            var secret = Base32Encoding.ToBytes(secretKey);
+  
+            var totp = new Totp(secret);        
+
+            return totp.VerifyTotp(code, out long timeStepMatched);
+        }
         public string AccountId { get; private set; }
         public string Password { get; private set; }
         public OtpType Type { get; private set; }

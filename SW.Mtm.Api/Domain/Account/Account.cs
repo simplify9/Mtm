@@ -19,12 +19,12 @@ namespace SW.Mtm.Domain
         {
         }
 
-        public Account(string displayName, ApiCredential apiCredential) : this(displayName, LoginMethod.ApiKey)
+        public Account(string displayName, ApiCredential apiCredential) : this(displayName, LoginMethod.ApiKey, OtpType.None)
         {
             _ApiCredentials.Add(apiCredential);
         }
 
-        public Account(string displayName, string phone) : this(displayName, LoginMethod.PhoneAndOtp)
+        public Account(string displayName, string phone) : this(displayName, LoginMethod.PhoneAndOtp, OtpType.None)
         {
             Phone = phone;
             PhoneVerified = true;
@@ -34,17 +34,25 @@ namespace SW.Mtm.Domain
         {
             Password = password;
         }
-
-        public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName, LoginMethod.EmailAndPassword)
+        public Account(string displayName, string email, string password, OtpType secondFactorMethod) : this(displayName, email, EmailProvider.None, secondFactorMethod)
+        {
+            Password = password;
+        }
+        public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName, LoginMethod.EmailAndPassword,OtpType.None)
+        {
+            Email = email;
+            EmailProvider = accountProvider;
+        }
+        public Account(string displayName, string email, EmailProvider accountProvider, OtpType secondFactorMethod) : this(displayName, LoginMethod.EmailAndPassword, secondFactorMethod)
         {
             Email = email;
             EmailProvider = accountProvider;
         }
 
-        private Account(string displayName, LoginMethod loginMethods)
+        private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod)
         {
             Id = Guid.NewGuid().ToString("N");
-            SecondFactorMethod = OtpType.None;
+            SecondFactorMethod = secondFactorMethod;
             LoginMethods = loginMethods;
             DisplayName = displayName;
             _ApiCredentials = new HashSet<ApiCredential>();
@@ -61,7 +69,13 @@ namespace SW.Mtm.Domain
         public LoginMethod LoginMethods { get; private set; }
         public OtpType SecondFactorMethod { get; private set; }
         public string SecondFactorKey { get; private set; }
+        public bool IsSecondFactorKeyVerified { get; private set; }
 
+
+        public void VerifySecondFactorKey()
+        {
+            IsSecondFactorKeyVerified = true;
+        }
         public void SetupSecondFactor(OtpType otpType, string key)
         {
             SecondFactorMethod = otpType;

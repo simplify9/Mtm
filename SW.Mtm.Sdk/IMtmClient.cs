@@ -40,7 +40,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData);
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(SearchAccounts request);
-        
+        Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);        
         Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request);
         Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,RemoveLoginMethodModel request);
 

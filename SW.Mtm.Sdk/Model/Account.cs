@@ -22,6 +22,7 @@ namespace SW.Mtm.Model
         public string Phone { get; set; }
         public string ApiKey { get; set; }
         public string OtpToken { get; set; }
+        public string Code { get; set; }
         public string RefreshToken { get; set; }
         public string Password { get; set; }
 
@@ -34,6 +35,8 @@ namespace SW.Mtm.Model
         public string OtpToken { get; set; }
         public OtpType OtpType { get; set; }
         public string Password { get; set; }
+        public string QrCodeUrl { get; set; }
+        public string SecretKey { get; set; }
     }
 
     public class AccountCreate
@@ -45,6 +48,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
         public string CredentialName { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
+        public OtpType SecondFactorMethod { get; set; }
     }
 
     public class AccountCreateResult
@@ -66,7 +70,8 @@ namespace SW.Mtm.Model
     public class AccountInitiatePasswordReset
     {
 
-    }
+    } 
+
 
     public class AccountInitiatePasswordResetResult
     {
@@ -137,4 +142,29 @@ namespace SW.Mtm.Model
         public LoginMethod LoginMethod { get; set; }
     }
 
+    public class AccountSetupOtpRequest
+    {
+        public OtpType Type { get; set; }
+    }
+    public class AccountSetupTotpResult
+    {
+        public string SecretKey { get; set; }
+        public string QrCodeUrl { get; set; }
+    }
+
+    public class AccountValidateTotpRequest
+    {
+        public string Code { get; set; }
+        public string OtpToken { get; set; }
+
+    }
+    public class AccountValidateTotpResult
+    {
+        public bool IsValid { get; set; }
+    }
+    public class AccountEnableSecondFactor
+    {
+        public string Code { get; set; }
+
+    }
 }

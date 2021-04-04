@@ -32,9 +32,17 @@ namespace SW.Mtm.Resources.Accounts
             if (request.Email != null)
             {
                 if (request.EmailProvider == EmailProvider.None)
-                    account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password));
+                    if(request.SecondFactorMethod == OtpType.None)
+                        account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password));
+                    else
+                        account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password), request.SecondFactorMethod);
+
                 else
-                    account = new Account(request.DisplayName, request.Email, request.EmailProvider);
+                    if (request.SecondFactorMethod == OtpType.None)
+                        account = new Account(request.DisplayName, request.Email, request.EmailProvider);
+                    else
+                        account = new Account(request.DisplayName, request.Email, request.EmailProvider, request.SecondFactorMethod);
+
             }
             else if (request.Phone != null)
             {
@@ -73,7 +81,7 @@ namespace SW.Mtm.Resources.Accounts
                 RuleFor(p => p.Email).Null().When(p => p.Phone != null || p.CredentialName != null) ;
                 RuleFor(p => p.Phone).Null().When(p => p.Email != null || p.CredentialName != null);
                 RuleFor(p => p.CredentialName).Null().When(p => p.Phone != null || p.Email != null);
-
+                RuleFor(p => p.SecondFactorMethod).IsInEnum();
                 RuleFor(p => p.Email).NotEmpty().When(p => p.Phone == null && p.CredentialName == null);
                 RuleFor(p => p.Phone).NotEmpty().When(p => p.Email == null && p.CredentialName == null);
                 RuleFor(p => p.CredentialName).NotEmpty().When(p => p.Phone == null && p.Email == null);

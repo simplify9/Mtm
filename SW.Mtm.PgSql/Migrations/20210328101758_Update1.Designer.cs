@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SW.Mtm.Model;
@@ -11,9 +12,10 @@ using SW.Mtm.PgSql;
 namespace SW.Mtm.PgSql.Migrations
 {
     [DbContext(typeof(MtmDbContext))]
-    partial class MtmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210328101758_Update1")]
+    partial class Update1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -263,12 +263,24 @@ namespace SW.Mtm.Sdk
                 .PostAsync(request);
         }
 
-        public async Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail, RemoveLoginMethodModel request)
+        public async Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/setupotpsecret")
+                .AsApiResult<AccountSetupTotpResult>()
+                .PostAsync(request);
+        }
+        public async Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,
+            RemoveLoginMethodModel request)
         {
             return await Builder
                 .JwtOrKey()
                 .Path($"accounts/{accountIdOrEmail}/removelogin")
                 .AsApiResult<ApiResult>()
-                .PostAsync(request);        }
+                .PostAsync(request);
+        }
+
+   
     }
 }
