@@ -13,24 +13,24 @@ using FluentValidation;
 
 namespace SW.Mtm.Resources.Accounts
 {
-    [HandlerName("setupOtpSecret")]
+    [HandlerName("setupTotp")]
     [Protect]
-    class SetupOtpSecret : ICommandHandler<AccountSetupOtpRequest>
+    class SetupTotp : ICommandHandler
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
-        private readonly IConfiguration configuration;
+        private readonly MtmOptions mtmOptions;
 
 
 
-        public SetupOtpSecret(MtmDbContext dbContext, RequestContext requestContext, IConfiguration configuration)
+        public SetupTotp(MtmDbContext dbContext, RequestContext requestContext, MtmOptions mtmOptions)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
-            this.configuration = configuration;
+            this.mtmOptions = mtmOptions;
         }
 
-        public async Task<object> Handle(AccountSetupOtpRequest request)
+        public async Task<object> Handle()
         {
             var accountId = requestContext.GetNameIdentifier();
             var secret = KeyGeneration.GenerateRandomKey(20);
@@ -41,17 +41,13 @@ namespace SW.Mtm.Resources.Accounts
                .Where(i => i.Id == accountId)
                .SingleOrDefaultAsync();
 
-            account.SetupSecondFactor(request.Type, base32Secret);
+            account.SetupSecondFactor(OtpType.Totp, base32Secret);
 
             await dbContext.SaveChangesAsync();
 
-            var issuer = configuration["Totp:Issuer"];
+            var issuer = mtmOptions.TotpIssuer;
    
-            var totpDigits = configuration["Totp:Digits"];
-            var totpPeriod = configuration["Totp:Period"];
-            var hashMethod = OtpHashMode.Sha256;
-
-            var qrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={base32Secret}&issuer={issuer}&algorithm={hashMethod}&digits={totpDigits}&period={totpPeriod}";
+            var qrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
 
             return new AccountSetupTotpResult
             {
@@ -60,15 +56,7 @@ namespace SW.Mtm.Resources.Accounts
             };
 
         }
-        class Validator : AbstractValidator<AccountSetupOtpRequest>
-        {
-            public Validator()
-            {
-                RuleFor(p=>p.Type).NotEmpty();
-
-            }
-
-        }
+       
 
 
     }

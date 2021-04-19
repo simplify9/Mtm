@@ -71,9 +71,13 @@ namespace SW.Mtm
             return new ClaimsIdentity(claims, "Mtm");
         }
 
-        public static string CreateJwt(this Account account, LoginMethod loginMethod, JwtTokenParameters jwtTokenParameters)
+        public static string CreateJwt(this Account account, LoginMethod loginMethod, JwtTokenParameters jwtTokenParameters, TimeSpan jwtExpiry = default)
         {
+           if(jwtExpiry == default)
             return jwtTokenParameters.WriteJwt(CreateClaimsIdentity(account, loginMethod));
+
+            return jwtTokenParameters.WriteJwt(CreateClaimsIdentity(account, loginMethod),jwtExpiry);
         }
+
     }
 }
