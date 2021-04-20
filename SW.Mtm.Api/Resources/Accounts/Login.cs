@@ -36,6 +36,7 @@ namespace SW.Mtm.Resources.Accounts
         {
 
             Account account = null;
+            var jwtExpiryTimeSpan = TimeSpan.FromMinutes(mtmOptions.JwtExpiryMinutes);
             var loginResult = new AccountLoginResult();
 
             if (request.RefreshToken != null)
@@ -58,7 +59,7 @@ namespace SW.Mtm.Resources.Accounts
                 if (account == null)
                     throw new SWUnauthorizedException();
 
-                loginResult.Jwt = account.CreateJwt(refreshToken.LoginMethod, jwtTokenParameters);
+                loginResult.Jwt = account.CreateJwt(refreshToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                 loginResult.RefreshToken = CreateRefreshToken(account, refreshToken.LoginMethod);
 
                 dbContext.Remove(refreshToken);
@@ -87,7 +88,7 @@ namespace SW.Mtm.Resources.Accounts
                         }
                         else
                         {
-                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                             loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
                             dbContext.Remove(otpToken);
 
@@ -121,7 +122,7 @@ namespace SW.Mtm.Resources.Accounts
                         else
                         {
                             account.VerifySecondFactorKey();
-                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                             loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
                             dbContext.Remove(otpToken);
 
@@ -143,7 +144,7 @@ namespace SW.Mtm.Resources.Accounts
                 if (account == null)
                     throw new SWNotFoundException(request.ApiKey);
 
-                loginResult.Jwt = account.CreateJwt(LoginMethod.ApiKey, jwtTokenParameters);
+                loginResult.Jwt = account.CreateJwt(LoginMethod.ApiKey, jwtTokenParameters, jwtExpiryTimeSpan);
 
             }
             else if (request.Email != null)
@@ -168,7 +169,7 @@ namespace SW.Mtm.Resources.Accounts
                 switch (account.SecondFactorMethod)
                 {
                     case OtpType.None:
-                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters, jwtExpiryTimeSpan);
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:
@@ -235,7 +236,7 @@ namespace SW.Mtm.Resources.Accounts
                 switch (account.SecondFactorMethod)
                 {
                     case OtpType.None:
-                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters, jwtExpiryTimeSpan);
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:

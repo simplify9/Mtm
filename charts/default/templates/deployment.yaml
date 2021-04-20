@@ -89,6 +89,11 @@ spec:
             - name: Mtm__TotpIssuer
               value: {{ .Values.totpIssuer }}
             {{- end }}  
+
+            {{- if .Values.jwtExpiryMinutes }}
+            - name: Mtm__JwtExpiryMinutes
+              value: {{ .Values.jwtExpiryMinutes }}
+            {{- end }}  
             
             - name: Token__Key
               valueFrom:
