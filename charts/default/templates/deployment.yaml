@@ -92,7 +92,7 @@ spec:
 
             {{- if .Values.jwtExpiryMinutes }}
             - name: Mtm__JwtExpiryMinutes
-              value: {{ .Values.jwtExpiryMinutes }}
+              value: {{ .Values.jwtExpiryMinutes | quote }}
             {{- end }}  
             
             - name: Token__Key
