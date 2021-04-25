@@ -21,8 +21,9 @@ namespace SW.Mtm
                 new Claim("phone_verified", account.PhoneVerified.ToString(), ClaimValueTypes.Boolean),
                 new Claim("login_methods", ((int)account.LoginMethods).ToString(), ClaimValueTypes.Integer),
                 new Claim("second_factor_method", ((int)account.SecondFactorMethod).ToString(), ClaimValueTypes.Integer),
-
+                new Claim("landlord", account.Landlord.ToString(), ClaimValueTypes.Boolean)
             };
+
 
             switch (loginMethod)
             {
@@ -60,7 +61,7 @@ namespace SW.Mtm
                         claims.AddRange(membership.ProfileData.Select(p => new Claim(p.Name, p.Value, p.Type)));
 
                 }
-
+               
                 foreach (var m in account.TenantMemberships)
                 {
                     claims.Add(new Claim("available_tenant", m.TenantId.ToString(), ClaimValueTypes.Integer32));
@@ -71,9 +72,13 @@ namespace SW.Mtm
             return new ClaimsIdentity(claims, "Mtm");
         }
 
-        public static string CreateJwt(this Account account, LoginMethod loginMethod, JwtTokenParameters jwtTokenParameters)
+        public static string CreateJwt(this Account account, LoginMethod loginMethod, JwtTokenParameters jwtTokenParameters, TimeSpan jwtExpiry = default)
         {
+           if(jwtExpiry == default)
             return jwtTokenParameters.WriteJwt(CreateClaimsIdentity(account, loginMethod));
+
+            return jwtTokenParameters.WriteJwt(CreateClaimsIdentity(account, loginMethod),jwtExpiry);
         }
+
     }
 }

@@ -18,11 +18,13 @@ namespace SW.Mtm.Resources.Accounts
         private readonly MtmDbContext dbContext;
         private readonly JwtTokenParameters jwtTokenParameters;
         private readonly RequestContext requestContext;
-        public SwitchTenant(MtmDbContext dbContext, JwtTokenParameters jwtTokenParameters, RequestContext requestContext)
+        private readonly MtmOptions mtmOptions;
+        public SwitchTenant(MtmDbContext dbContext, JwtTokenParameters jwtTokenParameters, RequestContext requestContext, MtmOptions mtmOptions)
         {
             this.dbContext = dbContext;
             this.jwtTokenParameters = jwtTokenParameters;
             this.requestContext = requestContext;
+            this.mtmOptions = mtmOptions;
         }
         public async Task<object> Handle(AccountSwitchTenant request)
         {
@@ -33,7 +35,7 @@ namespace SW.Mtm.Resources.Accounts
             //var tenantId = requestContext.GetTenantId();
             //if (!tenantId.HasValue)
             //    throw new SWException("Tenant is empty.");
-
+            var jwtExpiryTimeSpan = TimeSpan.FromMinutes(mtmOptions.JwtExpiryMinutes);
             var accountId = requestContext.GetNameIdentifier();
             if (string.IsNullOrEmpty(accountId))
                 throw new SWException("Account is empty.");
@@ -45,7 +47,7 @@ namespace SW.Mtm.Resources.Accounts
             
             var loginResult = new AccountLoginResult
             {
-                Jwt = account.CreateJwt(account.LoginMethods, jwtTokenParameters),
+                Jwt = account.CreateJwt(account.LoginMethods, jwtTokenParameters, jwtExpiryTimeSpan),
                 RefreshToken = CreateRefreshToken(account, account.LoginMethods)
             };
 

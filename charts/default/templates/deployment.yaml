@@ -84,7 +84,17 @@ spec:
 
             - name: Mtm__DatabaseType
               value: {{ .Values.dbType }}
+              
+            {{- if .Values.totpIssuer }}
+            - name: Mtm__TotpIssuer
+              value: {{ .Values.totpIssuer }}
+            {{- end }}  
 
+            {{- if .Values.jwtExpiryMinutes }}
+            - name: Mtm__JwtExpiryMinutes
+              value: {{ .Values.jwtExpiryMinutes | quote }}
+            {{- end }}  
+            
             - name: Token__Key
               valueFrom:
                 secretKeyRef:
