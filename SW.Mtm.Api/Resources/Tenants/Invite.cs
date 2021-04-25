@@ -50,7 +50,7 @@ namespace SW.Mtm.Resources.Tenants
                 if( dbContext.Set<Invitation>().Any(i => i.Email == request.Email && i.TenantId == key))
                     throw new SWException("Invitaion already sent.");
 
-                var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Email == request.Email);
+                var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Email.ToLower() == request.Email.ToLower());
                 if (account != null && account.TenantMemberships.Any(i => i.TenantId == key))
                     throw new SWException("Account already member.");
                 
