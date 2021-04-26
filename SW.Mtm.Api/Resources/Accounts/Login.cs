@@ -151,7 +151,7 @@ namespace SW.Mtm.Resources.Accounts
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
+                   .Where(u => u.Email.ToLower() == request.Email.ToLower() && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
              
 
