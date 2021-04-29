@@ -47,7 +47,7 @@ namespace SW.Mtm.Resources.Tenants
 
             else if (request.Email != null)
             {
-                if( dbContext.Set<Invitation>().Any(i => i.Email == request.Email && i.TenantId == key))
+                if( dbContext.Set<Invitation>().Any(i => i.Email.ToLower() == request.Email.ToLower() && i.TenantId == key))
                     throw new SWException("Invitaion already sent.");
 
                 var account = await dbContext.Set<Account>().FirstOrDefaultAsync(i => i.Email.ToLower() == request.Email.ToLower());
