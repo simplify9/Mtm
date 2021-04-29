@@ -33,9 +33,9 @@ namespace SW.Mtm.Resources.Tenants
                 //if (request.OwnerEmail != null)
                 //{
                 if (request.OwnerEmailProvider == EmailProvider.None)
-                    account = new Account(request.OwnerDisplayName, request.OwnerEmail, SecurePasswordHasher.Hash(request.OwnerPassword));
+                    account = new Account(request.OwnerDisplayName, request.OwnerEmail.ToLower(), SecurePasswordHasher.Hash(request.OwnerPassword));
                 else
-                    account = new Account(request.OwnerDisplayName, request.OwnerEmail, request.OwnerEmailProvider);
+                    account = new Account(request.OwnerDisplayName, request.OwnerEmail.ToLower(), request.OwnerEmailProvider);
                 //}
                 //else if (request.OwnerPhone != null)
                 //{

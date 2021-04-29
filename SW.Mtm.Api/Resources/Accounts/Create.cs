@@ -28,6 +28,7 @@ namespace SW.Mtm.Resources.Accounts
         {
             string apiKey = null;
             Account account;
+            request.Email = request.Email.ToLower();
 
             if (request.Email != null)
             {
@@ -91,7 +92,7 @@ namespace SW.Mtm.Resources.Accounts
 
                 RuleFor(p => p.Email).CustomAsync(async (value, context, cancellationToken) =>
                 {
-                    if (await mtmDbContext.Set<Account>().AnyAsync(p => p.Email == value && p.Email != null))
+                    if (await mtmDbContext.Set<Account>().AnyAsync(p => p.Email.ToLower() == value.ToLower() && p.Email != null))
                         context.AddFailure("Account exists.");
                 });
 

@@ -34,7 +34,7 @@ namespace SW.Mtm.Resources.Invitations
 
             if (!string.IsNullOrEmpty(request.Email))
                 return await dbContext.Set<Invitation>()
-                    .Where(i => i.Email == request.Email && i.TenantId == tenantId.Value)
+                    .Where(i => i.Email.ToLower() == request.Email.ToLower() && i.TenantId == tenantId.Value)
                     .Select(i => new InvitationSearchResult
                     {
                         TenantId = i.TenantId,
