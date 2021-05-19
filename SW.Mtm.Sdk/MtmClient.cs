@@ -176,7 +176,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> SetAsTenantOwner(AccountSetAsTenantOwner request)
         {
             return await Builder
-               .Jwt()
+               .Key()
                .Path($"accounts/setastenantowner")
                .AsApiResult()
                .PostAsync(request);
