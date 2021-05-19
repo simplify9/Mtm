@@ -16,13 +16,15 @@ namespace SW.Mtm.Resources.Accounts
     class SetAsTenantOwner : ICommandHandler<AccountSetAsTenantOwner>
     {
         private readonly MtmDbContext dbContext;
-        public SetAsTenantOwner(MtmDbContext dbContext)
+        private readonly RequestContext requestContext;
+        public SetAsTenantOwner(MtmDbContext dbContext, RequestContext requestContext)
         {
             this.dbContext = dbContext;
+            this.requestContext = requestContext;
         }
         public async Task<object> Handle(AccountSetAsTenantOwner request)
         {
-            if (!await dbContext.IsRequesterLandlord() && !await dbContext.IsRequesterTenantOwner())
+            if (requestContext.GetNameIdentifier() == Account.SystemId)
                 throw new SWUnauthorizedException();
 
             var account = await dbContext
