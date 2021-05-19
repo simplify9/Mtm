@@ -211,13 +211,14 @@ namespace SW.Mtm.Domain
             LoginMethods |= loginMethod;
             return true;
         }
-        // private bool RemoveLoginMethod(LoginMethod loginMethod)
-        // {
-        //     if ((LoginMethods & loginMethod) != loginMethod)
-        //         return false;
-        //     LoginMethods &= loginMethod;
-        //     return true;
-        // }
+        public bool RemoveLoginMethod(LoginMethod loginMethod)
+        {
+            if ((LoginMethods & loginMethod) != loginMethod)
+                return false;
+                    
+            LoginMethods &= ~loginMethod;
+            return true;
+        }
 
         public string[] Roles { get; private set; }
         public bool Disabled { get; private set; }
