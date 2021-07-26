@@ -221,7 +221,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount)
         {
             return await Builder
-                .Jwt()
+                .JwtOrKey()
                 .Path($"tenants/{key}/addaccount")
                 .AsApiResult()
                 .PostAsync(tenantAddAccount);
