@@ -176,7 +176,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> SetAsTenantOwner(AccountSetAsTenantOwner request)
         {
             return await Builder
-               .Jwt()
+               .Key()
                .Path($"accounts/setastenantowner")
                .AsApiResult()
                .PostAsync(request);
@@ -221,7 +221,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount)
         {
             return await Builder
-                .Jwt()
+                .JwtOrKey()
                 .Path($"tenants/{key}/addaccount")
                 .AsApiResult()
                 .PostAsync(tenantAddAccount);
@@ -269,6 +269,15 @@ namespace SW.Mtm.Sdk
                 .Jwt()
                 .Path($"accounts/setupotpsecret")
                 .AsApiResult<AccountSetupTotpResult>()
+                .PostAsync(request);
+        }
+        public async Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,
+            RemoveLoginMethodModel request)
+        {
+            return await Builder
+                .JwtOrKey()
+                .Path($"accounts/{accountIdOrEmail}/removelogin")
+                .AsApiResult<ApiResult>()
                 .PostAsync(request);
         }
 

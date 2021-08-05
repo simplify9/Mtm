@@ -21,21 +21,22 @@ namespace SW.Mtm.Resources.Accounts
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
         private readonly JwtTokenParameters jwtTokenParameters;
-        private readonly IConfiguration configuration;
+        private readonly MtmOptions mtmOptions;
 
 
-        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters, IConfiguration configuration)
+        public Login(MtmDbContext dbContext, RequestContext requestContext, JwtTokenParameters jwtTokenParameters, MtmOptions mtmOptions)
         {
             this.dbContext = dbContext;
             this.requestContext = requestContext;
             this.jwtTokenParameters = jwtTokenParameters;
-            this.configuration = configuration;
+            this.mtmOptions = mtmOptions;
         }
 
         async public Task<object> Handle(AccountLogin request)
         {
 
             Account account = null;
+            var jwtExpiryTimeSpan = TimeSpan.FromMinutes(mtmOptions.JwtExpiryMinutes);
             var loginResult = new AccountLoginResult();
 
             if (request.RefreshToken != null)
@@ -58,7 +59,7 @@ namespace SW.Mtm.Resources.Accounts
                 if (account == null)
                     throw new SWUnauthorizedException();
 
-                loginResult.Jwt = account.CreateJwt(refreshToken.LoginMethod, jwtTokenParameters);
+                loginResult.Jwt = account.CreateJwt(refreshToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                 loginResult.RefreshToken = CreateRefreshToken(account, refreshToken.LoginMethod);
 
                 dbContext.Remove(refreshToken);
@@ -87,7 +88,7 @@ namespace SW.Mtm.Resources.Accounts
                         }
                         else
                         {
-                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                             loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
                             dbContext.Remove(otpToken);
 
@@ -109,7 +110,7 @@ namespace SW.Mtm.Resources.Accounts
                                     account.SetupSecondFactor(account.SecondFactorMethod, secret);
                                 }
 
-                                var issuer = configuration["Totp:Issuer"];
+                                var issuer = mtmOptions.TotpIssuer;
 
                                 loginResult.SecretKey = secret;
                                 loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
@@ -121,7 +122,7 @@ namespace SW.Mtm.Resources.Accounts
                         else
                         {
                             account.VerifySecondFactorKey();
-                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters);
+                            loginResult.Jwt = account.CreateJwt(otpToken.LoginMethod, jwtTokenParameters, jwtExpiryTimeSpan);
                             loginResult.RefreshToken = CreateRefreshToken(account, otpToken.LoginMethod);
                             dbContext.Remove(otpToken);
 
@@ -143,14 +144,14 @@ namespace SW.Mtm.Resources.Accounts
                 if (account == null)
                     throw new SWNotFoundException(request.ApiKey);
 
-                loginResult.Jwt = account.CreateJwt(LoginMethod.ApiKey, jwtTokenParameters);
+                loginResult.Jwt = account.CreateJwt(LoginMethod.ApiKey, jwtTokenParameters, jwtExpiryTimeSpan);
 
             }
             else if (request.Email != null)
             {
                 account = await dbContext
                    .Set<Account>()
-                   .Where(u => u.Email == request.Email && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
+                   .Where(u => u.Email.ToLower() == request.Email.ToLower() && u.EmailProvider == request.EmailProvider && (u.LoginMethods & LoginMethod.EmailAndPassword) != 0 && !u.Disabled)
                    .SingleOrDefaultAsync();
              
 
@@ -168,7 +169,7 @@ namespace SW.Mtm.Resources.Accounts
                 switch (account.SecondFactorMethod)
                 {
                     case OtpType.None:
-                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters, jwtExpiryTimeSpan);
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:
@@ -187,7 +188,7 @@ namespace SW.Mtm.Resources.Accounts
                       
                             account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
-                            var issuer = configuration["Totp:Issuer"];
+                            var issuer = mtmOptions.TotpIssuer;
 
                             loginResult.SecretKey =secret ;
                             loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
@@ -235,7 +236,7 @@ namespace SW.Mtm.Resources.Accounts
                 switch (account.SecondFactorMethod)
                 {
                     case OtpType.None:
-                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters);
+                        loginResult.Jwt = account.CreateJwt(LoginMethod.EmailAndPassword, jwtTokenParameters, jwtExpiryTimeSpan);
                         loginResult.RefreshToken = CreateRefreshToken(account, LoginMethod.EmailAndPassword);
                         break;
                     case OtpType.Otp:
@@ -254,7 +255,7 @@ namespace SW.Mtm.Resources.Accounts
 
                                 account.SetupSecondFactor(account.SecondFactorMethod, secret);
 
-                                var issuer = configuration["Totp:Issuer"];
+                                var issuer = mtmOptions.TotpIssuer;
 
                                 loginResult.SecretKey = secret;
                                 loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
