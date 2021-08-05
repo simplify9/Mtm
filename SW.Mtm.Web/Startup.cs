@@ -80,7 +80,10 @@ namespace SW.Mtm.Web
                     }
                     else if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MsSql.ToString().ToLower())
                     {
-                        throw new NotImplementedException();
+                        c.UseSqlServer(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
+                        {
+                            b.MigrationsAssembly(typeof(MsSql.DbType).Assembly.FullName);
+                        });
                     }
                     else
                     {

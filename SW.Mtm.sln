@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SW.Mtm.PgSql", "SW.Mtm.PgSq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW.Mtm.UnitTests", "SW.Mtm.UnitTests\SW.Mtm.UnitTests.csproj", "{62E4A9DA-7D0F-464F-849C-2DDAF04E1AD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW.Mtm.MsSql", "SW.Mtm.MsSql\SW.Mtm.MsSql.csproj", "{869C0A54-020F-44E1-B9F0-768A4E419BCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{62E4A9DA-7D0F-464F-849C-2DDAF04E1AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E4A9DA-7D0F-464F-849C-2DDAF04E1AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62E4A9DA-7D0F-464F-849C-2DDAF04E1AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{869C0A54-020F-44E1-B9F0-768A4E419BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869C0A54-020F-44E1-B9F0-768A4E419BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869C0A54-020F-44E1-B9F0-768A4E419BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869C0A54-020F-44E1-B9F0-768A4E419BCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6B371710-B320-4C25-AE2C-D47A877E1E48} = {B6DD52DF-17C6-47F0-AE47-D3C1CC7AEB84}
 		{940DB4ED-7F8B-42B7-B4FE-75CA7E201A11} = {B6DD52DF-17C6-47F0-AE47-D3C1CC7AEB84}
+		{869C0A54-020F-44E1-B9F0-768A4E419BCC} = {B6DD52DF-17C6-47F0-AE47-D3C1CC7AEB84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73193C1C-B533-4CE6-87E5-2A70DA04D354}

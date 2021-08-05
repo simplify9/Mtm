@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SW.Mtm.Api\SW.Mtm.Api.csproj" />
+    <ProjectReference Include="..\SW.Mtm.MsSql\SW.Mtm.MsSql.csproj" />
     <ProjectReference Include="..\SW.Mtm.MySql\SW.Mtm.MySql.csproj" />
     <ProjectReference Include="..\SW.Mtm.PgSql\SW.Mtm.PgSql.csproj" />
   </ItemGroup>
