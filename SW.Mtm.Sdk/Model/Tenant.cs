@@ -17,6 +17,7 @@ namespace SW.Mtm.Model
         public EmailProvider OwnerEmailProvider { get; set; }
         public string OwnerDisplayName { get; set; }
         public string OwnerPassword { get; set; }
+        public OtpType OwnerSecondFactorMethod { get; set; }
     }
 
     public class TenantCreateResult
