@@ -16,6 +16,16 @@ namespace SW.Mtm.Sdk
         public MtmClient(HttpClient httpClient, RequestContext requestContext, MtmClientOptions mtmClientOptions) : base(httpClient, requestContext, mtmClientOptions)
         {
         }
+
+        public async Task<ApiResult<AccountLoginResult>> GenerateOtpAsApiResult(AccountCreate createAccount)
+        {
+            return await Builder
+                .JwtOrKey()
+                .Path("accounts/otp")
+                .AsApiResult<AccountLoginResult>()
+                .PostAsync(createAccount);
+        }
+
         async public Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
         {
             return await Builder

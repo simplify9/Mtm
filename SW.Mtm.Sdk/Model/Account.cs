@@ -26,6 +26,8 @@ namespace SW.Mtm.Model
         public string RefreshToken { get; set; }
         public string Password { get; set; }
 
+        public bool? MockOtp { get; set; }
+
     }
 
     public class AccountLoginResult
@@ -49,6 +51,8 @@ namespace SW.Mtm.Model
         public string CredentialName { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
         public OtpType SecondFactorMethod { get; set; }
+        public bool? MockOtp { get; set; }
+        public int? TenantId { get; set; }
     }
 
     public class AccountCreateResult

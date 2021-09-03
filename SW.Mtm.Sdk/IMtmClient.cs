@@ -19,6 +19,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword);
         Task<AccountCreateResult> CreateAccount(AccountCreate registerAccount);
         Task<ApiResult<AccountCreateResult>> CreateAccountAsApiResult(AccountCreate registerAccount);
+        Task<ApiResult<AccountLoginResult>> GenerateOtpAsApiResult(AccountCreate registerAccount);
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
         Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount);
         //Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);

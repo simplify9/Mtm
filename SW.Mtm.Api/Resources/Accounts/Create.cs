@@ -62,7 +62,17 @@ namespace SW.Mtm.Resources.Accounts
             
             // if (request.ProfileData != null)
             //     account.ProfileData = request.ProfileData.ToList();
+            
 
+            if (await dbContext.IsRequesterLandlord() && request.TenantId != null)
+            {
+                account.AddTenantMembership(new TenantMembership(request.TenantId.Value, MembershipType.User)
+                {
+                    ProfileData = request.ProfileData
+                });
+            }
+            
+            
             dbContext.Add(account);
             await dbContext.SaveChangesAsync();
 
