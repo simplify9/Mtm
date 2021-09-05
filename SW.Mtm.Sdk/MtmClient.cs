@@ -17,13 +17,13 @@ namespace SW.Mtm.Sdk
         {
         }
 
-        public async Task<ApiResult<AccountLoginResult>> GenerateOtpAsApiResult(AccountCreate createAccount)
+        public async Task<ApiResult<AccountLoginResult>> GenerateOtpAsApiResult(GenerateOtpModel generateAccount)
         {
             return await Builder
                 .JwtOrKey()
                 .Path("accounts/otp")
                 .AsApiResult<AccountLoginResult>()
-                .PostAsync(createAccount);
+                .PostAsync(generateAccount);
         }
 
         async public Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
