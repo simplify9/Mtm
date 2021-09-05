@@ -10,7 +10,6 @@ using SW.PrimitiveTypes;
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("otp")]
-    [Protect(RequireRole = true)]
     public class GenerateOtp : ICommandHandler<AccountCreate>
     {
         private readonly MtmDbContext dbContext;
