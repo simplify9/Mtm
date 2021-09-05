@@ -27,7 +27,7 @@ namespace SW.Mtm.Resources.Accounts
 
             var account = await dbContext.Set<Account>()
                 .Include(a => a.TenantMemberships)
-                .FirstOrDefaultAsync(i => i.Id == request.Phone);
+                .FirstOrDefaultAsync(i => i.Phone == request.Phone);
 
             var result = new AccountLoginResult();
 
