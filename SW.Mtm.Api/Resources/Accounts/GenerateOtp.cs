@@ -10,7 +10,7 @@ using SW.PrimitiveTypes;
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("otp")]
-    public class GenerateOtp : ICommandHandler<AccountCreate>
+    public class GenerateOtp : ICommandHandler<GenerateOtpModel>
     {
         private readonly MtmDbContext dbContext;
 
@@ -19,7 +19,7 @@ namespace SW.Mtm.Resources.Accounts
             this.dbContext = dbContext;
         }
 
-        public async Task<object> Handle(AccountCreate request)
+        public async Task<object> Handle(GenerateOtpModel request)
         {
             if (!await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())

@@ -52,6 +52,14 @@ namespace SW.Mtm.Model
         public string CredentialName { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
         public OtpType SecondFactorMethod { get; set; }
+        public int? TenantId { get; set; }
+    }
+
+    public class GenerateOtpModel
+    {
+        public string Phone { get; set; }
+        public string DisplayName { get; set; }
+        public ICollection<ProfileDataItem> ProfileData { get; set; }
         public bool? MockOtp { get; set; }
         public int? TenantId { get; set; }
     }
