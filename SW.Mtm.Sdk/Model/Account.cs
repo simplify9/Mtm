@@ -60,7 +60,7 @@ namespace SW.Mtm.Model
         public string Phone { get; set; }
         public string DisplayName { get; set; }
         public ICollection<ProfileDataItem> ProfileData { get; set; }
-        public bool? MockOtp { get; set; }
+        public bool MockOtp { get; set; }
         public int? TenantId { get; set; }
     }
 

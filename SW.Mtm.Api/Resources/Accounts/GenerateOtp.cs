@@ -53,7 +53,7 @@ namespace SW.Mtm.Resources.Accounts
                 throw new SWUnauthorizedException();
 
 
-            var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp, request.MockOtp ?? false);
+            var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp, request.MockOtp);
 
             await dbContext.SaveChangesAsync();
 
@@ -66,7 +66,7 @@ namespace SW.Mtm.Resources.Accounts
         }
 
         private KeyValuePair<string, string> CreateOtpToken(Account account, LoginMethod loginMethod, OtpType otpType,
-            bool mock = false)
+            bool mock)
         {
             OtpToken otpToken;
             string password = null;
