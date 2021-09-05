@@ -39,6 +39,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
         public string QrCodeUrl { get; set; }
         public string SecretKey { get; set; }
+        public bool? IsCreated { get; set; }
     }
 
     public class AccountCreate

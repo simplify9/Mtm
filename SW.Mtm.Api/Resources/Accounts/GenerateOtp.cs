@@ -11,7 +11,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("otp")]
     [Protect(RequireRole = true)]
-    public class GenerateOtp: ICommandHandler<AccountCreate>
+    public class GenerateOtp : ICommandHandler<AccountCreate>
     {
         private readonly MtmDbContext dbContext;
 
@@ -25,16 +25,18 @@ namespace SW.Mtm.Resources.Accounts
             if (!await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
-            
-            var account = await  dbContext.Set<Account>()
+
+            var account = await dbContext.Set<Account>()
                 .Include(a => a.TenantMemberships)
                 .FirstOrDefaultAsync(i => i.Id == request.Phone);
+
+            var result = new AccountLoginResult();
 
             if (account == null)
             {
                 account = new Account(request.DisplayName, request.Phone);
                 dbContext.Add(account);
-                
+
                 if (await dbContext.IsRequesterLandlord() && request.TenantId != null)
                 {
                     account.AddTenantMembership(new TenantMembership(request.TenantId.Value, MembershipType.User)
@@ -42,7 +44,9 @@ namespace SW.Mtm.Resources.Accounts
                         ProfileData = request.ProfileData
                     });
                 }
-                
+
+                result.IsCreated = true;
+
                 await dbContext.SaveChangesAsync();
             }
 
@@ -50,21 +54,20 @@ namespace SW.Mtm.Resources.Accounts
                 throw new SWUnauthorizedException();
 
 
-            var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp,request.MockOtp ?? false);
-            
-            await dbContext.SaveChangesAsync();
-            
-            return new AccountLoginResult
-            {
-                OtpType = OtpType.Otp,
-                OtpToken = otpToken.Key,
-                Password = otpToken.Value
-            };
-            
+            var otpToken = CreateOtpToken(account, LoginMethod.PhoneAndOtp, OtpType.Otp, request.MockOtp ?? false);
 
+            await dbContext.SaveChangesAsync();
+
+
+            result.OtpType = OtpType.Otp;
+            result.OtpToken = otpToken.Key;
+            result.Password = otpToken.Value;
+            
+            return result;
         }
-        
-        private KeyValuePair<string, string> CreateOtpToken(Account account, LoginMethod loginMethod, OtpType otpType, bool mock = false)
+
+        private KeyValuePair<string, string> CreateOtpToken(Account account, LoginMethod loginMethod, OtpType otpType,
+            bool mock = false)
         {
             OtpToken otpToken;
             string password = null;
@@ -72,7 +75,7 @@ namespace SW.Mtm.Resources.Accounts
             switch (otpType)
             {
                 case OtpType.Otp:
-                    password = mock ? "1234" :  RandomNumberGenerator.GetInt32(1000, 9999).ToString();
+                    password = mock ? "1234" : RandomNumberGenerator.GetInt32(1000, 9999).ToString();
                     otpToken = new OtpToken(account.Id, loginMethod, SecurePasswordHasher.Hash(password));
                     break;
                 case OtpType.Totp:
