@@ -255,11 +255,11 @@ namespace SW.Mtm.Sdk
                 .GetAsync();
         }
 
-        public async Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(string query)
+        public async Task<ApiResult<List<AccountGet>>> SearchAccountsAsApiResult(string searchUrl)
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts?searchUrl")
+                .Path($"accounts?{searchUrl}")
                 .AsApiResult<List<AccountGet>>()
                 .GetAsync();
         }
