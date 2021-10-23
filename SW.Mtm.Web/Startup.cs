@@ -71,11 +71,12 @@ namespace SW.Mtm.Web
 
                     if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MySql.ToString().ToLower())
                     {
-                        c.UseMySql(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
+                        c.UseMySql(Configuration.GetConnectionString(MtmDbContext.ConnectionString),
+                            new MySqlServerVersion(new Version(8, 0, 18)),
+                            b =>
                         {
                             b.MigrationsAssembly(typeof(MySql.DbType).Assembly.FullName);
                             b.CommandTimeout(90);
-                            b.ServerVersion(new ServerVersion(new Version(8, 0, 18), ServerType.MySql));
                         });
                     }
                     else if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.MsSql.ToString().ToLower())
