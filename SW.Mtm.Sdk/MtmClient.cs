@@ -1,4 +1,4 @@
-﻿    using SW.HttpExtensions;
+﻿using SW.HttpExtensions;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System.Collections.Generic;
@@ -280,6 +280,15 @@ namespace SW.Mtm.Sdk
             return await Builder
                 .Jwt()
                 .Path($"accounts?{searchUrl}")
+                .AsApiResult<SearchyResponse<AccountGet>>()
+                .GetAsync();
+        }
+
+        public async Task<ApiResult<SearchyResponse<AccountGet>>> LegacySearchAccountsAsApiResult(string searchUrl)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/LegacySearch?{searchUrl}")
                 .AsApiResult<SearchyResponse<AccountGet>>()
                 .GetAsync();
         }

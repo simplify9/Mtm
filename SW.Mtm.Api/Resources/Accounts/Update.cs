@@ -24,10 +24,10 @@ namespace SW.Mtm.Resources.Accounts
 
         public async Task<object> Handle(string key, UpdateAccountModel request)
         {
-            var account = await _dbContext.FindAsync<Account>(request.Email);
+            var account = await _dbContext.FindAsync<Account>(key);
 
             if (account == null)
-                throw new SWNotFoundException(request.Email);
+                throw new SWNotFoundException($"Cant find account with key {key}");
 
             if ((account.TenantId == null || !await _dbContext.IsRequesterTenantOwner(account.TenantId.Value)) &&
                 !await _dbContext.IsRequesterLandlord())
@@ -46,7 +46,7 @@ namespace SW.Mtm.Resources.Accounts
         {
             public Validate()
             {
-                RuleFor(p => p.Email).NotNull();
+                RuleFor(p => p.Email).NotEmpty();
             }
         }
     }

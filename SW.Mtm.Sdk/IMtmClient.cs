@@ -44,6 +44,8 @@ namespace SW.Mtm.Sdk
 
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<SearchyResponse<AccountGet>>> SearchAccountsAsApiResult(string searchUrl);
+        Task<ApiResult<SearchyResponse<AccountGet>>> LegacySearchAccountsAsApiResult(string searchUrl);
+
         Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);
 
         Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
