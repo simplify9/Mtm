@@ -1,4 +1,4 @@
-﻿using SW.HttpExtensions;
+﻿    using SW.HttpExtensions;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 using System.Collections.Generic;
@@ -261,7 +261,7 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                 .JwtOrKey()
-                .Path($"accounts/{accountId}/setprofiledata")
+                .Path($"accounts/{accountId}/update")
                 .AsApiResult()
                 .PostAsync(model);
         }
