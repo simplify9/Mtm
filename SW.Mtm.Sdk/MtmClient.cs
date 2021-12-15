@@ -284,14 +284,16 @@ namespace SW.Mtm.Sdk
                 .GetAsync();
         }
 
-        public async Task<ApiResult<SearchyResponse<AccountGet>>> LegacySearchAccountsAsApiResult(string searchUrl)
+
+        public async Task<ApiResult<List<AccountGet>>> LegacySearchAccountsAsApiResult(SearchAccounts request)
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts/LegacySearch?{searchUrl}")
-                .AsApiResult<SearchyResponse<AccountGet>>()
-                .GetAsync();
+                .Path($"accounts/LegacySearch")
+                .AsApiResult<List<AccountGet>>()
+                .GetAsync(request);
         }
+
 
         public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
             AddLoginMethodModel request)
