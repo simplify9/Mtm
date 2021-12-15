@@ -1,19 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using SW.HttpExtensions;
+﻿using SW.HttpExtensions;
 using SW.Mtm.Model;
 using SW.PrimitiveTypes;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SW.Mtm.Sdk
 {
     public class MtmClient : ApiClientBase<MtmClientOptions>, IMtmClient
     {
-        public MtmClient(HttpClient httpClient, RequestContext requestContext, MtmClientOptions mtmClientOptions) : base(httpClient, requestContext, mtmClientOptions)
+        public MtmClient(HttpClient httpClient, RequestContext requestContext, MtmClientOptions mtmClientOptions) :
+            base(httpClient, requestContext, mtmClientOptions)
         {
         }
 
@@ -26,21 +23,22 @@ namespace SW.Mtm.Sdk
                 .PostAsync(generateAccount);
         }
 
-        async public Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
+        public async Task<TenantCreateResult> CreateTenant(TenantCreate tenantCreate)
         {
             return await Builder
-               .JwtOrKey()
-               .Path("tenants")
-               .As<TenantCreateResult>(true)
-               .PostAsync(tenantCreate);
+                .JwtOrKey()
+                .Path("tenants")
+                .As<TenantCreateResult>(true)
+                .PostAsync(tenantCreate);
         }
+
         public async Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate tenantCreate)
         {
             return await Builder
-               .JwtOrKey()
-               .Path("tenants")
-               .AsApiResult<TenantCreateResult>()
-               .PostAsync(tenantCreate);
+                .JwtOrKey()
+                .Path("tenants")
+                .AsApiResult<TenantCreateResult>()
+                .PostAsync(tenantCreate);
         }
         //async public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate)
         //{
@@ -94,7 +92,7 @@ namespace SW.Mtm.Sdk
                 .PostAsync(tenantInvite);
         }
 
-        async public Task<AccountLoginResult> Login(AccountLogin loginAccount)
+        public async Task<AccountLoginResult> Login(AccountLogin loginAccount)
         {
             return await Builder
                 .JwtOrKey()
@@ -102,6 +100,7 @@ namespace SW.Mtm.Sdk
                 .As<AccountLoginResult>(true)
                 .PostAsync(loginAccount);
         }
+
         public async Task<ApiResult<AccountLoginResult>> LoginAsApiResult(AccountLogin loginAccount)
         {
             return await Builder
@@ -119,6 +118,7 @@ namespace SW.Mtm.Sdk
                 .As<AccountCreateResult>(true)
                 .PostAsync(registerAccount);
         }
+
         public async Task<ApiResult<AccountCreateResult>> CreateAccountAsApiResult(AccountCreate registerAccount)
         {
             return await Builder
@@ -127,96 +127,106 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<AccountCreateResult>()
                 .PostAsync(registerAccount);
         }
-        async public Task ChangePassword(AccountChangePassword changePasswordAccount)
+
+        public async Task ChangePassword(AccountChangePassword changePasswordAccount)
         {
             await Builder
-               .Jwt()
-               .Path($"accounts/changepassword")
-               .PostAsync(changePasswordAccount, true);
+                .Jwt()
+                .Path($"accounts/changepassword")
+                .PostAsync(changePasswordAccount, true);
         }
+
         public async Task<ApiResult> ChangePasswordAsApiResult(AccountChangePassword accountChangePassword)
         {
             return await Builder
-               .Jwt()
-               .Path($"accounts/changepassword")
-               .AsApiResult()
-               .PostAsync(accountChangePassword);
+                .Jwt()
+                .Path($"accounts/changepassword")
+                .AsApiResult()
+                .PostAsync(accountChangePassword);
         }
-        async public Task ResetPassword(string accountIdOrEmail, AccountResetPassword accountResetPassword)
+
+        public async Task ResetPassword(string accountIdOrEmail, AccountResetPassword accountResetPassword)
         {
             await Builder
-               .Key()
-               .Path($"accounts/{accountIdOrEmail}/resetpassword")
-               .PostAsync(accountResetPassword, true);
-        }
-        public async Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail, AccountResetPassword accountResetPassword)
-        {
-            return await Builder
-               .Key()
-               .Path($"accounts/{accountIdOrEmail}/resetpassword")
-               .AsApiResult()
-               .PostAsync(accountResetPassword);
-        }
-        async public Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
-        {
-            return await Builder
-               .Key()
-               .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
-               .As<AccountInitiatePasswordResetResult>(true)
-               .PostAsync(new  AccountInitiatePasswordReset());
+                .Key()
+                .Path($"accounts/{accountIdOrEmail}/resetpassword")
+                .PostAsync(accountResetPassword, true);
         }
 
-        public async Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(string accountIdOrEmail)
+        public async Task<ApiResult> ResetPasswordAsApiResult(string accountIdOrEmail,
+            AccountResetPassword accountResetPassword)
         {
             return await Builder
-               .Key()
-               .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
-               .AsApiResult<AccountInitiatePasswordResetResult>()
-               .PostAsync(new AccountInitiatePasswordReset());
+                .Key()
+                .Path($"accounts/{accountIdOrEmail}/resetpassword")
+                .AsApiResult()
+                .PostAsync(accountResetPassword);
         }
 
-        public async Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(InvitationSearch invitationSearch)
+        public async Task<AccountInitiatePasswordResetResult> InitiatePasswordReset(string accountIdOrEmail)
         {
             return await Builder
-               .Jwt()
-               .Path($"invitations?email={invitationSearch.Email}")
-               .AsApiResult<List<InvitationSearchResult>>()
-               .GetAsync();
-        } 
+                .Key()
+                .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
+                .As<AccountInitiatePasswordResetResult>(true)
+                .PostAsync(new AccountInitiatePasswordReset());
+        }
+
+        public async Task<ApiResult<AccountInitiatePasswordResetResult>> InitiatePasswordResetAsApiResult(
+            string accountIdOrEmail)
+        {
+            return await Builder
+                .Key()
+                .Path($"accounts/{accountIdOrEmail}/initiatepasswordreset")
+                .AsApiResult<AccountInitiatePasswordResetResult>()
+                .PostAsync(new AccountInitiatePasswordReset());
+        }
+
+        public async Task<ApiResult<List<InvitationSearchResult>>> SearchInvitationsAsApiResult(
+            InvitationSearch invitationSearch)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"invitations?email={invitationSearch.Email}")
+                .AsApiResult<List<InvitationSearchResult>>()
+                .GetAsync();
+        }
+
         public async Task<ApiResult> SetAsTenantOwner(AccountSetAsTenantOwner request)
         {
             return await Builder
-               .Key()
-               .Path($"accounts/setastenantowner")
-               .AsApiResult()
-               .PostAsync(request);
+                .Key()
+                .Path($"accounts/setastenantowner")
+                .AsApiResult()
+                .PostAsync(request);
         }
 
         public async Task<ApiResult<InvitationGet>> GetInvitationAsApiResult(string key)
         {
             return await Builder
-               .Key()
-               .Path($"invitations/{key}")
-               .AsApiResult<InvitationGet>()
-               .GetAsync();
+                .Key()
+                .Path($"invitations/{key}")
+                .AsApiResult<InvitationGet>()
+                .GetAsync();
         }
 
         public async Task<ApiResult> CancelInvitationAsApiResult(InvitationCancel invitationCancel)
         {
             return await Builder
-               .Jwt()
-               .Path($"invitations/cancel")
-               .AsApiResult()
-               .PostAsync(invitationCancel);
+                .Jwt()
+                .Path($"invitations/cancel")
+                .AsApiResult()
+                .PostAsync(invitationCancel);
         }
 
-        public async Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(AccountSwitchTenant accountSwitchTenant)
+        public async Task<ApiResult<AccountLoginResult>> SwitchTenantAsApiResult(
+            AccountSwitchTenant accountSwitchTenant)
         {
             return await Builder
-               .Jwt()
-               .Path($"accounts/switchtenant")
-               .AsApiResult<AccountLoginResult>()
-               .PostAsync(accountSwitchTenant);
+                .Jwt()
+                .Path($"accounts/switchtenant")
+                .AsApiResult<AccountLoginResult>()
+                .PostAsync(accountSwitchTenant);
         }
 
         public async Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount)
@@ -237,13 +247,23 @@ namespace SW.Mtm.Sdk
                 .PostAsync(tenantAddAccount);
         }
 
-        public async Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData)
+        public async Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail,
+            AccountSetProfileData accountSetProfileData)
         {
             return await Builder
                 .Jwt()
                 .Path($"accounts/{accountIdOrEmail}/setprofiledata")
                 .AsApiResult()
                 .PostAsync(accountSetProfileData);
+        }
+
+        public async Task<ApiResult> UpdateProfileAsApiResult(string accountId, UpdateAccountModel model)
+        {
+            return await Builder
+                .JwtOrKey()
+                .Path($"accounts/{accountId}/setprofiledata")
+                .AsApiResult()
+                .PostAsync(model);
         }
 
         public async Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail)
@@ -264,7 +284,8 @@ namespace SW.Mtm.Sdk
                 .GetAsync();
         }
 
-        public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request)
+        public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
+            AddLoginMethodModel request)
         {
             return await Builder
                 .JwtOrKey()
@@ -281,6 +302,7 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<AccountSetupTotpResult>()
                 .PostAsync(request);
         }
+
         public async Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,
             RemoveLoginMethodModel request)
         {
@@ -290,7 +312,5 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<ApiResult>()
                 .PostAsync(request);
         }
-
-   
     }
 }

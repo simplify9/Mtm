@@ -27,7 +27,6 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
 
         public bool? MockOtp { get; set; }
-
     }
 
     public class AccountLoginResult
@@ -73,7 +72,8 @@ namespace SW.Mtm.Model
     public class AccountSwitchTenant
     {
         public int NewTenant { get; set; }
-    } 
+    }
+
     public class AccountSetAsTenantOwner
     {
         public string AccountId { get; set; }
@@ -82,8 +82,7 @@ namespace SW.Mtm.Model
 
     public class AccountInitiatePasswordReset
     {
-
-    } 
+    }
 
 
     public class AccountInitiatePasswordResetResult
@@ -96,6 +95,11 @@ namespace SW.Mtm.Model
     {
         public string Token { get; set; }
         public string NewPassword { get; set; }
+    }
+
+    public class UpdateAccountModel
+    {
+        public string Email { get; set; }
     }
 
     public class AccountSetProfileData
@@ -113,7 +117,9 @@ namespace SW.Mtm.Model
         public string DisplayName { get; set; }
         public EmailProvider EmailProvider { get; set; }
         public LoginMethod LoginMethods { get; set; }
+
         public OtpType SecondFactorMethod { get; set; }
+
         //public string SecondFactorKey { get;  set; }
         //
         public string[] Roles { get; set; }
@@ -125,8 +131,6 @@ namespace SW.Mtm.Model
 
         public ICollection<int> TenantIdsMemberships { get; set; }
         public IEnumerable<ProfileDataItem> ProfileData { get; set; }
-        
-
     }
 
     public class SearchAccounts
@@ -145,6 +149,7 @@ namespace SW.Mtm.Model
         public string Password { get; set; }
         public string CredentialName { get; set; }
     }
+
     public class AddLoginMethodResult
     {
         public string Key { get; set; }
@@ -159,6 +164,7 @@ namespace SW.Mtm.Model
     {
         public OtpType Type { get; set; }
     }
+
     public class AccountSetupTotpResult
     {
         public string SecretKey { get; set; }
@@ -169,15 +175,15 @@ namespace SW.Mtm.Model
     {
         public string Code { get; set; }
         public string OtpToken { get; set; }
-
     }
+
     public class AccountValidateTotpResult
     {
         public bool IsValid { get; set; }
     }
+
     public class AccountEnableSecondFactor
     {
         public string Code { get; set; }
-
     }
 }
