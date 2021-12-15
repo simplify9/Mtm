@@ -21,6 +21,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<AccountCreateResult>> CreateAccountAsApiResult(AccountCreate registerAccount);
         Task<ApiResult<AccountLoginResult>> GenerateOtpAsApiResult(GenerateOtpModel generateAccount);
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
+
         Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount);
         //Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
         //Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate);
@@ -39,11 +40,15 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> RemoveAccountAsApiResult(int key, TenantRemoveAccount tenantRemoveAccount);
         Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount);
         Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData);
+        Task<ApiResult> UpdateProfileAsApiResult(string accountId, UpdateAccountModel model);
+
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<SearchyResponse<AccountGet>>> SearchAccountsAsApiResult(string searchUrl);
-        Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);        
-        Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,AddLoginMethodModel request);
-        Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail,RemoveLoginMethodModel request);
+        Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);
 
+        Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
+            AddLoginMethodModel request);
+
+        Task<ApiResult> RemoveLoginMethodAsApiResult(string accountIdOrEmail, RemoveLoginMethodModel request);
     }
 }

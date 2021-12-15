@@ -19,7 +19,8 @@ namespace SW.Mtm.Domain
         {
         }
 
-        public Account(string displayName, ApiCredential apiCredential) : this(displayName, LoginMethod.ApiKey, OtpType.None)
+        public Account(string displayName, ApiCredential apiCredential) : this(displayName, LoginMethod.ApiKey,
+            OtpType.None)
         {
             _ApiCredentials.Add(apiCredential);
         }
@@ -34,16 +35,22 @@ namespace SW.Mtm.Domain
         {
             Password = password;
         }
-        public Account(string displayName, string email, string password, OtpType secondFactorMethod) : this(displayName, email, EmailProvider.None, secondFactorMethod)
+
+        public Account(string displayName, string email, string password, OtpType secondFactorMethod) : this(
+            displayName, email, EmailProvider.None, secondFactorMethod)
         {
             Password = password;
         }
-        public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName, LoginMethod.EmailAndPassword,OtpType.None)
+
+        public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName,
+            LoginMethod.EmailAndPassword, OtpType.None)
         {
             Email = email;
             EmailProvider = accountProvider;
         }
-        public Account(string displayName, string email, EmailProvider accountProvider, OtpType secondFactorMethod) : this(displayName, LoginMethod.EmailAndPassword, secondFactorMethod)
+
+        public Account(string displayName, string email, EmailProvider accountProvider, OtpType secondFactorMethod) :
+            this(displayName, LoginMethod.EmailAndPassword, secondFactorMethod)
         {
             Email = email;
             EmailProvider = accountProvider;
@@ -76,6 +83,7 @@ namespace SW.Mtm.Domain
         {
             IsSecondFactorKeyVerified = true;
         }
+
         public void SetupSecondFactor(OtpType otpType, string key)
         {
             SecondFactorMethod = otpType;
@@ -91,24 +99,28 @@ namespace SW.Mtm.Domain
 
 
         public string Password { get; private set; }
+
         public void SetPassword(string password)
         {
             Password = password;
         }
 
         public bool Landlord { get; private set; }
+
         public void SetLandlord(bool landlord)
         {
             Landlord = landlord;
         }
 
         public bool EmailVerified { get; private set; }
+
         public void SetEmailVerified(bool emailVerified)
         {
             EmailVerified = emailVerified;
         }
 
         public bool PhoneVerified { get; private set; }
+
         public void SetPhoneVerified(bool phoneVerified)
         {
             PhoneVerified = phoneVerified;
@@ -116,6 +128,7 @@ namespace SW.Mtm.Domain
 
         readonly HashSet<ApiCredential> _ApiCredentials;
         public IReadOnlyCollection<ApiCredential> ApiCredentials => _ApiCredentials;
+
         public void SetApiCredentials(IEnumerable<ApiCredential> apiCredentials)
         {
             _ApiCredentials.Update(apiCredentials);
@@ -127,6 +140,7 @@ namespace SW.Mtm.Domain
 
         readonly HashSet<TenantMembership> _TenantMemberships;
         public IReadOnlyCollection<TenantMembership> TenantMemberships => _TenantMemberships;
+
         public bool SetTenantId(int tenantId)
         {
             if (_TenantMemberships.Any(t => t.TenantId == tenantId))
@@ -136,7 +150,6 @@ namespace SW.Mtm.Domain
             }
 
             return false;
-
         }
 
 
@@ -153,10 +166,12 @@ namespace SW.Mtm.Domain
             if (!_TenantMemberships.Any(t => t.TenantId == membership.TenantId))
             {
                 if (_TenantMemberships.Count == 0)
-                    if (TenantId == null) TenantId = membership.TenantId;
+                    if (TenantId == null)
+                        TenantId = membership.TenantId;
 
                 return _TenantMemberships.Add(membership);
             }
+
             return false;
         }
 
@@ -168,25 +183,34 @@ namespace SW.Mtm.Domain
                 if (TenantId == tenantId) TenantId = null;
                 return _TenantMemberships.Remove(membership);
             }
+
             return false;
+        }
+
+        public void Update(string email)
+        {
+            Email = email;
         }
 
         public bool UpdateTenantMembership(int tenantId, MembershipType membershipType)
         {
-            var oldMembership = _TenantMemberships.Where(t => t.TenantId == tenantId && t.Type != membershipType).SingleOrDefault();
+            var oldMembership = _TenantMemberships.Where(t => t.TenantId == tenantId && t.Type != membershipType)
+                .SingleOrDefault();
             if (oldMembership != null && _TenantMemberships.Remove(oldMembership))
             {
                 return _TenantMemberships.Add(new TenantMembership(tenantId, membershipType));
             }
+
             return false;
         }
-        
-        public bool AddEmailLoginMethod(string email,string password)
+
+        public bool AddEmailLoginMethod(string email, string password)
         {
             Password = password;
             return AddEmailLoginMethod(email, EmailProvider.None);
         }
-        public bool AddEmailLoginMethod(string email,EmailProvider provider)
+
+        public bool AddEmailLoginMethod(string email, EmailProvider provider)
         {
             Email = email;
             EmailProvider = provider;
@@ -199,11 +223,13 @@ namespace SW.Mtm.Domain
             PhoneVerified = true;
             return AddLoginMethod(LoginMethod.PhoneAndOtp);
         }
+
         public bool AddApiKeyLoginMethod(ApiCredential apiCredential)
         {
             _ApiCredentials.Add(apiCredential);
             return AddLoginMethod(LoginMethod.ApiKey);
         }
+
         private bool AddLoginMethod(LoginMethod loginMethod)
         {
             if ((LoginMethods & loginMethod) == loginMethod)
@@ -211,11 +237,12 @@ namespace SW.Mtm.Domain
             LoginMethods |= loginMethod;
             return true;
         }
+
         public bool RemoveLoginMethod(LoginMethod loginMethod)
         {
             if ((LoginMethods & loginMethod) != loginMethod)
                 return false;
-                    
+
             LoginMethods &= ~loginMethod;
             return true;
         }
