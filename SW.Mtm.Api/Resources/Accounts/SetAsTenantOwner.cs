@@ -24,7 +24,7 @@ namespace SW.Mtm.Resources.Accounts
         }
         public async Task<object> Handle(AccountSetAsTenantOwner request)
         {
-            if (requestContext.GetNameIdentifier() == Account.SystemId)
+            if (requestContext.GetNameIdentifier() != Account.SystemId)
                 throw new SWUnauthorizedException();
 
             var account = await dbContext
