@@ -52,6 +52,7 @@ namespace SW.Mtm.Model
         public ICollection<ProfileDataItem> ProfileData { get; set; }
         public OtpType SecondFactorMethod { get; set; }
         public int? TenantId { get; set; }
+        public bool IsLandlordAccount { get; set; }
     }
 
     public class GenerateOtpModel
