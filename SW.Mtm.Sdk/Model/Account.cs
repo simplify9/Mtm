@@ -101,6 +101,9 @@ namespace SW.Mtm.Model
     {
         public string Email { get; set; }
     }
+    public class ResetTotopAccountModel
+    {
+    }
 
     public class AccountSetProfileData
     {

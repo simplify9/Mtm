@@ -101,23 +101,21 @@ namespace SW.Mtm.Resources.Accounts
                             {
                                 throw new SWException("Otp code is invalid.");
                             }
-                            else
+
+                            var secret = account.SecondFactorKey;
+                            if (string.IsNullOrEmpty(secret))
                             {
-                                var secret = account.SecondFactorKey;
-                                if (string.IsNullOrEmpty(secret))
-                                {
-                                    secret = CreateSecondFactorSecretKey();
-                                    account.SetupSecondFactor(account.SecondFactorMethod, secret);
-                                }
-
-                                var issuer = mtmOptions.TotpIssuer;
-
-                                loginResult.SecretKey = secret;
-                                loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
-                                loginResult.OtpType = account.SecondFactorMethod;
-                                loginResult.OtpToken = otpToken.Id;
-                                loginResult.Password = otpToken.Password;
+                                secret = CreateSecondFactorSecretKey();
+                                account.SetupSecondFactor(account.SecondFactorMethod, secret);
                             }
+
+                            var issuer = mtmOptions.TotpIssuer;
+
+                            loginResult.SecretKey = secret;
+                            loginResult.QrCodeUrl = $"otpauth://totp/{issuer}:{account.Email}?secret={secret}";
+                            loginResult.OtpType = account.SecondFactorMethod;
+                            loginResult.OtpToken = otpToken.Id;
+                            loginResult.Password = otpToken.Password;
                         }
                         else
                         {

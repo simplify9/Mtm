@@ -141,6 +141,12 @@ namespace SW.Mtm.Domain
         readonly HashSet<TenantMembership> _TenantMemberships;
         public IReadOnlyCollection<TenantMembership> TenantMemberships => _TenantMemberships;
 
+        public void ResetSecondFactor()
+        {
+            IsSecondFactorKeyVerified = false;
+            SecondFactorKey = null;
+        }
+
         public bool SetTenantId(int tenantId)
         {
             if (_TenantMemberships.Any(t => t.TenantId == tenantId))
