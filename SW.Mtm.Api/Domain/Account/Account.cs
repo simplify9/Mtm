@@ -35,6 +35,10 @@ namespace SW.Mtm.Domain
         {
             Password = password;
         }
+        public Account(string displayName, string email, string password, bool landlord) : this(displayName, email, EmailProvider.None, landlord)
+        {
+            Password = password;
+        }
 
         public Account(string displayName, string email, string password, OtpType secondFactorMethod) : this(
             displayName, email, EmailProvider.None, secondFactorMethod)
@@ -42,6 +46,12 @@ namespace SW.Mtm.Domain
             Password = password;
         }
 
+        public Account(string displayName, string email, EmailProvider accountProvider, bool landlord) : this(displayName,
+            LoginMethod.EmailAndPassword, OtpType.None, landlord)
+        {
+            Email = email;
+            EmailProvider = accountProvider;
+        }
         public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName,
             LoginMethod.EmailAndPassword, OtpType.None)
         {
@@ -55,7 +65,18 @@ namespace SW.Mtm.Domain
             Email = email;
             EmailProvider = accountProvider;
         }
-
+        private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod,bool landlord)
+        {
+            Id = Guid.NewGuid().ToString("N");
+            SecondFactorMethod = secondFactorMethod;
+            LoginMethods = loginMethods;
+            DisplayName = displayName;
+            _ApiCredentials = new HashSet<ApiCredential>();
+            _TenantMemberships = new HashSet<TenantMembership>();
+            ProfileData = new ProfileDataItem[] { };
+            Roles = landlord ? new []{ RoleConstants.AccountsCreate} : new string[] { };
+            Landlord = landlord;
+        }
         private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod)
         {
             Id = Guid.NewGuid().ToString("N");

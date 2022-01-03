@@ -30,7 +30,14 @@ namespace SW.Mtm.Resources.Accounts
             Account account;
             request.Email = request.Email?.ToLower();
 
-            if (request.Email != null)
+            if (request.IsLandlordAccount)
+            {
+                if (!await dbContext.IsRequesterLandlord())
+                    throw new SWUnauthorizedException();
+                
+                account = new Account(request.DisplayName, request.Email, SecurePasswordHasher.Hash(request.Password),true);
+                
+            }else if (request.Email != null)
             {
                 if (request.EmailProvider == EmailProvider.None)
                     if(request.SecondFactorMethod == OtpType.None)
