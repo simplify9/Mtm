@@ -15,7 +15,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("resetTotp")]
     [Protect]
-    class ResetTotp : ICommandHandler<string>
+    class ResetTotp : ICommandHandler<string,ResetTotopAccountModel>
     {
         private readonly MtmDbContext dbContext;
 
@@ -28,7 +28,7 @@ namespace SW.Mtm.Resources.Accounts
          
         }
 
-        public async Task<object> Handle(string key)
+        public async Task<object> Handle(string key, ResetTotopAccountModel model)
         {
             if (!await dbContext.IsRequesterLandlord())
                 throw new SWUnauthorizedException();

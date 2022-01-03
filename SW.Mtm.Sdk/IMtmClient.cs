@@ -41,7 +41,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> TenantAddAccountAsApiResult(int key, TenantAddAccount tenantAddAccount);
         Task<ApiResult> SetProfileDataAsApiResult(string accountIdOrEmail, AccountSetProfileData accountSetProfileData);
         Task<ApiResult> UpdateProfileAsApiResult(string accountId, UpdateAccountModel model);
-        Task<ApiResult> ResetTotpAsApiResult(string accountId);
+        Task<ApiResult> ResetTotpAsApiResult(string accountId, ResetTotopAccountModel model);
 
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<SearchyResponse<AccountGet>>> SearchAccountsAsApiResult(string searchUrl);

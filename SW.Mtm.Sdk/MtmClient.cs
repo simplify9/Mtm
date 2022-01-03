@@ -266,13 +266,13 @@ namespace SW.Mtm.Sdk
                 .PostAsync(model);
         }
 
-        public async Task<ApiResult> ResetTotpAsApiResult(string accountId)
+        public async Task<ApiResult> ResetTotpAsApiResult(string accountId, ResetTotopAccountModel model)
         {
             return await Builder
                 .Jwt()
                 .Path($"accounts/{accountId}/resetTotp")
                 .AsApiResult()
-                .PostAsync();
+                .PostAsync(model);
             
         }
 
