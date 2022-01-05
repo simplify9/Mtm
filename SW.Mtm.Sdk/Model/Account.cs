@@ -80,6 +80,10 @@ namespace SW.Mtm.Model
         public string AccountId { get; set; }
         public int TenantId { get; set; }
     }
+    public class AccountSetAsLandlord
+    {
+        public string AccountId { get; set; }
+    }
 
     public class AccountInitiatePasswordReset
     {
