@@ -204,7 +204,7 @@ namespace SW.Mtm.Sdk
         public async Task<ApiResult> SetAsLandlord(AccountSetAsLandlord request)
         {
             return await Builder
-                .Key()
+                .Jwt()
                 .Path($"accounts/setaslandlord")
                 .AsApiResult()
                 .PostAsync(request);        
