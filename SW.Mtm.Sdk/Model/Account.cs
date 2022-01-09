@@ -136,6 +136,7 @@ namespace SW.Mtm.Model
         public DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
+        public bool Landlord { get; set; }
 
         public ICollection<int> TenantIdsMemberships { get; set; }
         public IEnumerable<ProfileDataItem> ProfileData { get; set; }
