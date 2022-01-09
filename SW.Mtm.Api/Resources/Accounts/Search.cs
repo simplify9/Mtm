@@ -67,7 +67,9 @@ namespace SW.Mtm.Resources.Accounts
                     EmailProvider = account.EmailProvider,
                     LoginMethods = account.LoginMethods,
                     ProfileData = account.ProfileData,
-                    SecondFactorMethod = account.SecondFactorMethod
+                    SecondFactorMethod = account.SecondFactorMethod,
+                    Landlord = account.Landlord
+                    
                 };
 
             return new SearchyResponse<AccountGet>
