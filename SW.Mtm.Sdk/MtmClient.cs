@@ -300,9 +300,9 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                 .Jwt()
-                .Path("accounts/LegacySearchPost")
+                .Path("accounts/LegacySearch")
                 .AsApiResult<List<AccountGet>>()
-                .GetAsync(request);
+                .PostAsync(request);
         }
 
         public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
