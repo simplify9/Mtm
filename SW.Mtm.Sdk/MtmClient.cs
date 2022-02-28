@@ -40,22 +40,6 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<TenantCreateResult>()
                 .PostAsync(tenantCreate);
         }
-        //async public Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate)
-        //{
-        //    return await Builder
-        //       .Jwt()
-        //       .Path("tenants")
-        //       .As<TenantCreateResult>(true)
-        //       .PostAsync(tenantCreate);
-        //}
-        //public async Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate)
-        //{
-        //    return await Builder
-        //       .Jwt()
-        //       .Path("tenants")
-        //       .AsApiResult<TenantCreateResult>()
-        //       .PostAsync(tenantCreate);
-        //}
 
         public async Task AcceptInvitation(string key, InvitationAccept invitationAccept)
         {
@@ -207,7 +191,7 @@ namespace SW.Mtm.Sdk
                 .Jwt()
                 .Path($"accounts/setaslandlord")
                 .AsApiResult()
-                .PostAsync(request);        
+                .PostAsync(request);
         }
 
         public async Task<ApiResult<InvitationGet>> GetInvitationAsApiResult(string key)
@@ -282,7 +266,6 @@ namespace SW.Mtm.Sdk
                 .Path($"accounts/{accountId}/resetTotp")
                 .AsApiResult()
                 .PostAsync(model);
-            
         }
 
         public async Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail)
@@ -308,11 +291,19 @@ namespace SW.Mtm.Sdk
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts/LegacySearch")
+                .Path("accounts/LegacySearch")
                 .AsApiResult<List<AccountGet>>()
                 .GetAsync(request);
         }
 
+        public async Task<ApiResult<List<AccountGet>>> LegacySearchAccountsPostAsApiResult(SearchAccounts request)
+        {
+            return await Builder
+                .Jwt()
+                .Path("accounts/LegacySearchPost")
+                .AsApiResult<List<AccountGet>>()
+                .GetAsync(request);
+        }
 
         public async Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
             AddLoginMethodModel request)
