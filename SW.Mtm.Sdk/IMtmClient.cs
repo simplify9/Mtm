@@ -23,10 +23,6 @@ namespace SW.Mtm.Sdk
         Task<TenantCreateResult> CreateTenant(TenantCreate registerAccount);
 
         Task<ApiResult<TenantCreateResult>> CreateTenantAsApiResult(TenantCreate registerAccount);
-        //Task<TenantCreateResult> CreateAdditionalTenant(TenantCreate tenantCreate);
-        //Task<ApiResult<TenantCreateResult>> CreateAdditionalTenantAsApiResult(TenantCreate tenantCreate);
-
-
         Task AcceptInvitation(string key, InvitationAccept invitationAccept);
         Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept);
 
@@ -47,6 +43,7 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
         Task<ApiResult<SearchyResponse<AccountGet>>> SearchAccountsAsApiResult(string searchUrl);
         Task<ApiResult<List<AccountGet>>> LegacySearchAccountsAsApiResult(SearchAccounts request);
+        Task<ApiResult<List<AccountGet>>> LegacySearchAccountsPostAsApiResult(SearchAccounts request);
 
         Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);
 
