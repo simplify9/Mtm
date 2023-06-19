@@ -15,6 +15,7 @@ namespace SW.Mtm
         }
 
         public string DatabaseType { get; set; }
+        public string AdminDb { get; set; }
         
         public string TotpIssuer { get; set; }
         public int JwtExpiryMinutes { get; set; }

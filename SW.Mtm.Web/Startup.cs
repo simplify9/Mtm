@@ -58,7 +58,7 @@ namespace SW.Mtm.Web
                     {
                         b.MigrationsHistoryTable("_ef_migrations_history", PgSql.MtmDbContext.Schema);
                         b.MigrationsAssembly(typeof(PgSql.DbType).Assembly.FullName);
-                        b.UseAdminDatabase("defaultdb");
+                        b.UseAdminDatabase(mtmOptions.AdminDb);
                     });
 
                 });

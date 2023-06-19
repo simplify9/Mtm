@@ -48,6 +48,9 @@ spec:
 
             - name: SwLogger__ApplicationName
               value: {{ template "project.fullname" . }}
+              
+            - name: Mtm__AdminDb
+              value: {{ .Values.adminDb }}
 
             - name: SwLogger__ElasticsearchEnvironments
               value: {{ .Values.global.environment }}
