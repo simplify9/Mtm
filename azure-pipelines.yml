@@ -8,6 +8,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
+- group: PlaygroundSecrets
 - group: Chartmuseum
 - name: imageName
   value: 'mtm'
@@ -111,5 +112,13 @@ jobs:
       chartName: '$(imageName)'
       chartVersion: $(version)
       releaseName: '$(imageName)'
-      overrideValues: 'db=$(dbConnection),ingress.enabled=true,ingress.hosts={mtm.sf9.io}'
-      arguments: --repo https://charts.sf9.io
+
+      arguments: >
+        --repo https://charts.sf9.io
+        --set environment="Staging"
+        --set ingress.hosts={mtm.sf9.io}
+        --set db="$(dbcs)"
+        --set ingress.enabled=true
+        --set ingress.path="/api"
+        --set ingress.tls[0].secretName="mtm-tls"
+        --set ingress.annotations."cert-manager\.io/cluster-issuer"="letsencrypt-nginx"
