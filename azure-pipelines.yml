@@ -117,6 +117,7 @@ jobs:
         --repo https://charts.sf9.io
         --set environment="Staging"
         --set ingress.hosts={mtm.sf9.io}
+        --set dbType="PgSql"
         --set db="$(dbcs)"
         --set ingress.enabled=true
         --set ingress.path="/api"
