@@ -106,7 +106,7 @@ jobs:
     displayName: 'Deploy to playground'
     inputs:
       connectionType: 'Kubernetes Service Connection'
-      kubernetesServiceConnection: 'k8s-s9'
+      kubernetesServiceConnection: 'k8s-s9-dev'
       namespace: 'playground'
       command: 'upgrade'
       chartName: '$(imageName)'
