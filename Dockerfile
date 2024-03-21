@@ -4,6 +4,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+
 WORKDIR /src
 COPY ["SW.Mtm.Web/SW.Mtm.Web.csproj", "SW.Mtm.Web/"]
 COPY ["SW.Mtm.Api/SW.Mtm.Api.csproj", "SW.Mtm.Api/"]
