@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SW.Mtm.Domain;
 using SW.PrimitiveTypes;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SW.Mtm.Model;
 
@@ -21,23 +18,24 @@ namespace SW.Mtm.Resources.Accounts
             this.requestContext = requestContext;
         }
 
-        public async Task<object> Handle(string accountIdOrEmail, bool lookup = false)
+        public async Task<object> Handle(string accountIdOrEmailOrPhone, bool lookup = false)
         {
-            if (requestContext.GetNameIdentifier() != accountIdOrEmail &&
-                requestContext.GetEmail() != accountIdOrEmail &&
+            if (requestContext.GetNameIdentifier() != accountIdOrEmailOrPhone &&
+                requestContext.GetEmail() != accountIdOrEmailOrPhone &&
+                requestContext.GetMobilePhone() != accountIdOrEmailOrPhone &&
                 !await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
-
-
+            
             var accountQuery =  dbContext.Set<Account>()
                 .Include(a => a.TenantMemberships);
             
-            var account = await accountQuery.FirstOrDefaultAsync(i => i.Id == accountIdOrEmail) ??
-                          await accountQuery.Where(i => i.Email == accountIdOrEmail).SingleOrDefaultAsync();
+            var account = await accountQuery.FirstOrDefaultAsync(i => i.Id == accountIdOrEmailOrPhone) ??
+                          await accountQuery.FirstOrDefaultAsync(i => i.Phone == accountIdOrEmailOrPhone) ??
+                          await accountQuery.Where(i => i.Email == accountIdOrEmailOrPhone).SingleOrDefaultAsync();
 
             if (account == null)
-                throw new SWNotFoundException(accountIdOrEmail);
+                throw new SWNotFoundException(accountIdOrEmailOrPhone);
 
             var response = new AccountGet
             {
@@ -54,16 +52,15 @@ namespace SW.Mtm.Resources.Accounts
                 SecondFactorMethod = account.SecondFactorMethod,
                 
             };
-
-            if (requestContext.GetNameIdentifier() == accountIdOrEmail ||
-                requestContext.GetEmail() == accountIdOrEmail ||
+            
+            if (requestContext.GetNameIdentifier() == accountIdOrEmailOrPhone ||
+                requestContext.GetEmail() == accountIdOrEmailOrPhone ||
+                requestContext.GetMobilePhone() == accountIdOrEmailOrPhone ||
                 await dbContext.IsRequesterLandlord())
             {
                 response.TenantIdsMemberships = account.TenantMemberships.Select(t => t.TenantId).ToList();
             }
-
             return response;
-            
         }
     }
 }
