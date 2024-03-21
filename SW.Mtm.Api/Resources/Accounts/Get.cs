@@ -26,9 +26,7 @@ namespace SW.Mtm.Resources.Accounts
                 !await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
-            var x = requestContext.GetNameIdentifier();
-            var w = requestContext.GetMobilePhone();
-            var email = requestContext.GetEmail();
+            
             var accountQuery =  dbContext.Set<Account>()
                 .Include(a => a.TenantMemberships);
             
