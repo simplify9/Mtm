@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 
 WORKDIR /src
 COPY ["SW.Mtm.Web/SW.Mtm.Web.csproj", "SW.Mtm.Web/"]
