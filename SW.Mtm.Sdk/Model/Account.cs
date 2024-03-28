@@ -140,6 +140,7 @@ namespace SW.Mtm.Model
 
         public ICollection<int> TenantIdsMemberships { get; set; }
         public IEnumerable<ProfileDataItem> ProfileData { get; set; }
+        public bool CanRequsetOtp { get; set; }
     }
 
     public class SearchAccounts

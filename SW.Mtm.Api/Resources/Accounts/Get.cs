@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using SW.Mtm.Domain;
 using SW.PrimitiveTypes;
 using System.Linq;
@@ -37,6 +38,14 @@ namespace SW.Mtm.Resources.Accounts
             if (account == null)
                 throw new SWNotFoundException(accountIdOrEmailOrPhone);
 
+            DateTime tenMinutesAgo = DateTime.UtcNow.AddMinutes(-10);
+            
+            var recentOtps = await dbContext.Set<OtpToken>()
+                .Where(x => x.AccountId == account.Id && x.CreatedOn >= tenMinutesAgo)
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(3)
+                .ToListAsync();
+
             var response = new AccountGet
             {
                 Id = account.Id,
@@ -50,6 +59,7 @@ namespace SW.Mtm.Resources.Accounts
                 LoginMethods = account.LoginMethods,
                 ProfileData = account.ProfileData,
                 SecondFactorMethod = account.SecondFactorMethod,
+                CanRequsetOtp = recentOtps.Count != 3
                 
             };
             
