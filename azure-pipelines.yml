@@ -25,7 +25,7 @@ jobs:
     displayName: 'Use .NET Core sdk'
     inputs:
       packageType: sdk
-      version: 5.0.100
+      version: 6.0.0
       installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - task: DotNetCoreCLI@2
@@ -36,14 +36,14 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: 'dotnet pack'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
     inputs:
       command: pack
       packagesToPack: 'SW.Mtm.Sdk/SW.Mtm.Sdk.csproj;'
       versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
@@ -52,7 +52,7 @@ jobs:
 
 - job: build
   displayName: Build, push image and chart and deploy to playground
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
   steps:
 
   - task: VersionDotNetCoreAssemblies@2
