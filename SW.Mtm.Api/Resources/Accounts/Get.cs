@@ -23,7 +23,7 @@ namespace SW.Mtm.Resources.Accounts
         {
             if (requestContext.GetNameIdentifier() != accountIdOrEmailOrPhone &&
                 requestContext.GetEmail() != accountIdOrEmailOrPhone &&
-                requestContext.GetMobilePhone() != accountIdOrEmailOrPhone &&
+                // requestContext.GetMobilePhone() != accountIdOrEmailOrPhone &&
                 !await dbContext.IsRequesterLandlord() &&
                 !await dbContext.IsRequesterTenantOwner())
                 throw new SWUnauthorizedException();
@@ -65,7 +65,7 @@ namespace SW.Mtm.Resources.Accounts
             
             if (requestContext.GetNameIdentifier() == accountIdOrEmailOrPhone ||
                 requestContext.GetEmail() == accountIdOrEmailOrPhone ||
-                requestContext.GetMobilePhone() == accountIdOrEmailOrPhone ||
+                // requestContext.GetMobilePhone() == accountIdOrEmailOrPhone ||
                 await dbContext.IsRequesterLandlord())
             {
                 response.TenantIdsMemberships = account.TenantMemberships.Select(t => t.TenantId).ToList();

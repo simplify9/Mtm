@@ -268,11 +268,11 @@ namespace SW.Mtm.Sdk
                 .PostAsync(model);
         }
 
-        public async Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail)
+        public async Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmailOrPhone)
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts/{accountIdOrEmail}")
+                .Path($"accounts/{accountIdOrEmailOrPhone}")
                 .AsApiResult<AccountGet>()
                 .GetAsync();
         }
