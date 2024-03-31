@@ -36,14 +36,14 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: 'dotnet pack'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/releases/6.0')
     inputs:
       command: pack
       packagesToPack: 'SW.Mtm.Sdk/SW.Mtm.Sdk.csproj;'
       versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/releases/6.0')
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
@@ -52,7 +52,7 @@ jobs:
 
 - job: build
   displayName: Build, push image and chart and deploy to playground
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/net6')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/releases/6.0')
   steps:
 
   - task: VersionDotNetCoreAssemblies@2
