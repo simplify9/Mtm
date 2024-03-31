@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using OtpNet;
 using SW.HttpExtensions;
 using SW.Mtm.Domain;
@@ -35,7 +34,7 @@ namespace SW.Mtm.Resources.Accounts
         async public Task<object> Handle(AccountLogin request)
         {
 
-            Account account = null;
+            Account account;
             var jwtExpiryTimeSpan = TimeSpan.FromMinutes(mtmOptions.JwtExpiryMinutes);
             var loginResult = new AccountLoginResult();
 
