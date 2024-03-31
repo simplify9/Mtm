@@ -285,7 +285,15 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<SearchyResponse<AccountGet>>()
                 .GetAsync();
         }
-
+        
+        public async Task<ApiResult<List<GetOtpsResponseModel>>> SearchOtpsAsApiResult(GetOtpsModel search)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/getOtps")
+                .AsApiResult<List<GetOtpsResponseModel>>()
+                .GetAsync(search);
+        }
 
         public async Task<ApiResult<List<AccountGet>>> LegacySearchAccountsAsApiResult(SearchAccounts request)
         {
@@ -295,7 +303,7 @@ namespace SW.Mtm.Sdk
                 .AsApiResult<List<AccountGet>>()
                 .GetAsync(request);
         }
-
+        
         public async Task<ApiResult<List<AccountGet>>> LegacySearchAccountsPostAsApiResult(SearchAccounts request)
         {
             return await Builder

@@ -149,6 +149,19 @@ namespace SW.Mtm.Model
         public string PhoneContains { get; set; }
         public string[] Ids { get; set; }
     }
+    
+    public class GetOtpsModel
+    {
+        public DateTime From { get; set; }
+        public string Phone { get; set; }
+    }
+    
+    public class GetOtpsResponseModel
+    {
+        public DateTime CreatedOn { get; set; }
+        public string Id { get; set; }
+    }
+
 
     public class AddLoginMethodModel
     {
