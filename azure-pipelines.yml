@@ -13,7 +13,7 @@ variables:
 - name: imageName
   value: 'mtm'
 - name: version
-  value: $[format('3.0.{0}', counter('3.0', 0))]
+  value: $[format('6.0.{0}', counter('6.0', 0))]
 
 jobs:
 
