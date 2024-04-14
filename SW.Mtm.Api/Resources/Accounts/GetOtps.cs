@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using SW.Mtm.Domain;
 using SW.PrimitiveTypes;
@@ -26,9 +27,9 @@ namespace SW.Mtm.Resources.Accounts
             if (account == null)
                 throw new SWNotFoundException(request.Phone);
 
-            
+            var from = DateTime.UtcNow.AddMinutes(-request.NumberOfMinutes);
             var otps = await _dbContext.Set<OtpToken>()
-                .Where(x => x.AccountId == account.Id && x.CreatedOn > request.From)
+                .Where(x => x.AccountId == account.Id && x.CreatedOn > from)
                 .ToListAsync();
 
             return otps.Select(x => new GetOtpsResponseModel

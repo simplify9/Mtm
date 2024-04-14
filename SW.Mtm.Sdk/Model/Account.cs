@@ -152,7 +152,7 @@ namespace SW.Mtm.Model
     
     public class GetOtpsModel
     {
-        public DateTime From { get; set; }
+        public int NumberOfMinutes { get; set; }
         public string Phone { get; set; }
     }
     
