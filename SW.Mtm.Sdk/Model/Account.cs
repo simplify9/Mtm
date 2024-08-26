@@ -105,6 +105,9 @@ namespace SW.Mtm.Model
     public class UpdateAccountModel
     {
         public string Email { get; set; }
+        public string DisplayName { get; set; }
+
+        
     }
     public class ResetTotopAccountModel
     {

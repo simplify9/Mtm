@@ -214,9 +214,10 @@ namespace SW.Mtm.Domain
             return false;
         }
 
-        public void Update(string email)
+        public void Update(string email,string displayName=null)
         {
             Email = email;
+            DisplayName = displayName??DisplayName;
         }
 
         public bool UpdateTenantMembership(int tenantId, MembershipType membershipType)
