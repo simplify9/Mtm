@@ -35,7 +35,7 @@ namespace SW.Mtm.Resources.Accounts
                 throw new SWUnauthorizedException();
             }
 
-            account.Update(request.Email);
+            account.Update(request.Email,request.DisplayName);
 
             await _dbContext.SaveChangesAsync();
 
