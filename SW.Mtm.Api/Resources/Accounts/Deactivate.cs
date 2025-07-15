@@ -23,7 +23,7 @@ public class Deactivate:ICommandHandler<string>
         if (account == null)
             throw new SWNotFoundException($"Cant find account with key {key}");
         if (account.Disabled)
-            throw new SWException("Account is already deactivated");
+            throw new SWException("Account is already deactivate");
         
         account.Activate();
 
