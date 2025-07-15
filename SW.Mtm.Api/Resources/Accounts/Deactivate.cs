@@ -25,6 +25,7 @@ public class Deactivate:ICommandHandler<string>
         if (account.Disabled)
             throw new SWException("Account is already deactivate");
         
+        
         account.Activate();
 
         await _dbContext.SaveChangesAsync();
