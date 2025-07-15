@@ -35,7 +35,9 @@ namespace SW.Mtm.Domain
         {
             Password = password;
         }
-        public Account(string displayName, string email, string password, bool landlord) : this(displayName, email, EmailProvider.None, landlord)
+
+        public Account(string displayName, string email, string password, bool landlord) : this(displayName, email,
+            EmailProvider.None, landlord)
         {
             Password = password;
         }
@@ -46,12 +48,14 @@ namespace SW.Mtm.Domain
             Password = password;
         }
 
-        public Account(string displayName, string email, EmailProvider accountProvider, bool landlord) : this(displayName,
+        public Account(string displayName, string email, EmailProvider accountProvider, bool landlord) : this(
+            displayName,
             LoginMethod.EmailAndPassword, OtpType.None, landlord)
         {
             Email = email;
             EmailProvider = accountProvider;
         }
+
         public Account(string displayName, string email, EmailProvider accountProvider) : this(displayName,
             LoginMethod.EmailAndPassword, OtpType.None)
         {
@@ -65,7 +69,8 @@ namespace SW.Mtm.Domain
             Email = email;
             EmailProvider = accountProvider;
         }
-        private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod,bool landlord)
+
+        private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod, bool landlord)
         {
             Id = Guid.NewGuid().ToString("N");
             SecondFactorMethod = secondFactorMethod;
@@ -74,9 +79,10 @@ namespace SW.Mtm.Domain
             _ApiCredentials = new HashSet<ApiCredential>();
             _TenantMemberships = new HashSet<TenantMembership>();
             ProfileData = new ProfileDataItem[] { };
-            Roles = landlord ? new []{ RoleConstants.AccountsCreate} : new string[] { };
+            Roles = landlord ? new[] { RoleConstants.AccountsCreate } : new string[] { };
             Landlord = landlord;
         }
+
         private Account(string displayName, LoginMethod loginMethods, OtpType secondFactorMethod)
         {
             Id = Guid.NewGuid().ToString("N");
@@ -214,10 +220,20 @@ namespace SW.Mtm.Domain
             return false;
         }
 
-        public void Update(string email,string displayName=null)
+        public void Update(string email, string displayName = null)
         {
             Email = email;
-            DisplayName = displayName??DisplayName;
+            DisplayName = displayName ?? DisplayName;
+        }
+
+        public void Activate()
+        {
+            Disabled = true;
+        }
+
+        public void Deactivate()
+        {
+            Disabled = false;
         }
 
         public bool UpdateTenantMembership(int tenantId, MembershipType membershipType)
