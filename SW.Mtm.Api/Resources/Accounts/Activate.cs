@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using SW.Mtm.Domain;
+using SW.Mtm.Model;
 using SW.PrimitiveTypes;
 
 namespace SW.Mtm.Resources.Accounts;
@@ -7,7 +8,7 @@ namespace SW.Mtm.Resources.Accounts;
 
 [Protect]
 [HandlerName(nameof(Activate))]
-public class Activate:ICommandHandler<string>
+public class Activate:ICommandHandler<string,ActivateDeactivateOptions>
 {
     private readonly MtmDbContext _dbContext;
 
@@ -16,7 +17,7 @@ public class Activate:ICommandHandler<string>
     {
         _dbContext = dbContext;
     }
-    public async Task<object> Handle(string key)
+    public async Task<object> Handle(string key,ActivateDeactivateOptions request)
     {
         var account = await _dbContext.FindAsync<Account>(key);
         if (account == null)
