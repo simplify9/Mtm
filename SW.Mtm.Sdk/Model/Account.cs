@@ -198,4 +198,9 @@ namespace SW.Mtm.Model
     {
         public string Code { get; set; }
     }
+
+    public class ActivateDeactivateOptions
+    {
+        
+    }
 }
