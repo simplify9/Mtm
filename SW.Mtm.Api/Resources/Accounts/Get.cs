@@ -7,7 +7,7 @@ using SW.Mtm.Model;
 
 namespace SW.Mtm.Resources.Accounts
 {
-    class Get : IGetHandler<string>
+    class Get : IGetHandler<string,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
@@ -18,7 +18,7 @@ namespace SW.Mtm.Resources.Accounts
             this.requestContext = requestContext;
         }
 
-        public async Task<object> Handle(string accountIdOrEmailOrPhone, bool lookup = false)
+        public async Task<object> Handle(string accountIdOrEmailOrPhone)
         {
             if (requestContext.GetNameIdentifier() != accountIdOrEmailOrPhone &&
                 requestContext.GetEmail() != accountIdOrEmailOrPhone &&

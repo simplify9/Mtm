@@ -8,7 +8,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("changepassword")]
-    class ChangePassword : ICommandHandler<AccountChangePassword>
+    class ChangePassword : ICommandHandler<AccountChangePassword,object>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;

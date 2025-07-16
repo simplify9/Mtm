@@ -10,7 +10,7 @@ using SW.Mtm.Model;
 
 namespace SW.Mtm.Resources.Invitations
 {
-    class Get : IGetHandler<string>
+    class Get : IGetHandler<string,object>
     {
         private readonly MtmDbContext dbContext;
 
@@ -19,7 +19,7 @@ namespace SW.Mtm.Resources.Invitations
             this.dbContext = dbContext;
         }
 
-        public async Task<object> Handle(string key, bool lookup = false)
+        public async Task<object> Handle(string key)
         {
             var invitation = await dbContext.FindAsync<Invitation>(key);
 

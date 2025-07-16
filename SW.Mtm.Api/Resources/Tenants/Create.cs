@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SW.Mtm.Resources.Tenants
 {
     [Protect]
-    class Create : ICommandHandler<TenantCreate>
+    class Create : ICommandHandler<TenantCreate,object>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;

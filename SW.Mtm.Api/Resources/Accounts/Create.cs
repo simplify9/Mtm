@@ -15,7 +15,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     
     [Protect(RequireRole = true)]
-    class Create : ICommandHandler<AccountCreate>
+    class Create : ICommandHandler<AccountCreate,object>
     {
         private readonly MtmDbContext dbContext;
 

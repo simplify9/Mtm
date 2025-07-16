@@ -13,7 +13,7 @@ namespace SW.Mtm.Resources.Accounts
 
     [Protect(RequireRole = true)]
     [HandlerName("initiatepasswordreset")]
-    class InitiatePasswordReset : ICommandHandler<string, AccountInitiatePasswordReset>
+    class InitiatePasswordReset : ICommandHandler<string, AccountInitiatePasswordReset,object>
     {
         private readonly MtmDbContext dbContext;
 

@@ -8,7 +8,7 @@ using SW.PrimitiveTypes;
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("LegacySearch")]
-    public class LegacySearch : IQueryHandler<SearchAccounts>
+    public class LegacySearch : IQueryHandler<SearchAccounts,object>
     {
         private readonly MtmDbContext _dbContext;
 

@@ -15,7 +15,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("setupTotp")]
     [Protect]
-    class SetupTotp : ICommandHandler
+    class SetupTotp : ICommandHandler<object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;

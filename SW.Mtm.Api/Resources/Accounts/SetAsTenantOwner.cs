@@ -13,7 +13,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("setastenantowner")]
     [Protect]
-    class SetAsTenantOwner : ICommandHandler<AccountSetAsTenantOwner>
+    class SetAsTenantOwner : ICommandHandler<AccountSetAsTenantOwner,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;

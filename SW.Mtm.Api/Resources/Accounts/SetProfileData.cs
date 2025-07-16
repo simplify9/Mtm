@@ -14,7 +14,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("setprofiledata")]
-    class SetProfileData : ICommandHandler<string, AccountSetProfileData>
+    class SetProfileData : ICommandHandler<string, AccountSetProfileData,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;

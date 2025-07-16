@@ -11,7 +11,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("removelogin")]
-    public class RemoveLoginMethod : ICommandHandler<string, RemoveLoginMethodModel>
+    public class RemoveLoginMethod : ICommandHandler<string, RemoveLoginMethodModel,object>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;

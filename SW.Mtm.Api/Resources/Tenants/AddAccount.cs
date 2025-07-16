@@ -10,7 +10,7 @@ namespace SW.Mtm.Resources.Tenants
 {
     [Protect]
     [HandlerName("addaccount")]
-    class AddAccount : ICommandHandler<int, TenantAddAccount>
+    class AddAccount : ICommandHandler<int, TenantAddAccount,object>
     {
         private readonly MtmDbContext mtmDbContext;
 

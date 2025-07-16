@@ -12,7 +12,7 @@ namespace SW.Mtm.Resources.Invitations
 {
 
     [Protect]
-    class Search : IQueryHandler<InvitationSearch>
+    class Search : IQueryHandler<InvitationSearch,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;

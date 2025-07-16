@@ -12,7 +12,7 @@ namespace SW.Mtm.Resources.Invitations
 {
     [HandlerName("Cancel")]
     [Protect]
-    class Cancel : ICommandHandler<InvitationCancel>
+    class Cancel : ICommandHandler<InvitationCancel,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
