@@ -46,6 +46,9 @@ namespace SW.Mtm.Sdk
         Task<ApiResult<List<GetOtpsResponseModel>>> SearchOtpsAsApiResult(GetOtpsModel request);
 
         Task<ApiResult<AccountSetupTotpResult>> SetupOtpSecret(AccountSetupOtpRequest request);
+        
+        Task<ApiResult> ActivateAccount(string accountId ,ActivateDeactivateOptions request);
+        Task<ApiResult> DeactivateAccount(string accountId ,ActivateDeactivateOptions request);
 
         Task<ApiResult<AddLoginMethodResult>> AddLoginMethodAsApiResult(string accountIdOrEmail,
             AddLoginMethodModel request);

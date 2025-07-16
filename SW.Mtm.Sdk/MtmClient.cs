@@ -48,6 +48,24 @@ namespace SW.Mtm.Sdk
                 .Path($"invitations/{key}/accept")
                 .PostAsync(invitationAccept);
         }
+        
+        public async Task<ApiResult> ActivateAccount(string accountId,ActivateDeactivateOptions request)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/{accountId}/Activate")
+                .AsApiResult()
+                .PostAsync(request);
+        }
+        
+        public async Task<ApiResult> DeactivateAccount(string accountId ,ActivateDeactivateOptions request)
+        {
+            return await Builder
+                .Jwt()
+                .Path($"accounts/${accountId}/Deactivate")
+                .AsApiResult()
+                .PostAsync(request);
+        }
 
         public async Task<ApiResult> AcceptInvitationAsApiResult(string key, InvitationAccept invitationAccept)
         {

@@ -273,6 +273,16 @@ namespace SW.Mtm.Domain
             LoginMethods &= ~loginMethod;
             return true;
         }
+        
+        public void Activate()
+        {
+            Disabled = true;
+        }
+
+        public void Deactivate()
+        {
+            Disabled = false;
+        }
 
         public string[] Roles { get; private set; }
         public bool Disabled { get; private set; }
