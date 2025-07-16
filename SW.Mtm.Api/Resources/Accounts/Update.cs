@@ -10,7 +10,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("update")]
-    public class Update : ICommandHandler<string, UpdateAccountModel>
+    public class Update : ICommandHandler<string, UpdateAccountModel,object>
     {
         private readonly MtmDbContext _dbContext;
         private readonly RequestContext _requestContext;

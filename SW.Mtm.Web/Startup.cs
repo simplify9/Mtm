@@ -7,13 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using SW.CqApi;
 using SW.EfCoreExtensions;
 using SW.HttpExtensions;
 using SW.Logger;
 using SW.PrimitiveTypes;
+
+
+
 
 namespace SW.Mtm.Web
 {

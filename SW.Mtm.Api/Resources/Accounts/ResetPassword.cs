@@ -15,7 +15,7 @@ namespace SW.Mtm.Resources.Accounts
 
     [Protect(RequireRole = true)]
     [HandlerName("resetpassword")]
-    class ResetPassword : ICommandHandler<string, AccountResetPassword>
+    class ResetPassword : ICommandHandler<string, AccountResetPassword,object>
     {
         private readonly MtmDbContext dbContext;
 

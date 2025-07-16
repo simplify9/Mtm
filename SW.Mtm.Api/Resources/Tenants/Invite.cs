@@ -13,7 +13,7 @@ namespace SW.Mtm.Resources.Tenants
 {
     [Protect]
     [HandlerName("invite")]
-    class Invite : ICommandHandler<int, TenantInvite>
+    class Invite : ICommandHandler<int, TenantInvite,object>
     {
         private readonly MtmDbContext dbContext;
 

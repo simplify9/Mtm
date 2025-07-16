@@ -8,7 +8,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName(nameof(Deactivate))]
-    public class Deactivate:ICommandHandler<string,ActivateDeactivateOptions>
+    public class Deactivate:ICommandHandler<string,ActivateDeactivateOptions,object>
     {
         private readonly MtmDbContext _dbContext;
 

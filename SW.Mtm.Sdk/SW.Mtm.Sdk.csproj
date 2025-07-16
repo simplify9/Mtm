@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>SimplyWorks.Mtm.Sdk</PackageId>
     <Authors>Simplify9</Authors>
     <Product>SimplyWorks.Mtm.Sdk</Product>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SimplyWorks.HttpExtensions" Version="5.0.0" />
+    <PackageReference Include="SimplyWorks.HttpExtensions" Version="6.1.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [Protect]
     [HandlerName("addlogin")]
-    public class AddLoginMethod: ICommandHandler<string, AddLoginMethodModel>
+    public class AddLoginMethod: ICommandHandler<string, AddLoginMethodModel,object>
     {
         private readonly RequestContext requestContext;
         private readonly MtmDbContext dbContext;

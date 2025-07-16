@@ -8,7 +8,7 @@ using SW.PrimitiveTypes;
 namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("LegacySearch")]
-    public class LegacySearchPost : ICommandHandler<SearchAccounts>
+    public class LegacySearchPost : ICommandHandler<SearchAccounts,object>
     {
         private readonly MtmDbContext _dbContext;
 

@@ -13,7 +13,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("switchtenant")]
     [Protect]
-    class SwitchTenant : ICommandHandler<AccountSwitchTenant>
+    class SwitchTenant : ICommandHandler<AccountSwitchTenant,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly JwtTokenParameters jwtTokenParameters;

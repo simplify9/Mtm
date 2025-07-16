@@ -15,7 +15,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("resetTotp")]
     [Protect]
-    class ResetTotp : ICommandHandler<string,ResetTotopAccountModel>
+    class ResetTotp : ICommandHandler<string,ResetTotopAccountModel,object>
     {
         private readonly MtmDbContext dbContext;
 

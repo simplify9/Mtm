@@ -9,7 +9,7 @@ namespace SW.Mtm.Resources.Accounts
 {
     [HandlerName("setAsLandlord")]
     [Protect]
-    public class SetAsLandlord : ICommandHandler<AccountSetAsLandlord>
+    public class SetAsLandlord : ICommandHandler<AccountSetAsLandlord,object>
     {
         
         private readonly MtmDbContext dbContext;

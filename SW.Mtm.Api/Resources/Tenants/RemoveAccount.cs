@@ -10,7 +10,7 @@ namespace SW.Mtm.Resources.Tenants
 {
     [Protect]
     [HandlerName("removeaccount")]
-    class RemoveAccount : ICommandHandler<int, TenantRemoveAccount>
+    class RemoveAccount : ICommandHandler<int, TenantRemoveAccount,object>
     {
         private readonly MtmDbContext mtmDbContext;
 

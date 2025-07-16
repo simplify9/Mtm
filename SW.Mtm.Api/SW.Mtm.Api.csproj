@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>SW.Mtm</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.3.4" />
     <PackageReference Include="Otp.NET" Version="1.2.2" />
-    <PackageReference Include="SimplyWorks.EfCoreExtensions" Version="5.0.0" />
+    <PackageReference Include="SimplyWorks.EfCoreExtensions" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>

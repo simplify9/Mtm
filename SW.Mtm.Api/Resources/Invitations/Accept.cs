@@ -10,7 +10,7 @@ namespace SW.Mtm.Resources.Invitations
 {
     [Protect]
     [HandlerName("accept")]
-    class Accept : ICommandHandler<string, InvitationAccept>
+    class Accept : ICommandHandler<string, InvitationAccept,object>
     {
         private readonly MtmDbContext dbContext;
         private readonly RequestContext requestContext;
