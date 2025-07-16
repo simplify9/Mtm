@@ -128,20 +128,20 @@ namespace SW.Mtm.Sdk
                 .AsApiResult()
                 .PostAsync(accountChangePassword);
         }
-        public async Task<ApiResult> ActivateAccount(ActivateDeactivateOptions request)
+        public async Task<ApiResult> ActivateAccount(string accountId,ActivateDeactivateOptions request)
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts/Activate")
+                .Path($"accounts/{accountId}/Activate")
                 .AsApiResult()
                 .PostAsync(request);
         }
         
-        public async Task<ApiResult> DeactivateAccount(ActivateDeactivateOptions request)
+        public async Task<ApiResult> DeactivateAccount(string accountId ,ActivateDeactivateOptions request)
         {
             return await Builder
                 .Jwt()
-                .Path($"accounts/Deactivate")
+                .Path($"accounts/${accountId}/Deactivate")
                 .AsApiResult()
                 .PostAsync(request);
         }

@@ -40,8 +40,8 @@ namespace SW.Mtm.Sdk
         Task<ApiResult> UpdateProfileAsApiResult(string accountId, UpdateAccountModel model);
         Task<ApiResult> ResetTotpAsApiResult(string accountId, ResetTotopAccountModel model);
         
-        Task<ApiResult> ActivateAccount(ActivateDeactivateOptions request);
-        Task<ApiResult> DeactivateAccount(ActivateDeactivateOptions request);
+        Task<ApiResult> ActivateAccount(string accountId ,ActivateDeactivateOptions request);
+        Task<ApiResult> DeactivateAccount(string accountId ,ActivateDeactivateOptions request);
 
 
         Task<ApiResult<AccountGet>> GetAccountAsApiResult(string accountIdOrEmail);
