@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SimplyWorks.HttpExtensions" Version="8.1.2" />
+    <PackageReference Include="SimplyWorks.HttpExtensions" Version="8.1.8" />
   </ItemGroup>
 
   <ItemGroup>
