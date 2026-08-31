@@ -1,4 +1,9 @@
-{{- if and .Values.ingress.enabled (not .Values.gateway.enabled) -}}
+{{- /*
+Ingress is the legacy routing mode and is suppressed whenever Gateway API
+routing is on, so the two can never render at once. Both blocks are
+nil-guarded so nulling either one renders no route instead of crashing.
+*/ -}}
+{{- if and .Values.ingress .Values.ingress.enabled (not (and .Values.gateway .Values.gateway.enabled)) -}}
 {{- $fullName := include "project.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $ingressPath := .Values.ingress.path -}}

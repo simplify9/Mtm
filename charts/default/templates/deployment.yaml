@@ -124,7 +124,14 @@ spec:
             - name: {{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "project.fullname" . }}
+                  {{- /*
+                  $root, not `.`: inside a range over a map, `.` is rebound to
+                  the map VALUE (a string), so `template "project.fullname" .`
+                  failed with `can't evaluate field Values in type string` and
+                  made ANY release that set `secrets.*` fail to render at all.
+                  $root was already captured above for exactly this purpose.
+                  */}}
+                  name: {{ template "project.fullname" $root }}
                   key: {{ $key }}
 
             {{- end }}
