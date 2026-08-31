@@ -6,6 +6,14 @@ replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
+  # Fully-qualified repository INCLUDING the registry host. Empty means
+  # ghcr.io/simplify9/<chart name>, which is where CI publishes the image.
+  # The CI pipeline sets this explicitly; override it to pin a different
+  # registry (e.g. docker.io/simplify9/mtm for versions <= 6.0.8).
+  repository: ""
+  # Image tag. Empty means .Chart.Version, keeping chart and app version
+  # locked together as they have always been.
+  tag: ""
 
 # imagePullSecrets:
 #   - name: sw-secret
