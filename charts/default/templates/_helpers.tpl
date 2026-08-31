@@ -41,3 +41,20 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+Fully-qualified container image reference.
+
+This was previously hardcoded in deployment.yaml as
+  docker.io/simplify9/<chart name>:<chart version>
+which ignored the image.repository / image.tag values the CI pipeline has been
+passing all along, and pointed at a registry that has received no push since
+6.0.8 (Aug 2025). Images are published to ghcr.io, so that is the default now.
+Both halves stay overridable for anyone who needs a different registry or tag.
+*/}}
+{{- define "project.image" -}}
+{{- $image := .Values.image | default dict -}}
+{{- $repo := $image.repository | default (printf "ghcr.io/simplify9/%s" .Chart.Name) -}}
+{{- $tag := $image.tag | default .Chart.Version -}}
+{{- printf "%s:%s" $repo $tag -}}
+{{- end -}}
