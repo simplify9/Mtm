@@ -21,7 +21,7 @@ jobs:
     with:
       major-version: '6'
       minor-version: '0'
-      dotnet-version: '6.0.x'
+      dotnet-version: '8.0.x'
 
       # Build + test + push the SDK NuGet package
       nuget-projects: 'SW.Mtm.Sdk/SW.Mtm.Sdk.csproj'
