@@ -14,12 +14,12 @@ permissions:
   packages: write
 
 jobs:
-  cicd:
+  Prod:
     if: ${{ github.event_name == 'workflow_dispatch' || github.ref_name == 
       'main' || startsWith(github.ref_name, 'releases/') }}
     uses: simplify9/.github/.github/workflows/reusable-service-cicd.yml@main
     with:
-      major-version: '6'
+      major-version: '8'
       minor-version: '0'
       dotnet-version: '8.0.x'
 
