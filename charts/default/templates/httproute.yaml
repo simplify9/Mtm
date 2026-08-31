@@ -1,4 +1,14 @@
-{{- if .Values.gateway.enabled -}}
+{{- /*
+Gateway API routing. Schema is intentionally identical to s9genericchart-v2's
+httproute.yaml so that one set of gateway values deploys against either chart
+(see charts/default/README.md § Gateway API).
+
+`and .Values.gateway .Values.gateway.enabled` rather than a bare
+`.Values.gateway.enabled`: a caller that nulls the whole block (`--set
+gateway=null`, or a values file with a bare `gateway:` key) would otherwise
+crash with a nil-pointer error instead of simply rendering no route.
+*/ -}}
+{{- if and .Values.gateway .Values.gateway.enabled -}}
 {{- $fullName := include "project.fullname" . -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -9,10 +19,17 @@ metadata:
 spec:
   parentRefs:
     {{- range .Values.gateway.parentRefs }}
-    - name: {{ .name }}
+    - name: {{ required "gateway.parentRefs[].name is required — it must name an existing Gateway." .name }}
       {{- with .namespace }}
       namespace: {{ . }}
       {{- end }}
+      {{- /*
+      sectionName pins the route to ONE named listener on the Gateway. Omitting
+      it attaches the route to every listener whose hostname matches, which on a
+      multi-domain gateway is rarely what you want. A sectionName that does not
+      match a live listener makes the route report Accepted=False /
+      NoMatchingParent — loud, and therefore safe.
+      */ -}}
       {{- with .sectionName }}
       sectionName: {{ . }}
       {{- end }}
@@ -25,10 +42,17 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.gateway.routes }}
+    {{- /*
+    Normalise backendRef to a dict up front. The previous `dig "backendRef" ...`
+    form raised "interface conversion: interface {} is nil" when a route carried
+    an explicitly empty `backendRef:` key — which is exactly the shape a user
+    produces by commenting out the two children in values.yaml.
+    */ -}}
+    {{- $backendRef := default (dict) .backendRef }}
     - matches:
         - path:
             type: {{ .pathType | default "PathPrefix" }}
-            value: {{ .path | quote }}
+            value: {{ required "gateway.routes[].path is required (e.g. \"/\" or \"/mtm\")." .path | quote }}
       {{- with .timeout }}
       timeouts:
         {{- with .request }}
@@ -39,13 +63,18 @@ spec:
         {{- end }}
       {{- end }}
       backendRefs:
-        - name: {{ dig "backendRef" "name" "" . | default $fullName }}
-          port: {{ dig "backendRef" "port" 0 . | default $.Values.service.port }}
-          {{- with dig "backendRef" "namespace" "" . }}
+        - name: {{ $backendRef.name | default $fullName }}
+          port: {{ $backendRef.port | default $.Values.service.port }}
+          {{- with $backendRef.namespace }}
           namespace: {{ . }}
           {{- end }}
-          {{- with dig "backendRef" "weight" 0 . }}
-          weight: {{ . }}
+          {{- /*
+          hasKey, not `with`: `with` treats 0 as falsy, so an explicit
+          `weight: 0` (a legal Gateway API value meaning "drain this backend")
+          was silently discarded and the backend kept its implicit weight of 1.
+          */ -}}
+          {{- if hasKey $backendRef "weight" }}
+          weight: {{ $backendRef.weight }}
           {{- end }}
     {{- end }}
 {{- end }}
