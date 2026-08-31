@@ -1,5 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
+# .NET 8 runtime images changed the default listening port from 80 to 8080
+# (aspnet:6.0 shipped ASPNETCORE_URLS=http://+:80, aspnet:8.0 ships
+# ASPNETCORE_HTTP_PORTS=8080). The Helm chart hardcodes containerPort 80 and
+# the Service targets the named "http" port, so without this the app listens
+# on 8080, the Service has no reachable endpoint and the gateway returns 503
+# -- silently, because the chart ships probes.enabled=false so the pod still
+# reports Ready. Pin the port back to 80 to match the chart and the 6.0 image.
+ENV ASPNETCORE_HTTP_PORTS=80
 EXPOSE 80
 EXPOSE 443
 
