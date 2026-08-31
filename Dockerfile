@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 # .NET 8 runtime images changed the default listening port from 80 to 8080
 # (aspnet:6.0 shipped ASPNETCORE_URLS=http://+:80, aspnet:8.0 ships
