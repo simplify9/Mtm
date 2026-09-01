@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using SW.CqApi;
@@ -51,11 +52,27 @@ namespace SW.Mtm.Web
 
             if (mtmOptions.DatabaseType.ToLower() == RelationalDbType.PgSql.ToString().ToLower())
             {
+                // Npgsql 8 removed the implicit dynamic JSON serializer. Properties
+                // mapped with StoreAsJson() (Tenant.ProfileData,
+                // TenantMembership.ProfileData, Account.ProfileData) are POCO
+                // collections stored in json/jsonb columns, and reading them now
+                // throws unless dynamic JSON is opted into explicitly:
+                //   InvalidCastException: Reading as
+                //   'IEnumerable<ProfileDataItem>' is not supported for fields
+                //   having DataTypeName 'jsonb'
+                // Built ONCE here, not inside the AddDbContext lambda:
+                // NpgsqlDataSource owns the connection pool, so building one per
+                // DbContext instance would leak pools.
+                var pgDataSourceBuilder = new NpgsqlDataSourceBuilder(
+                    Configuration.GetConnectionString(MtmDbContext.ConnectionString));
+                pgDataSourceBuilder.EnableDynamicJson();
+                var pgDataSource = pgDataSourceBuilder.Build();
+
                 services.AddDbContext<MtmDbContext, PgSql.MtmDbContext>(c =>
                 {
                     c.EnableSensitiveDataLogging(true);
                     c.UseSnakeCaseNamingConvention();
-                    c.UseNpgsql(Configuration.GetConnectionString(MtmDbContext.ConnectionString), b =>
+                    c.UseNpgsql(pgDataSource, b =>
                     {
                         b.MigrationsHistoryTable("_ef_migrations_history", PgSql.MtmDbContext.Schema);
                         b.MigrationsAssembly(typeof(PgSql.DbType).Assembly.FullName);
