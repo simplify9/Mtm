@@ -11,7 +11,7 @@ ENV ASPNETCORE_HTTP_PORTS=80
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 WORKDIR /src
 COPY ["SW.Mtm.Web/SW.Mtm.Web.csproj", "SW.Mtm.Web/"]
